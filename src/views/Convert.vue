@@ -1,12 +1,18 @@
 <template>
   <div class="home">
-    <section class="hero is-primary">
+    <section class="hero is-light">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Convert</h1>
-          <h2 class="subtitle">Convert data to get it ready for publishing</h2>
+          <h2 class="subtitle">Get data ready for publishing</h2>
         </div>
       </div>
     </section>
+    <div class="container">
+      <p>
+        <router-link to="/postcode-to-lsoa">Postcode to LSOA</router-link> |
+        <router-link to="/date-format">Format dates</router-link>
+      </p>
+    </div>
   </div>
 </template>

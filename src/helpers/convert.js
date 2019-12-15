@@ -1,3 +1,3 @@
-export function convertPostcodesToLSOAs(callback) {
+export function convertPostcodesToLSOAs(postcodes, callback) {
   callback();
 }

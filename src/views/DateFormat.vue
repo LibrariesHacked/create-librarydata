@@ -3,8 +3,8 @@
     <section class="hero is-light">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Create</h1>
-          <h2 class="subtitle">Tools for creating library data</h2>
+          <h1 class="title">Convert dates</h1>
+          <h2 class="subtitle">Ensure your dates are formatted correctly</h2>
         </div>
       </div>
     </section>

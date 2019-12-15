@@ -3,6 +3,8 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Convert from "./views/Convert.vue";
 import Schemas from "./views/Schemas.vue";
+import PostcodeToLsoa from "./views/PostcodeToLsoa.vue";
+import DateFormat from "./views/DateFormat.vue";
 
 Vue.use(Router);
 
@@ -24,6 +26,16 @@ export default new Router({
       path: "/convert",
       name: "convert",
       component: Convert
+    },
+    {
+      path: "/postcode-to-lsoa",
+      name: "postcode-to-lsoa",
+      component: PostcodeToLsoa
+    },
+    {
+      path: "/date-format",
+      name: "date-format",
+      component: DateFormat
     }
   ]
 });

@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Convert from "./views/Convert.vue";
-import Schemas from "./views/Schemas.vue";
 import PostcodeToLsoa from "./views/PostcodeToLsoa.vue";
 import DateFormat from "./views/DateFormat.vue";
 
@@ -18,11 +17,6 @@ export default new Router({
       component: Home
     },
     {
-      path: "/schemas",
-      name: "schemas",
-      component: Schemas
-    },
-    {
       path: "/convert",
       name: "convert",
       component: Convert
@@ -35,7 +29,7 @@ export default new Router({
     {
       path: "/date-format",
       name: "date-format",
-      component: DateFormat
+      components: DateFormat
     }
   ]
 });

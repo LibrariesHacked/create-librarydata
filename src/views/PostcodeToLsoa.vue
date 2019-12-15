@@ -10,5 +10,17 @@
         </div>
       </div>
     </section>
+    <custom-footer />
   </div>
 </template>
+<script>
+import Footer from "../components/Footer";
+
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+  components: { "custom-footer": Footer }
+};
+</script>

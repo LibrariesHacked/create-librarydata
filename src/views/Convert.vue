@@ -14,5 +14,17 @@
         <router-link to="/date-format">Format dates</router-link>
       </p>
     </div>
+    <custom-footer />
   </div>
 </template>
+<script>
+import Footer from "../components/Footer";
+
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+  components: { "custom-footer": Footer }
+};
+</script>

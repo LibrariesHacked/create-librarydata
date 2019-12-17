@@ -10,7 +10,7 @@
         <section class="section">
           <div class="content has-text-centered">
             <p>
-              <b-icon icon="upload" size="is-large"> </b-icon>
+              <b-icon icon="upload" size="is-medium"> </b-icon>
             </p>
             <p>Drop your CSV file here or click to add</p>
           </div>
@@ -19,10 +19,10 @@
     </b-field>
 
     <div class="tags">
-      <span class="tag is-primary" v-if="file">
+      <span class="tag is-medium" v-if="file">
         {{ file.name }}
         <button
-          class="delete is-small"
+          class="delete is-medium"
           type="button"
           @click="$emit('delete-file')"
         ></button>

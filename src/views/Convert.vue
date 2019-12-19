@@ -4,7 +4,9 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Convert</h1>
-          <h2 class="subtitle">Get data ready for publishing</h2>
+          <h2 class="subtitle">
+            Do things to data to get it into the right format
+          </h2>
         </div>
       </div>
     </section>

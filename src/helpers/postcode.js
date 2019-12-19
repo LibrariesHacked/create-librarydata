@@ -13,13 +13,12 @@ export function extractPostcodeSectors(postcode_list) {
 }
 
 export function extractPostcodeSector(postcode) {
-  let sector = null;
   const re = /[a-zA-Z]+\d\d?[a-zA-Z]?\s*\d+/;
   if (postcode) {
     let match = postcode.match(re);
-    if (match && match.length > 0) sector = match[0];
+    if (match && match.length > 0) return match[0];
   }
-  return sector;
+  return null;
 }
 
 export function getLsoasFromPostcodeSectors(sectors, callback) {
@@ -36,7 +35,7 @@ export function extractLsoaLookupFromPostcodes(postcode_list, callback) {
   this.getLsoasFromPostcodeSectors(sectors, lsoas => {
     Object.keys(lsoas).forEach(lsoa => {
       lsoas[lsoa].forEach(postcode => {
-        postcodes[postcode.replace(/\s/g, "")] = lsoa;
+        postcodes[postcode.replace(/\s/g, "")] = lsoa.trim();
       });
     });
     callback(postcodes);

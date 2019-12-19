@@ -11,7 +11,15 @@
 $primary: #36a2eb;
 $primary-invert: findColorInvert($primary);
 
-// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$success: #4bc0c0;
+$success-invert: findColorInvert($success);
+
+$warning: #ffce56;
+$warning-invert: findColorInvert($warning);
+
+$danger: #fe7190;
+$danger-invert: findColorInvert($danger);
+
 $colors: (
   "white": (
     $white,
@@ -59,4 +67,10 @@ $link-focus-border: $primary;
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+</style>
+
+<style>
+.hero {
+  border-bottom: 1px solid #e5e5e5 !important;
+}
 </style>

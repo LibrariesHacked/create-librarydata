@@ -24,7 +24,7 @@
         <button
           class="delete is-medium"
           type="button"
-          @click="$emit('delete-file')"
+          v-on:click="$emit('delete-file')"
         ></button>
       </span>
     </div>

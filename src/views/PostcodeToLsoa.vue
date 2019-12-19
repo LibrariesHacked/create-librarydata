@@ -3,27 +3,28 @@
     <section class="hero is-light">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Postcode to LSOA</h1>
+          <h1 class="title">Postcode to LSOAs</h1>
           <h2 class="subtitle">
-            Convert data containing postcodes to use LSOAs
+            Convert data with postcodes in to use lower super output areas.
           </h2>
         </div>
       </div>
     </section>
     <div class="container">
       <br />
-      <nav class="breadcrumb" aria-label="breadcrumbs">
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/convert">Convert</a></li>
           <li class="is-active">
-            <a href="#" aria-current="page">Postcode to LSOA</a>
+            <a href="#" aria-current="page">Postcode to LSOAs</a>
           </li>
         </ul>
       </nav>
       <hr />
       <b-steps
         size="is-medium"
+        type="is-light"
         v-model="active_step"
         :has-navigation="false"
         :animated="true"

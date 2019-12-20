@@ -1,15 +1,9 @@
 <template>
   <div class="home">
-    <section class="hero is-light">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">Postcode to LSOAs</h1>
-          <h2 class="subtitle">
-            Convert data with postcodes in to use lower super output areas.
-          </h2>
-        </div>
-      </div>
-    </section>
+    <custom-header
+      title="Postcode to LSOAs"
+      subtitle="Convert data with postcodes in to use lower super output areas."
+    />
     <div class="container">
       <br />
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
@@ -127,6 +121,7 @@
 <script>
 import Footer from "../components/Footer";
 import FileUpload from "../components/FileUpload";
+import Header from "../components/Header";
 
 import * as Papa from "papaparse";
 import * as postcodeHelper from "../helpers/postcode";
@@ -218,6 +213,10 @@ export default {
       }
     }
   },
-  components: { "custom-footer": Footer, "file-upload": FileUpload }
+  components: {
+    "custom-footer": Footer,
+    "file-upload": FileUpload,
+    "custom-header": Header
+  }
 };
 </script>

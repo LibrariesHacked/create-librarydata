@@ -1,15 +1,9 @@
 <template>
   <div class="home">
-    <section class="hero is-light">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">Convert</h1>
-          <h2 class="subtitle">
-            Do things to data to get it into the right format
-          </h2>
-        </div>
-      </div>
-    </section>
+    <custom-header
+      title="Convert"
+      subtitle="Get data to look the way you want it to."
+    />
     <div class="container">
       <p>
         <router-link to="/postcode-to-lsoa">Postcode to LSOA</router-link> |
@@ -21,12 +15,13 @@
 </template>
 <script>
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default {
   data() {
     return {};
   },
   methods: {},
-  components: { "custom-footer": Footer }
+  components: { "custom-footer": Footer, "custom-header": Header }
 };
 </script>

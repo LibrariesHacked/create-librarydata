@@ -19,9 +19,40 @@
               >.</small
             >
           </p>
+          <p class="control">
+            <a
+              class="button"
+              href="https://github.com/librarieshacked/create-librarydata"
+              target="_blank"
+            >
+              <b-icon icon="github-circle" />
+
+              <span>GitHub</span>
+            </a>
+          </p>
           <p></p>
         </div>
-        <div class="column"></div>
+        <div class="column">
+          <router-link
+            to="/"
+            exact
+            class="navbar-item has-text-weight-semibold"
+          >
+            Home
+          </router-link>
+          <router-link
+            to="/privacy"
+            class="navbar-item has-text-weight-semibold"
+          >
+            Privacy
+          </router-link>
+          <router-link
+            to="/accessibility"
+            class="navbar-item has-text-weight-semibold"
+          >
+            Accessibility
+          </router-link>
+        </div>
       </div>
     </div>
   </footer>

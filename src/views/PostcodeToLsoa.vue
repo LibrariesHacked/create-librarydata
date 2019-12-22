@@ -2,7 +2,7 @@
   <div class="home">
     <custom-header
       title="Postcode to LSOAs"
-      subtitle="Convert data with postcodes in to use lower super output areas."
+      subtitle="Convert data with postcodes in to use lower super output areas"
     />
     <div class="container">
       <br />

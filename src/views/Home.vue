@@ -2,7 +2,7 @@
   <div class="home">
     <custom-header
       title="Create."
-      subtitle="Tools for building and sharing library data."
+      subtitle="Tools for building and sharing library data"
     />
     <section class="hero">
       <div class="hero-body">
@@ -15,7 +15,7 @@
               <b-icon icon="rotate-right-variant" size="is-large" />
               <p class="title is-4"><strong>Convert</strong></p>
               <p class="subtitle">
-                Get data into formats people will want it.
+                Get it into the right format
               </p>
             </router-link>
             <router-link
@@ -24,7 +24,7 @@
             >
               <b-icon icon="progress-check" size="is-large" />
               <p class="title is-4"><strong>Validate</strong></p>
-              <p class="subtitle">Make sure the data can be used.</p>
+              <p class="subtitle">Make sure it is to a standard</p>
             </router-link>
             <router-link
               to="/publish"
@@ -32,7 +32,7 @@
             >
               <b-icon icon="publish" size="is-large" />
               <p class="title is-4"><strong>Publish</strong></p>
-              <p class="subtitle">Make the data widely available.</p>
+              <p class="subtitle">Make it available so it can be used</p>
             </router-link>
             <router-link
               to="/maintain"
@@ -40,7 +40,7 @@
             >
               <b-icon icon="sync" size="is-large" />
               <p class="title is-4"><strong>Maintain</strong></p>
-              <p class="subtitle">Keep the data up to date.</p>
+              <p class="subtitle">Keep it correct and up to date</p>
             </router-link>
           </div>
         </div>
@@ -67,33 +67,37 @@ export default {
   border: 1px solid white;
 }
 
-.page-feature span.icon {
-  color: black;
+.page-feature .subtitle {
+  padding-bottom: 1.5em;
 }
 
-.page-feature.convert:hover .title,
-.page-feature.convert:hover span.icon {
+.page-feature {
+  border: 1px solid white;
+}
+
+.page-feature.convert .title,
+.page-feature.convert span.icon {
   color: #36a2eb;
 }
 
-.page-feature.validate:hover .title strong,
-.page-feature.validate:hover span.icon {
+.page-feature.validate .title strong,
+.page-feature.validate span.icon {
   color: #4bc0c0;
 }
 
-.page-feature.publish:hover .title strong,
-.page-feature.publish:hover span.icon {
+.page-feature.publish .title strong,
+.page-feature.publish span.icon {
   color: #ffce56;
 }
 
-.page-feature.maintain:hover .title strong,
-.page-feature.maintain:hover span.icon {
+.page-feature.maintain .title strong,
+.page-feature.maintain span.icon {
   color: #fe7190;
 }
 
 .page-feature:hover {
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background-color: #f9f9f9;
+  border-color: #f5f5f5;
   border-radius: 5px;
 }
 </style>

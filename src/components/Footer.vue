@@ -65,3 +65,9 @@ export default {
   methods: {}
 };
 </script>
+
+<style scoped>
+.router-link-active {
+  color: #36a2eb;
+}
+</style>

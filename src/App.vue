@@ -60,9 +60,9 @@ $colors: (
 );
 
 // Links
-$link: $primary;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
+$link: $danger;
+$link-invert: $danger-invert;
+$link-focus-border: $danger;
 
 // Import Bulma and Buefy styles
 @import "~bulma";

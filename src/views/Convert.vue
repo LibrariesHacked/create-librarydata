@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <custom-header
-      title="Convert"
-      subtitle="Get data to look the way you want it to."
-    />
+    <custom-header title="Convert" subtitle="Get data into the right format" />
     <div class="container">
       <p>
         <router-link to="/postcode-to-lsoa">Postcode to LSOA</router-link> |

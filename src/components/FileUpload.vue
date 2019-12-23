@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-field>
+    <b-field label="Choose file from your computer">
       <b-upload
         type="is-light"
         accept=".csv"
@@ -19,7 +19,7 @@
     </b-field>
 
     <div class="tags">
-      <span class="tag is-medium" v-if="file">
+      <span class="tag is-medium is-info" v-if="file">
         {{ file.name }}
         <button
           class="delete is-medium"

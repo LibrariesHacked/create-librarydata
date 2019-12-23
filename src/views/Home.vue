@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .page-feature {
   border: 1px solid white;
 }

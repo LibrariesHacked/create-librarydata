@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <custom-header
-      title="Postcode to LSOAs"
-      subtitle="Convert data with postcodes in to use lower super output areas"
+      title="Postcode to LSOA"
+      subtitle="Convert data containing postcodes to use lower super output areas"
     />
     <div class="container">
       <br />
@@ -11,19 +11,19 @@
           <li><a href="/">Home</a></li>
           <li><a href="/convert">Convert</a></li>
           <li class="is-active">
-            <a href="#" aria-current="page">Postcode to LSOAs</a>
+            <a href="#" aria-current="page">Postcode to LSOA</a>
           </li>
         </ul>
       </nav>
       <hr />
       <b-steps
         size="is-medium"
-        type="is-light"
+        type="is-info"
         v-model="active_step"
         :has-navigation="false"
         :animated="true"
       >
-        <b-step-item label="Choose File" icon="cloud-upload">
+        <b-step-item label="File" icon="cloud-upload">
           <hr />
           <div class="columns">
             <div class="column">
@@ -34,18 +34,35 @@
               />
               <br />
               <b-button
-                size="is-medium"
                 icon-right="chevron-right"
                 v-on:click="confirmFile"
                 :disabled="file === null"
+                :rounded="true"
               >
                 Next
               </b-button>
             </div>
             <div class="column">
-              <b-message>
-                You will need to upload a CSV (comma separated values) file. One
-                of the columns in this file should be UK postcodes.
+              <b-message type="is-info" class="content">
+                <p><b>File tips</b></p>
+                <p>
+                  Select the file containing your data.
+                </p>
+                <ol>
+                  <li>The first row of the file should be column headings</li>
+                  <li>One column should contain UK postcodes.</li>
+                </ol>
+                <p>
+                  In the next step you can choose which column contains
+                  postcodes.
+                </p>
+              </b-message>
+              <b-message type="is-warning" class="content">
+                <p><b>No CSV?</b></p>
+                <p>
+                  If you have a sheet that isn't a CSV file you'll need to use
+                  software to save as a CSV first.
+                </p>
               </b-message>
             </div>
           </div>
@@ -71,18 +88,33 @@
               </b-field>
               <br />
               <b-button
-                size="is-medium"
                 icon-right="chevron-right"
                 v-on:click="confirmOptions"
                 :disabled="postcode_column === ''"
+                :rounded="true"
               >
                 Convert
               </b-button>
             </div>
             <div class="column">
-              <b-message>
-                Choose the column in your file that contains postcodes. These
-                will be converted to LSOAs.
+              <b-message type="is-info" class="content">
+                <p>
+                  <b>Choose postcode column</b>
+                </p>
+                <p>
+                  The list should display the columns in your data.
+                </p>
+                <ol>
+                  <li>Select the correct column</li>
+                  <li>
+                    When ready select the <strong>Convert</strong> option to
+                    continue
+                  </li>
+                </ol>
+                <p>
+                  Depending on the size of your file, the process may take a
+                  number of minutes.
+                </p>
               </b-message>
             </div>
           </div>
@@ -91,29 +123,57 @@
           <hr />
           <div class="columns">
             <div class="column">
+              <h3 class="content title is-4">Finished conversion</h3>
               <b-table
+                class="summary-table"
                 :data="summary_data"
                 :columns="summary_columns"
-                :striped="true"
               ></b-table>
+              <br />
               <b-button
-                size="is-medium"
+                type="is-primary"
                 icon-right="download"
                 v-on:click="downloadConvertedFile"
+                :rounded="true"
               >
-                Download converted file
+                Download
               </b-button>
             </div>
             <div class="column">
-              <b-message>
-                Choose the column in your file that contains postcodes. These
-                will be converted to LSOAs.
+              <b-message class="content" type="is-info">
+                <p>
+                  <b>Results</b>
+                </p>
+                <p>
+                  The converted file will have the following changes.
+                </p>
+                <ul>
+                  <li>
+                    The column header will be changed to
+                    <strong>LSOA</strong>.
+                  </li>
+                  <li>
+                    Postcodes will be changed to the LSOA they're located in.
+                  </li>
+                  <li>
+                    Out of date postcodes will be changed to
+                    <strong>Terminated</strong>.
+                  </li>
+                  <li>
+                    Invalid postcodes will be changed to
+                    <strong>Unknown</strong>
+                  </li>
+                </ul>
               </b-message>
             </div>
           </div>
         </b-step-item>
       </b-steps>
     </div>
+    <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
+      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin">
+      </b-icon>
+    </b-loading>
     <custom-footer />
   </div>
 </template>
@@ -129,15 +189,17 @@ import * as postcodeHelper from "../helpers/postcode";
 export default {
   data() {
     return {
+      loading: false,
       active_step: 0,
       columns: [],
       file: null,
       postcode_column: "",
       csv_data: [],
-      summary_data: [{ converted: 0, unknown: 0 }],
+      summary_data: [{ converted: 0, outdated: 0, unknown: 0 }],
       summary_columns: [
         { field: "converted", label: "Converted" },
-        { field: "unknown", label: "Unmatched" }
+        { field: "outdated", label: "Outdated" },
+        { field: "unknown", label: "Invalid" }
       ]
     };
   },
@@ -156,6 +218,8 @@ export default {
       }
     },
     confirmOptions: function() {
+      // First show loading
+      this.loading = true;
       // First get all the postcodes
       this.summary_data[0].converted = 0;
       this.summary_data[0].unknown = 0;
@@ -171,12 +235,11 @@ export default {
         postcodes,
         postcode_lookup => {
           // Now we have the postcode lookup we can update the original data
-          self.csv_data.forEach(row => {
+          self.csv_data.forEach((row, idx) => {
             const column_value = row[column_index];
-            if (column_value === self.postcode_column) {
+            if (idx === 0 && column_value === self.postcode_column) {
               row[column_index] = "LSOA";
             } else {
-              // Do lookup
               if (
                 column_value &&
                 column_value !== "" &&
@@ -192,6 +255,7 @@ export default {
             }
           });
           self.active_step = 2;
+          this.loading = false;
         }
       );
     },
@@ -220,3 +284,18 @@ export default {
   }
 };
 </script>
+
+<style>
+.summary-table table {
+  border-collapse: collapse !important;
+  background: #f9f9f9;
+}
+
+.summary-table td {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.summary-table th {
+  border: 1px solid #e5e5e5 !important;
+}
+</style>

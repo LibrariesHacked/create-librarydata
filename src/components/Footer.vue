@@ -40,18 +40,6 @@
           >
             Home
           </router-link>
-          <router-link
-            to="/privacy"
-            class="navbar-item has-text-weight-semibold"
-          >
-            Privacy
-          </router-link>
-          <router-link
-            to="/accessibility"
-            class="navbar-item has-text-weight-semibold"
-          >
-            Accessibility
-          </router-link>
         </div>
       </div>
     </div>

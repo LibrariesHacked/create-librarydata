@@ -6,7 +6,10 @@
     />
     <div class="container">
       <br />
-      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+      <nav
+        class="breadcrumb has-bullet-separator is-medium"
+        aria-label="breadcrumbs"
+      >
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/convert">Convert</a></li>
@@ -123,7 +126,10 @@
           <hr />
           <div class="columns">
             <div class="column">
-              <h3 class="content title is-4">Finished conversion</h3>
+              <h3 class="content title is-4">Finished</h3>
+              <h3 class="content subtitle is-6">
+                {{ "Completed in " + getTimeCompleted() + " seconds" }}
+              </h3>
               <b-table
                 class="summary-table"
                 :data="summary_data"
@@ -171,8 +177,7 @@
       </b-steps>
     </div>
     <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
-      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin">
-      </b-icon>
+      <b-icon icon="sync" size="is-large" custom-class="mdi-spin"> </b-icon>
     </b-loading>
     <custom-footer />
   </div>
@@ -183,27 +188,44 @@ import Footer from "../components/Footer";
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
 
+import moment from "moment";
+
 import * as Papa from "papaparse";
 import * as postcodeHelper from "../helpers/postcode";
 
 export default {
   data() {
     return {
+      start_time: null,
+      end_time: null,
       loading: false,
+      loading_message: "",
       active_step: 0,
       columns: [],
       file: null,
       postcode_column: "",
       csv_data: [],
-      summary_data: [{ converted: 0, outdated: 0, unknown: 0 }],
+      summary_data: [{ total: 0, converted: 0, terminated: 0, unknown: 0 }],
       summary_columns: [
-        { field: "converted", label: "Converted" },
-        { field: "outdated", label: "Outdated" },
-        { field: "unknown", label: "Invalid" }
+        { field: "total", label: "Total" },
+        { field: "converted", label: "Completed" },
+        { field: "terminated", label: "Terminated" },
+        { field: "unknown", label: "Unknown" }
       ]
     };
   },
   methods: {
+    getTimeElapsed: function() {
+      return this.start_time ? this.start_time.fromNow() : "";
+    },
+    getTimeCompleted: function() {
+      if (this.start_time && this.end_time) {
+        return Math.round(
+          moment.duration(this.end_time.diff(this.start_time)).asSeconds()
+        );
+      }
+      return "";
+    },
     confirmFile: function() {
       if (this.file !== null) {
         let self = this;
@@ -218,36 +240,48 @@ export default {
       }
     },
     confirmOptions: function() {
+      let self = this;
+      // First set timer
+      this.start_time = moment();
       // First show loading
       this.loading = true;
+      this.loading_message = "Collecting postcodes";
       // First get all the postcodes
+      this.summary_data[0].total = 0;
       this.summary_data[0].converted = 0;
       this.summary_data[0].unknown = 0;
+      this.summary_data[0].terminated = 0;
       const column_index = this.columns.indexOf(this.postcode_column);
-      let self = this;
       const postcodes = this.csv_data
-        .map(row => {
+        .map((row, idx) => {
           const value = row[column_index];
-          if (value !== this.postcode_column) return row[column_index];
+          if (idx != 0 && value !== this.postcode_column) return value;
         })
         .filter(postcode => postcode != null);
+      this.loading_message = "Fetching LSOAs";
       postcodeHelper.extractLsoaLookupFromPostcodes(
         postcodes,
         postcode_lookup => {
+          this.loading_message = "Replacing postcodes";
           // Now we have the postcode lookup we can update the original data
           self.csv_data.forEach((row, idx) => {
-            const column_value = row[column_index];
-            if (idx === 0 && column_value === self.postcode_column) {
+            const value = row[column_index];
+            if (idx === 0 && value === self.postcode_column) {
               row[column_index] = "LSOA";
             } else {
+              this.summary_data[0].total++;
               if (
-                column_value &&
-                column_value !== "" &&
-                postcode_lookup[column_value.replace(/\s/g, "")]
+                value &&
+                value !== "" &&
+                postcode_lookup[value.replace(/\s/g, "")]
               ) {
-                row[column_index] =
-                  postcode_lookup[column_value.replace(/\s/g, "")];
-                this.summary_data[0].converted++;
+                if (postcode_lookup[value.replace(/\s/g, "")] !== "") {
+                  row[column_index] = postcode_lookup[value.replace(/\s/g, "")];
+                  this.summary_data[0].converted++;
+                } else {
+                  row[column_index] = "Terminated";
+                  this.summary_data[0].terminated++;
+                }
               } else {
                 row[column_index] = "Unknown";
                 this.summary_data[0].unknown++;
@@ -256,6 +290,7 @@ export default {
           });
           self.active_step = 2;
           this.loading = false;
+          this.end_time = moment();
         }
       );
     },

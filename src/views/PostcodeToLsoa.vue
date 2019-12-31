@@ -49,22 +49,18 @@
               <b-message type="is-info" class="content">
                 <p><b>File tips</b></p>
                 <p>
-                  Select the file containing your data.
+                  Select the file containing postcode data.
                 </p>
                 <ol>
-                  <li>The first row of the file should be column headings</li>
+                  <li>The first row of the file should be column headings.</li>
                   <li>One column should contain UK postcodes.</li>
                 </ol>
-                <p>
-                  In the next step you can choose which column contains
-                  postcodes.
-                </p>
               </b-message>
               <b-message type="is-warning" class="content">
                 <p><b>No CSV?</b></p>
                 <p>
-                  If you have a sheet that isn't a CSV file you'll need to use
-                  software to save as a CSV first.
+                  If your data isn't a CSV file you'll need to use software to
+                  save as a CSV first.
                 </p>
               </b-message>
             </div>
@@ -142,7 +138,33 @@
                 v-on:click="downloadConvertedFile"
                 :rounded="true"
               >
-                Download
+                Download converted file
+              </b-button>
+              <hr />
+              <h4 class="content title is-5">Library data file</h4>
+              <h4 class="content subtitle is-6">
+                Publish your data
+              </h4>
+              <b-field label="Authority name">
+                <b-input v-model="authority"></b-input>
+              </b-field>
+              <b-field label="Select date extracted">
+                <b-datepicker
+                  placeholder="Type or select a date..."
+                  icon="calendar-today"
+                  v-model="extract_date"
+                  editable
+                >
+                </b-datepicker>
+              </b-field>
+              <b-button
+                type="is-secondary"
+                icon-right="download"
+                v-on:click="downloadSchemaFile"
+                :disabled="authority === '' || extract_date === ''"
+                :rounded="true"
+              >
+                Download schema file
               </b-button>
             </div>
             <div class="column">
@@ -151,7 +173,7 @@
                   <b>Results</b>
                 </p>
                 <p>
-                  The converted file will have the following changes.
+                  The converted file will include these changes:
                 </p>
                 <ul>
                   <li>
@@ -159,17 +181,46 @@
                     <strong>LSOA</strong>.
                   </li>
                   <li>
-                    Postcodes will be changed to the LSOA they're located in.
+                    Postcodes will be changed to their LSOA.
                   </li>
                   <li>
-                    Out of date postcodes will be changed to
+                    Outdated postcodes will be changed to
                     <strong>Terminated</strong>.
                   </li>
                   <li>
                     Invalid postcodes will be changed to
-                    <strong>Unknown</strong>
+                    <strong>Unknown</strong>.
                   </li>
                 </ul>
+              </b-message>
+              <b-message class="content" type="is-success">
+                <p>
+                  <b>Schema file</b>
+                </p>
+                <p>
+                  LSOAs are required for the
+                  <a
+                    href="https://schema.librarydata.uk/membership"
+                    target="_blank"
+                    >membership library data schema</a
+                  >.
+                </p>
+                <p>
+                  If your data is library member postcodes, this tool will
+                  create a valid data export.
+                </p>
+                <ol>
+                  <li>
+                    Fill out the name of your library service.
+                  </li>
+                  <li>
+                    Select when the postcodes were extracted from your
+                    membership database.
+                  </li>
+                  <li>
+                    Download the data file ready for publishing.
+                  </li>
+                </ol>
               </b-message>
             </div>
           </div>
@@ -177,7 +228,7 @@
       </b-steps>
     </div>
     <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
-      <b-icon icon="sync" size="is-large" custom-class="mdi-spin"> </b-icon>
+      <b-icon icon="sync" size="is-large" custom-class="mdi-spin"></b-icon>
     </b-loading>
     <custom-footer />
   </div>
@@ -205,13 +256,16 @@ export default {
       file: null,
       postcode_column: "",
       csv_data: [],
+      lsoas_counted: {},
       summary_data: [{ total: 0, converted: 0, terminated: 0, unknown: 0 }],
       summary_columns: [
         { field: "total", label: "Total" },
-        { field: "converted", label: "Completed" },
+        { field: "converted", label: "Successful" },
         { field: "terminated", label: "Terminated" },
         { field: "unknown", label: "Unknown" }
-      ]
+      ],
+      authority: "",
+      extract_date: null
     };
   },
   methods: {
@@ -226,24 +280,38 @@ export default {
       }
       return "";
     },
-    confirmFile: function() {
-      if (this.file !== null) {
-        let self = this;
-        Papa.parse(self.file, {
-          skipEmptyLines: true,
-          complete: function(results) {
-            self.columns = results.data[0];
-            self.csv_data = results.data;
-            self.active_step = 1;
-          }
-        });
+    confirmFile: async function() {
+      let self = this;
+      self.start_time = moment();
+      self.loading = true;
+      self.loading_message = "Analysing file";
+      if (self.file !== null) {
+        const parseFile = rawFile => {
+          return new Promise(resolve => {
+            let data = [];
+            Papa.parse(rawFile, {
+              skipEmptyLines: true,
+              worker: true,
+              step: results => {
+                data.push(results.data);
+              },
+              complete: () => {
+                resolve(data);
+              }
+            });
+          });
+        };
+        let data = await parseFile(self.file);
+        self.columns = data[0];
+        self.csv_data = data;
+        self.loading = false;
+        self.end_time = moment();
+        self.active_step = 1;
       }
     },
     confirmOptions: function() {
       let self = this;
-      // First set timer
       this.start_time = moment();
-      // First show loading
       this.loading = true;
       this.loading_message = "Collecting postcodes";
       // First get all the postcodes
@@ -275,12 +343,31 @@ export default {
                 value !== "" &&
                 postcode_lookup[value.replace(/\s/g, "")]
               ) {
-                if (postcode_lookup[value.replace(/\s/g, "")] !== "") {
-                  row[column_index] = postcode_lookup[value.replace(/\s/g, "")];
-                  this.summary_data[0].converted++;
-                } else {
+                if (
+                  postcode_lookup[value.replace(/\s/g, "")] === "Terminated"
+                ) {
                   row[column_index] = "Terminated";
                   this.summary_data[0].terminated++;
+                } else if (
+                  postcode_lookup[value.replace(/\s/g, "")] === "Unknown"
+                ) {
+                  row[column_index] = "Unknown";
+                  this.summary_data[0].unknown++;
+                } else {
+                  row[column_index] = postcode_lookup[value.replace(/\s/g, "")];
+                  this.summary_data[0].converted++;
+                  if (
+                    this.lsoas_counted[
+                      postcode_lookup[value.replace(/\s/g, "")]
+                    ]
+                  ) {
+                    this.lsoas_counted[
+                      postcode_lookup[value.replace(/\s/g, "")]
+                    ] = 0;
+                  }
+                  this.lsoas_counted[
+                    postcode_lookup[value.replace(/\s/g, "")]
+                  ]++;
                 }
               } else {
                 row[column_index] = "Unknown";
@@ -295,10 +382,34 @@ export default {
       );
     },
     downloadConvertedFile: function() {
-      var csv = new Blob([Papa.unparse(this.csv_data)], {
+      this.downloadFile("output.csv", this.csv_data);
+    },
+    downloadSchemaFile: function() {
+      // Create the data
+      let membership_data = [
+        ["Local authority", "Count date", "Area code", "Members"]
+      ];
+      Object.keys(this.lsoas_counted).forEach(lsoa => {
+        membership_data.push([
+          this.authority,
+          this.extract_date,
+          lsoa,
+          this.lsoas_counted[lsoa]
+        ]);
+      });
+      // Push unknown and terminated (all as unknown)
+      membership_data.push([
+        this.authority,
+        this.extract_date,
+        "Unknown",
+        this.summary_data[0].terminated + this.summary_data[0].unknown
+      ]);
+      this.downloadFile("membership.csv", membership_data);
+    },
+    downloadFile: function(filename, data) {
+      var csv = new Blob([Papa.unparse(data)], {
         type: "text/csv;charset=utf-8;"
       });
-      const filename = "output.csv";
       if (navigator.msSaveBlob) {
         navigator.msSaveBlob(csv, filename);
       } else {

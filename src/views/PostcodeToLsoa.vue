@@ -161,7 +161,7 @@
                 type="is-secondary"
                 icon-right="download"
                 v-on:click="downloadSchemaFile"
-                :disabled="authority === '' || extract_date === ''"
+                :disabled="authority === '' || extract_date === null"
                 :rounded="true"
               >
                 Download schema file
@@ -357,7 +357,7 @@ export default {
                   row[column_index] = postcode_lookup[value.replace(/\s/g, "")];
                   this.summary_data[0].converted++;
                   if (
-                    this.lsoas_counted[
+                    !this.lsoas_counted[
                       postcode_lookup[value.replace(/\s/g, "")]
                     ]
                   ) {
@@ -389,21 +389,28 @@ export default {
       let membership_data = [
         ["Local authority", "Count date", "Area code", "Members"]
       ];
+      const date_string = moment(this.extract_date).format("YYYY-MM-DD");
       Object.keys(this.lsoas_counted).forEach(lsoa => {
+        let count = this.lsoas_counted[lsoa];
         membership_data.push([
           this.authority,
-          this.extract_date,
+          date_string,
           lsoa,
-          this.lsoas_counted[lsoa]
+          count > 4 ? count : "*"
         ]);
       });
       // Push unknown and terminated (all as unknown)
-      membership_data.push([
-        this.authority,
-        this.extract_date,
-        "Unknown",
-        this.summary_data[0].terminated + this.summary_data[0].unknown
-      ]);
+      if (
+        this.summary_data[0].terminated > 0 ||
+        this.summary_data[0].unknown > 0
+      ) {
+        membership_data.push([
+          this.authority,
+          date_string,
+          "Unknown",
+          this.summary_data[0].terminated + this.summary_data[0].unknown
+        ]);
+      }
       this.downloadFile("membership.csv", membership_data);
     },
     downloadFile: function(filename, data) {

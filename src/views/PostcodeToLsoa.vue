@@ -11,8 +11,12 @@
         aria-label="breadcrumbs"
       >
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/convert">Convert</a></li>
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/convert">Convert</a>
+          </li>
           <li class="is-active">
             <a href="#" aria-current="page">Postcode to LSOA</a>
           </li>
@@ -41,23 +45,24 @@
                 v-on:click="confirmFile"
                 :disabled="file === null"
                 :rounded="true"
+                >Next</b-button
               >
-                Next
-              </b-button>
             </div>
             <div class="column">
               <b-message type="is-info" class="content">
-                <p><b>File tips</b></p>
                 <p>
-                  Select the file containing postcode data.
+                  <b>File tips</b>
                 </p>
+                <p>Select your file containing postcode data.</p>
                 <ol>
                   <li>The first row of the file should be column headings.</li>
                   <li>One column should contain UK postcodes.</li>
                 </ol>
               </b-message>
               <b-message type="is-warning" class="content">
-                <p><b>No CSV?</b></p>
+                <p>
+                  <b>No CSV?</b>
+                </p>
                 <p>
                   If your data isn't a CSV file you'll need to use software to
                   save as a CSV first.
@@ -80,9 +85,8 @@
                     v-for="option in columns"
                     :value="option"
                     :key="option"
+                    >{{ option }}</option
                   >
-                    {{ option }}
-                  </option>
                 </b-select>
               </b-field>
               <br />
@@ -91,27 +95,24 @@
                 v-on:click="confirmOptions"
                 :disabled="postcode_column === ''"
                 :rounded="true"
+                >Convert</b-button
               >
-                Convert
-              </b-button>
             </div>
             <div class="column">
               <b-message type="is-info" class="content">
                 <p>
                   <b>Choose postcode column</b>
                 </p>
-                <p>
-                  The list should display the columns in your data.
-                </p>
+                <p>This list should display the columns in your data.</p>
                 <ol>
                   <li>Select the correct column</li>
                   <li>
-                    When ready select the <strong>Convert</strong> option to
-                    continue
+                    When ready select the
+                    <strong>Convert</strong> option to continue
                   </li>
                 </ol>
                 <p>
-                  Depending on the size of your file, the process may take a
+                  Depending on the size of your file, the conversion may take a
                   number of minutes.
                 </p>
               </b-message>
@@ -123,9 +124,9 @@
           <div class="columns">
             <div class="column">
               <h3 class="content title is-4">Finished</h3>
-              <h3 class="content subtitle is-6">
+              <h4 class="content subtitle is-6">
                 {{ "Completed in " + getTimeCompleted() + " seconds" }}
-              </h3>
+              </h4>
               <b-table
                 class="summary-table"
                 :data="summary_data"
@@ -137,25 +138,21 @@
                 icon-right="download"
                 v-on:click="downloadConvertedFile"
                 :rounded="true"
+                >Download converted file</b-button
               >
-                Download converted file
-              </b-button>
               <hr />
-              <h4 class="content title is-5">Library data file</h4>
-              <h4 class="content subtitle is-6">
-                Publish your data
-              </h4>
-              <b-field label="Authority name">
+              <h4 class="content title is-5">Library membership</h4>
+              <h5 class="content subtitle is-6">Publish your data</h5>
+              <b-field label="Local authority name">
                 <b-input v-model="authority"></b-input>
               </b-field>
-              <b-field label="Select date extracted">
+              <b-field label="Count date">
                 <b-datepicker
                   placeholder="Type or select a date..."
                   icon="calendar-today"
                   v-model="extract_date"
                   editable
-                >
-                </b-datepicker>
+                ></b-datepicker>
               </b-field>
               <b-button
                 type="is-secondary"
@@ -163,63 +160,53 @@
                 v-on:click="downloadSchemaFile"
                 :disabled="authority === '' || extract_date === null"
                 :rounded="true"
+                >Download schema file</b-button
               >
-                Download schema file
-              </b-button>
             </div>
             <div class="column">
               <b-message class="content" type="is-info">
                 <p>
-                  <b>Results</b>
+                  <b>Converted file</b>
                 </p>
-                <p>
-                  The converted file will include these changes:
-                </p>
+                <p>The download will include these changes.</p>
                 <ul>
+                  <li>Valid postcodes will be changed to their LSOA.</li>
                   <li>
-                    The column header will be changed to
-                    <strong>LSOA</strong>.
-                  </li>
-                  <li>
-                    Postcodes will be changed to their LSOA.
-                  </li>
-                  <li>
-                    Outdated postcodes will be changed to
+                    Old postcodes will be changed to
                     <strong>Terminated</strong>.
                   </li>
                   <li>
                     Invalid postcodes will be changed to
                     <strong>Unknown</strong>.
                   </li>
+                  <li>
+                    The column header will be changed to
+                    <strong>LSOA</strong>.
+                  </li>
                 </ul>
               </b-message>
               <b-message class="content" type="is-success">
                 <p>
-                  <b>Schema file</b>
+                  <b>Library data</b>
                 </p>
                 <p>
-                  LSOAs are required for the
+                  LSOAs are required for
                   <a
                     href="https://schema.librarydata.uk/membership"
                     target="_blank"
-                    >membership library data schema</a
+                    >library membership data</a
                   >.
                 </p>
                 <p>
-                  If your data is library member postcodes, this tool will
-                  create a valid data export.
+                  If your data holds postcodes of library members, this tool
+                  will create a data file to publish.
                 </p>
                 <ol>
+                  <li>Fill out the name of your library service.</li>
                   <li>
-                    Fill out the name of your library service.
+                    Select when the postcodes were extracted from your database.
                   </li>
-                  <li>
-                    Select when the postcodes were extracted from your
-                    membership database.
-                  </li>
-                  <li>
-                    Download the data file ready for publishing.
-                  </li>
+                  <li>Download the data file ready for publishing.</li>
                 </ol>
               </b-message>
             </div>
@@ -334,40 +321,26 @@ export default {
           // Now we have the postcode lookup we can update the original data
           self.csv_data.forEach((row, idx) => {
             const value = row[column_index];
+            const stripped = value.replace(/\s/g, "");
             if (idx === 0 && value === self.postcode_column) {
               row[column_index] = "LSOA";
             } else {
               this.summary_data[0].total++;
-              if (
-                value &&
-                value !== "" &&
-                postcode_lookup[value.replace(/\s/g, "")]
-              ) {
-                if (
-                  postcode_lookup[value.replace(/\s/g, "")] === "Terminated"
-                ) {
+              if (value && value !== "" && postcode_lookup[stripped]) {
+                const lookup = postcode_lookup[stripped];
+                if (lookup === "Terminated") {
                   row[column_index] = "Terminated";
                   this.summary_data[0].terminated++;
-                } else if (
-                  postcode_lookup[value.replace(/\s/g, "")] === "Unknown"
-                ) {
+                } else if (lookup === "Unknown") {
                   row[column_index] = "Unknown";
                   this.summary_data[0].unknown++;
                 } else {
-                  row[column_index] = postcode_lookup[value.replace(/\s/g, "")];
+                  row[column_index] = lookup;
                   this.summary_data[0].converted++;
-                  if (
-                    !this.lsoas_counted[
-                      postcode_lookup[value.replace(/\s/g, "")]
-                    ]
-                  ) {
-                    this.lsoas_counted[
-                      postcode_lookup[value.replace(/\s/g, "")]
-                    ] = 0;
+                  if (!this.lsoas_counted[lookup]) {
+                    this.lsoas_counted[lookup] = 0;
                   }
-                  this.lsoas_counted[
-                    postcode_lookup[value.replace(/\s/g, "")]
-                  ]++;
+                  this.lsoas_counted[lookup]++;
                 }
               } else {
                 row[column_index] = "Unknown";
@@ -382,7 +355,7 @@ export default {
       );
     },
     downloadConvertedFile: function() {
-      this.downloadFile("output.csv", this.csv_data);
+      this.downloadFile("converted.csv", this.csv_data);
     },
     downloadSchemaFile: function() {
       // Create the data
@@ -396,7 +369,7 @@ export default {
           this.authority,
           date_string,
           lsoa,
-          count > 4 ? count : "*"
+          count > 4 ? count : "x"
         ]);
       });
       // Push unknown and terminated (all as unknown)

@@ -1,3 +1,10 @@
 {
-    "postcode_api": "https://api-geography.azurewebsites.net/rest/postcodes/"
+    "postcode_api": "https://api-geography.azurewebsites.net/rest/postcodes/",
+    "schema_path": "https://raw.githubusercontent.com/LibrariesHacked/schema-librarydata/master/archive/",
+    "schemas": {
+        "membership": {
+            "name": "Membership",
+            "version": "0.3.0"
+        }
+    }
 }

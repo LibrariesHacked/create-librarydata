@@ -31,7 +31,7 @@ export function getLsoasFromPostcodeSectors(sectors, callback) {
 
 export function extractLsoaLookupFromPostcodes(postcode_list, callback) {
   // First thing to do is extract all the postcode sectors
-  const sectors = this.extractPostcodeSectors(postcode_list);
+  const sectors = extractPostcodeSectors(postcode_list);
   // Then we retrieve all the LSOA data
   let postcodes = {};
   this.getLsoasFromPostcodeSectors(sectors, lsoas => {

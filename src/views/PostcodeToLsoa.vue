@@ -230,6 +230,7 @@ import moment from "moment";
 
 import * as Papa from "papaparse";
 import * as postcodeHelper from "../helpers/postcode";
+import * as validateHelper from "../helpers/validate";
 
 export default {
   data() {
@@ -357,7 +358,7 @@ export default {
     downloadConvertedFile: function() {
       this.downloadFile("converted.csv", this.csv_data);
     },
-    downloadSchemaFile: function() {
+    downloadSchemaFile: async function() {
       // Create the data
       let membership_data = [
         ["Local authority", "Count date", "Area code", "Members"]
@@ -369,7 +370,7 @@ export default {
           this.authority,
           date_string,
           lsoa,
-          count > 4 ? count : "x"
+          count > 4 ? count.toString() : "x"
         ]);
       });
       // Push unknown and terminated (all as unknown)
@@ -381,10 +382,15 @@ export default {
           this.authority,
           date_string,
           "Unknown",
-          this.summary_data[0].terminated + this.summary_data[0].unknown
+          (
+            this.summary_data[0].terminated + this.summary_data[0].unknown
+          ).toString()
         ]);
       }
-      this.downloadFile("membership.csv", membership_data);
+
+      // Validate and trigger download
+      let valid = await validateHelper.validate("membership", membership_data);
+      if (valid) this.downloadFile("membership.csv", membership_data);
     },
     downloadFile: function(filename, data) {
       var csv = new Blob([Papa.unparse(data)], {

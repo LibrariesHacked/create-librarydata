@@ -6,7 +6,7 @@ const config = require("./config.json");
 export function extractPostcodeSectors(postcode_list) {
   let sectors = new Set(
     postcode_list
-      .map(postcode => this.extractPostcodeSector(postcode))
+      .map(postcode => extractPostcodeSector(postcode))
       .filter(sector => sector != null)
   );
   return [...sectors];
@@ -34,7 +34,7 @@ export function extractLsoaLookupFromPostcodes(postcode_list, callback) {
   const sectors = extractPostcodeSectors(postcode_list);
   // Then we retrieve all the LSOA data
   let postcodes = {};
-  this.getLsoasFromPostcodeSectors(sectors, lsoas => {
+  getLsoasFromPostcodeSectors(sectors, lsoas => {
     Object.keys(lsoas).forEach(lsoa => {
       lsoas[lsoa].forEach(postcode => {
         postcodes[postcode.replace(/\s/g, "")] = lsoa.trim();

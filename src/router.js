@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import Convert from "./views/Convert.vue";
 import PostcodeToLsoa from "./views/PostcodeToLsoa.vue";
 import DateFormat from "./views/DateFormat.vue";
 
@@ -15,11 +14,6 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home
-    },
-    {
-      path: "/convert",
-      name: "convert",
-      component: Convert
     },
     {
       path: "/postcode-to-lsoa",

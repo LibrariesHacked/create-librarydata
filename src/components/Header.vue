@@ -1,9 +1,9 @@
 <template>
-  <section class="hero is-light">
+  <section class="hero is-light header">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title has-text-danger">{{ title }}</h1>
-        <h2 class="subtitle">{{ subtitle }}</h2>
+        <h1 class="title has-text-primary has-text-weight-bold">{{ title }}</h1>
+        <h2 class="subtitle has-text-weight-semibold">{{ subtitle }}</h2>
       </div>
     </div>
   </section>
@@ -17,3 +17,8 @@ export default {
   props: ["title", "subtitle"]
 };
 </script>
+<style scoped>
+.header {
+  margin-bottom: 20px;
+}
+</style>

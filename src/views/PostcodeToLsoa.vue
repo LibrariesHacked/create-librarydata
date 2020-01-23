@@ -18,7 +18,7 @@
               This tool ensures postcodes are kept secure. Postcode
               <strong>sectors</strong> are used to retrieve all possible
               postcode/LSOA pairings. The correct ones are then chosen without
-              needing to transfer full postcodes.
+              the full postcodes needing to leave your local PC.
             </p>
           </b-message>
           <div class="columns">
@@ -124,8 +124,8 @@
                 </p>
                 <p>
                   If your data includes how many people live in each postcode,
-                  please select the column this count is held in. The tool will
-                  then be able to correctly count people per LSOA to compile
+                  select the column this count is held in. The tool will then be
+                  able to count people per LSOA to compile
                   <a
                     href="https://schema.librarydata.uk/membership"
                     target="_blank"
@@ -134,8 +134,8 @@
                   for you.
                 </p>
                 <p>
-                  If each of your rows relates to a single person, or you just
-                  want to convert postcodes, you can ignore this option.
+                  If each of your rows relates to one person, or you only want
+                  to convert postcodes, you can ignore this option.
                 </p>
               </b-message>
             </div>
@@ -161,7 +161,34 @@
                 :rounded="true"
                 >Download converted file</b-button
               >
-              <hr />
+            </div>
+            <div class="column">
+              <b-message class="content" type="is-info">
+                <p>
+                  <b>Converted file</b>
+                </p>
+                <p>These changes have been applied:</p>
+                <ul>
+                  <li>Postcodes are changed to their LSOA.</li>
+                  <li>
+                    Old postcodes are changed to
+                    <strong>Terminated</strong>.
+                  </li>
+                  <li>
+                    Any that weren't recognised are changed to
+                    <strong>Unknown</strong>.
+                  </li>
+                  <li>
+                    The column header is changed to
+                    <strong>LSOA</strong>.
+                  </li>
+                </ul>
+              </b-message>
+            </div>
+          </div>
+          <hr />
+          <div class="columns">
+            <div class="column">
               <h4 class="content title is-5">Library membership</h4>
               <h5 class="content subtitle is-6">
                 Prepare your data
@@ -183,32 +210,11 @@
                 v-on:click="downloadSchemaFile"
                 :disabled="authority === '' || extract_date === null"
                 :rounded="true"
-                >Download schema file</b-button
+                >Download membership file</b-button
               >
             </div>
             <div class="column">
-              <b-message class="content" type="is-info">
-                <p>
-                  <b>Converted file</b>
-                </p>
-                <p>The converted file will include these changes:</p>
-                <ul>
-                  <li>Postcodes will be changed to their LSOA.</li>
-                  <li>
-                    Old postcodes will be changed to
-                    <strong>Terminated</strong>.
-                  </li>
-                  <li>
-                    Any that weren't recognised will be changed to
-                    <strong>Unknown</strong>. Maybe typos?
-                  </li>
-                  <li>
-                    The column header will be changed to
-                    <strong>LSOA</strong>.
-                  </li>
-                </ul>
-              </b-message>
-              <b-message class="content" type="is-success">
+              <b-message class="content" type="is-warning">
                 <p>
                   <b>Library data</b>
                 </p>
@@ -221,8 +227,7 @@
                   >.
                 </p>
                 <p>
-                  This tool has aggregated the LSOAs to provide a count of
-                  members per LSOA.
+                  This tool has calculated a count of members per LSOA.
                 </p>
                 <ol>
                   <li>Fill out the name of your library service.</li>

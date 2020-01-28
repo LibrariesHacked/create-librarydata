@@ -15,10 +15,10 @@
         <b-step-item label="File" icon="cloud-upload">
           <b-message type="is-danger">
             <p>
-              This tool ensures postcodes are kept secure. Postcode
-              <strong>sectors</strong> are used to retrieve all possible
-              postcode/LSOA pairings. The correct ones are then chosen without
-              the full postcodes needing to leave your local PC.
+              This tool ensures postcodes are kept secure. Postcode sectors are
+              used to retrieve all possible postcode/LSOA pairings. The correct
+              ones are then chosen, without the full postcodes needing to leave
+              your local PC.
             </p>
           </b-message>
           <div class="columns">
@@ -34,12 +34,15 @@
                 v-on:click="confirmFile"
                 :disabled="file === null"
                 :rounded="true"
-                >Next</b-button
               >
+                Next
+              </b-button>
             </div>
             <div class="column">
               <b-message type="is-info" class="content">
-                <p><b>File tips</b></p>
+                <p>
+                  <b>File tips</b>
+                </p>
                 <ol>
                   <li>Select your CSV file that contains postcodes</li>
                   <li>The first row of the file should be column headings.</li>
@@ -52,7 +55,8 @@
                 </p>
                 <p>
                   If your data isn't a CSV file you'll need to use software to
-                  save it as a CSV first. Try <b>Save as</b> in your software.
+                  save it as a CSV first. Try
+                  <b>Save as</b> in your software.
                 </p>
               </b-message>
             </div>
@@ -71,8 +75,8 @@
                     v-for="option in columns"
                     :value="option"
                     :key="option"
-                    >{{ option }}</option
-                  >
+                    >{{ option }}
+                  </option>
                 </b-select>
               </b-field>
               <br />
@@ -81,8 +85,8 @@
                 v-on:click="confirmOptions"
                 :disabled="postcode_column === ''"
                 :rounded="true"
-                >Convert</b-button
-              >
+                >Convert
+              </b-button>
               <hr />
               <b-field label="Count column (optional)">
                 <b-select
@@ -90,13 +94,13 @@
                   placeholder="Count of postcodes"
                   v-model="counts_column"
                 >
-                  <option value=""></option>
+                  <option value></option>
                   <option
                     v-for="option in columns.filter(c => c !== postcode_column)"
                     :value="option"
                     :key="option"
-                    >{{ option }}</option
-                  >
+                    >{{ option }}
+                  </option>
                 </b-select>
               </b-field>
             </div>
@@ -108,6 +112,7 @@
                 <p>These lists show the column headings in your data.</p>
                 <ol>
                   <li>Select the correct column for the postcodes</li>
+                  <li>Check guidance below on the optional step</li>
                   <li>
                     When ready, select the
                     <strong>Convert</strong> option to continue
@@ -129,8 +134,8 @@
                   <a
                     href="https://schema.librarydata.uk/membership"
                     target="_blank"
-                    >library membership data</a
-                  >
+                    >library membership data
+                  </a>
                   for you.
                 </p>
                 <p>
@@ -190,9 +195,7 @@
           <div class="columns">
             <div class="column">
               <h4 class="content title is-5">Library membership</h4>
-              <h5 class="content subtitle is-6">
-                Prepare your data
-              </h5>
+              <h5 class="content subtitle is-6">Prepare your data</h5>
               <b-field label="Local authority name">
                 <b-input v-model="authority"></b-input>
               </b-field>
@@ -226,9 +229,7 @@
                     >library membership data</a
                   >.
                 </p>
-                <p>
-                  This tool has calculated a count of members per LSOA.
-                </p>
+                <p>This tool has calculated a count of members per LSOA.</p>
                 <ol>
                   <li>Fill out the name of your library service.</li>
                   <li>
@@ -258,6 +259,7 @@ import Header from "../components/Header";
 import moment from "moment";
 
 import * as Papa from "papaparse";
+import * as csvHelper from "../helpers/csv";
 import * as postcodeHelper from "../helpers/postcode";
 import * as validateHelper from "../helpers/validate";
 
@@ -287,9 +289,6 @@ export default {
     };
   },
   methods: {
-    getTimeElapsed: function() {
-      return this.start_time ? this.start_time.fromNow() : "";
-    },
     getTimeCompleted: function() {
       if (this.start_time && this.end_time) {
         return Math.round(
@@ -304,22 +303,7 @@ export default {
       self.loading = true;
       self.loading_message = "Analysing file";
       if (self.file !== null) {
-        const parseFile = rawFile => {
-          return new Promise(resolve => {
-            let data = [];
-            Papa.parse(rawFile, {
-              skipEmptyLines: true,
-              worker: true,
-              step: results => {
-                data.push(results.data);
-              },
-              complete: () => {
-                resolve(data);
-              }
-            });
-          });
-        };
-        let data = await parseFile(self.file);
+        const data = await csvHelper.parseFile(self.file);
         self.columns = data[0];
         self.csv_data = data;
         self.loading = false;
@@ -329,27 +313,28 @@ export default {
     },
     confirmOptions: function() {
       let self = this;
-      this.start_time = moment();
-      this.loading = true;
-      this.loading_message = "Collecting postcodes";
+      self.start_time = moment();
+      self.loading = true;
+      self.loading_message = "Collecting postcodes";
       // First get all the postcodes
-      this.summary_data[0].total = 0;
-      this.summary_data[0].converted = 0;
-      this.summary_data[0].unknown = 0;
-      this.summary_data[0].terminated = 0;
-      const postcode_column_index = this.columns.indexOf(this.postcode_column);
-      const counts_column_index = this.columns.indexOf(this.counts_column);
-      const postcodes = this.csv_data
+      self.summary_data[0].total = 0;
+      self.summary_data[0].converted = 0;
+      self.summary_data[0].unknown = 0;
+      self.summary_data[0].terminated = 0;
+      //self.lsoas_counted = { Unknown: 0 };
+      const postcode_column_index = this.columns.indexOf(self.postcode_column);
+      const counts_column_index = self.columns.indexOf(this.counts_column);
+      const postcodes = self.csv_data
         .map((row, idx) => {
           const value = row[postcode_column_index];
-          if (idx != 0 && value !== this.postcode_column) return value;
+          if (idx != 0 && value !== self.postcode_column) return value;
         })
-        .filter(postcode => postcode != null);
-      this.loading_message = "Fetching LSOAs";
+        .filter(p => p != null);
+      self.loading_message = "Fetching LSOAs";
       postcodeHelper.extractLsoaLookupFromPostcodes(
         postcodes,
         postcode_lookup => {
-          this.loading_message = "Replacing postcodes";
+          self.loading_message = "Replacing postcodes";
           // Now we have the postcode lookup we can update the original data
           this.lsoas_counted["Unknown"] = 0;
           self.csv_data.forEach((row, idx) => {
@@ -423,18 +408,21 @@ export default {
             count > 4 ? count.toString() : "x"
           ]);
         });
+      let count = this.lsoas_counted["Unknown"];
       // Push unknown and terminated (all as unknown)
       if (this.lsoas_counted["Unknown"] > 0) {
         membership_data.push([
           this.authority,
           date_string,
           "Unknown",
-          this.lsoas_counted["Unknown"].toString()
+          count > 4 ? count.toString() : "x"
         ]);
       }
       // Validate and trigger download
       let valid = await validateHelper.validate("membership", membership_data);
-      if (valid) this.downloadFile("membership.csv", membership_data);
+      if (valid) {
+        this.downloadFile("membership.csv", membership_data);
+      }
     },
     downloadFile: function(filename, data) {
       var csv = new Blob([Papa.unparse(data)], {

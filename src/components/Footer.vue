@@ -55,6 +55,9 @@ export default {
 </script>
 
 <style scoped>
+.footer {
+  margin-top: 10px;
+}
 .router-link-active {
   color: #36a2eb;
 }

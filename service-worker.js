@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.2678e73560aaa78589fb6907aaa50628.js"
+  "/precache-manifest.3b175c499057a8ee5dafb6812438e9cc.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "create-librarydata"});

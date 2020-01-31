@@ -2,7 +2,7 @@
   <section class="header">
     <div class="container">
       <h1 class="title has-text-primary has-text-weight-bold">{{ title }}</h1>
-      <h2 class="subtitle">{{ subtitle }}</h2>
+      <h2 class="subtitle has-text-grey">{{ subtitle }}</h2>
     </div>
     <hr />
   </section>

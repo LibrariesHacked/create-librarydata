@@ -11,7 +11,14 @@
         v-on:delete-file="file = null"
       />
       <hr />
-      <b-table :data="data" :columns="columns"> </b-table>
+      <div class="table-container">
+        <b-table
+          class="table is-narrow libraries-table"
+          :data="data"
+          :columns="columns"
+        >
+        </b-table>
+      </div>
     </div>
     <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
       <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
@@ -54,6 +61,42 @@ export default {
         {
           field: "address_3",
           label: "Address 3"
+        },
+        {
+          field: "postcode",
+          label: "Postcode"
+        },
+        {
+          field: "statutory",
+          label: "Statutory"
+        },
+        {
+          field: "type_of_library",
+          label: "Type of library"
+        },
+        {
+          field: "year_opened",
+          label: "Year opened"
+        },
+        {
+          field: "year_closed",
+          label: "Year closed"
+        },
+        {
+          field: "",
+          label: "Address 3"
+        },
+        {
+          field: "address_3",
+          label: "Address 3"
+        },
+        {
+          field: "address_3",
+          label: "Address 3"
+        },
+        {
+          field: "address_3",
+          label: "Address 3"
         }
       ]
     };
@@ -85,3 +128,20 @@ export default {
   }
 };
 </script>
+<style>
+.libraries-table table {
+  border-collapse: collapse !important;
+  background: #f9f9f9;
+}
+
+.libraries-table td {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.libraries-table th {
+  border: 1px solid #e5e5e5 !important;
+  font-weight: 700 !important;
+  font-size: 0.9em !important;
+  color: #7a7a7a !important;
+}
+</style>

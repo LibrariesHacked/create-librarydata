@@ -7,7 +7,7 @@
     <div class="container">
       <b-steps
         size="is-medium"
-        type="is-info"
+        type="is-danger"
         v-model="active_step"
         :has-navigation="false"
         :animated="true"
@@ -261,7 +261,6 @@ import moment from "moment";
 import * as Papa from "papaparse";
 import * as csvHelper from "../helpers/csv";
 import * as postcodeHelper from "../helpers/postcode";
-import * as validateHelper from "../helpers/validate";
 
 export default {
   data() {
@@ -299,86 +298,71 @@ export default {
     },
     confirmFile: async function() {
       let self = this;
-      self.start_time = moment();
       self.loading = true;
-      self.loading_message = "Analysing file";
       if (self.file !== null) {
         const data = await csvHelper.parseFile(self.file);
         self.columns = data[0];
         self.csv_data = data;
-        self.loading = false;
-        self.end_time = moment();
         self.active_step = 1;
+        self.loading = false;
       }
     },
     confirmOptions: function() {
       let self = this;
       self.start_time = moment();
       self.loading = true;
-      self.loading_message = "Collecting postcodes";
       // First get all the postcodes
       self.summary_data[0].total = 0;
       self.summary_data[0].converted = 0;
       self.summary_data[0].unknown = 0;
       self.summary_data[0].terminated = 0;
-      //self.lsoas_counted = { Unknown: 0 };
-      const postcode_column_index = this.columns.indexOf(self.postcode_column);
+      self.lsoas_counted = { Unknown: 0 };
+      const postcode_column_index = self.columns.indexOf(self.postcode_column);
       const counts_column_index = self.columns.indexOf(this.counts_column);
       const postcodes = self.csv_data
-        .map((row, idx) => {
-          const value = row[postcode_column_index];
-          if (idx != 0 && value !== self.postcode_column) return value;
-        })
-        .filter(p => p != null);
-      self.loading_message = "Fetching LSOAs";
+        .map(row => row[postcode_column_index])
+        .filter(p => p != null && p != self.postcode_column);
       postcodeHelper.extractLsoaLookupFromPostcodes(
         postcodes,
         postcode_lookup => {
-          self.loading_message = "Replacing postcodes";
-          // Now we have the postcode lookup we can update the original data
-          this.lsoas_counted["Unknown"] = 0;
           self.csv_data.forEach((row, idx) => {
-            const postcode_value = row[postcode_column_index];
-            const stripped = postcode_value.replace(/\s/g, "");
-            if (idx === 0 && postcode_value === self.postcode_column) {
-              // Set column header to LSOA
+            const postcode = row[postcode_column_index];
+            const stripped = postcode.replace(/\s/g, "");
+            if (idx === 0 && postcode === self.postcode_column) {
+              // This is the header row
               row[postcode_column_index] = "LSOA";
             } else {
+              // This is a postcode row
               this.summary_data[0].total++;
-              let lookup = "";
-              if (
-                postcode_value &&
-                postcode_value !== "" &&
-                postcode_lookup[stripped]
-              ) {
-                lookup = postcode_lookup[stripped];
-                if (lookup === "Terminated") {
+              let lsoa = "";
+              if (postcode && postcode !== "" && postcode_lookup[stripped]) {
+                lsoa = postcode_lookup[stripped];
+                if (lsoa === "Terminated") {
                   row[postcode_column_index] = "Terminated";
                   this.summary_data[0].terminated++;
-                } else if (lookup === "Unknown") {
+                } else if (lsoa === "Unknown") {
                   row[postcode_column_index] = "Unknown";
                   this.summary_data[0].unknown++;
                 } else {
                   // We have a valid lookup
-                  row[postcode_column_index] = lookup;
+                  row[postcode_column_index] = lsoa;
                   this.summary_data[0].converted++;
-                }
-                if (!this.lsoas_counted[lookup]) {
-                  this.lsoas_counted[lookup] = 0;
                 }
               } else {
                 row[postcode_column_index] = "Unknown";
                 this.summary_data[0].unknown++;
-                lookup = "Unknown";
+                lsoa = "Unknown";
               }
-              if (lookup === "Terminated") lookup = "Unknown";
-              // Set the counts value
+              if (lsoa === "Terminated") lsoa = "Unknown";
+              // Ensure our lookup count has the lsoa key value
+              if (!this.lsoas_counted[lsoa]) this.lsoas_counted[lsoa] = 0;
               if (this.counts_column !== "") {
-                this.lsoas_counted[lookup] =
-                  this.lsoas_counted[lookup] +
-                  parseInt(row[counts_column_index]);
+                // if count column use that
+                this.lsoas_counted[lsoa] =
+                  this.lsoas_counted[lsoa] + parseInt(row[counts_column_index]);
               } else {
-                this.lsoas_counted[lookup]++;
+                // else just add one
+                this.lsoas_counted[lsoa]++;
               }
             }
           });
@@ -392,7 +376,6 @@ export default {
       this.downloadFile("converted.csv", this.csv_data);
     },
     downloadSchemaFile: async function() {
-      // Create the data
       let membership_data = [
         ["Local authority", "Count date", "Area code", "Members"]
       ];
@@ -418,11 +401,7 @@ export default {
           count > 4 ? count.toString() : "x"
         ]);
       }
-      // Validate and trigger download
-      let valid = await validateHelper.validate("membership", membership_data);
-      if (valid) {
-        this.downloadFile("membership.csv", membership_data);
-      }
+      this.downloadFile("membership.csv", membership_data);
     },
     downloadFile: function(filename, data) {
       var csv = new Blob([Papa.unparse(data)], {

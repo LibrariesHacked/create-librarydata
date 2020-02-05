@@ -1,253 +1,257 @@
 <template>
-  <div class="home">
+  <div>
     <custom-header
       title="Postcode to LSOA"
-      subtitle="Convert postcode data to use lower super output areas"
+      subtitle="Convert postcode data to use lower super output areas."
     />
-    <div class="container">
-      <b-steps
-        size="is-medium"
-        type="is-danger"
-        v-model="active_step"
-        :has-navigation="false"
-        :animated="true"
-      >
-        <b-step-item label="File" icon="cloud-upload">
-          <b-message type="is-danger">
-            <p>
-              This tool ensures postcodes are kept secure. Postcode sectors are
-              used to retrieve all possible postcode/LSOA pairings. The correct
-              ones are then chosen, without the full postcodes needing to leave
-              your local PC.
-            </p>
-          </b-message>
-          <div class="columns">
-            <div class="column">
-              <file-upload
-                v-bind:file="file"
-                v-on:upload-file="file = $event"
-                v-on:delete-file="file = null"
-              />
-              <br />
-              <b-button
-                icon-right="chevron-right"
-                v-on:click="confirmFile"
-                :disabled="file === null"
-                :rounded="true"
-              >
-                Next
-              </b-button>
-            </div>
-            <div class="column">
-              <b-message type="is-info" class="content">
-                <p>
-                  <b>File tips</b>
-                </p>
-                <ol>
-                  <li>Select your CSV file that contains postcodes</li>
-                  <li>The first row of the file should be column headings.</li>
-                  <li>One column should contain UK postcodes.</li>
-                </ol>
-              </b-message>
-              <b-message type="is-warning" class="content">
-                <p>
-                  <b>No CSV, no conversion</b>
-                </p>
-                <p>
-                  If your data isn't a CSV file you'll need to use software to
-                  save it as a CSV first. Try
-                  <b>Save as</b> in your software.
-                </p>
-              </b-message>
-            </div>
-          </div>
-        </b-step-item>
-        <b-step-item label="Options" icon="settings">
-          <div class="columns">
-            <div class="column">
-              <b-field label="Postcode column">
-                <b-select
-                  size="is-medium"
-                  placeholder="Select column"
-                  v-model="postcode_column"
+    <section>
+      <div class="container">
+        <b-steps
+          size="is-medium"
+          type="is-danger"
+          v-model="active_step"
+          :has-navigation="false"
+          :animated="true"
+        >
+          <b-step-item label="File" icon="cloud-upload">
+            <b-message type="is-danger">
+              <p>
+                This tool ensures postcodes are kept secure. Postcode sectors
+                are used to retrieve all possible postcode/LSOA pairings. The
+                correct ones are then chosen, without the full postcodes needing
+                to leave your local PC.
+              </p>
+            </b-message>
+            <div class="columns">
+              <div class="column">
+                <file-upload
+                  v-bind:file="file"
+                  v-on:upload-file="file = $event"
+                  v-on:delete-file="file = null"
+                />
+                <br />
+                <b-button
+                  icon-right="chevron-right"
+                  v-on:click="confirmFile"
+                  :disabled="file === null"
+                  :rounded="true"
                 >
-                  <option
-                    v-for="option in columns"
-                    :value="option"
-                    :key="option"
-                    >{{ option }}
-                  </option>
-                </b-select>
-              </b-field>
-              <br />
-              <b-button
-                icon-right="chevron-right"
-                v-on:click="confirmOptions"
-                :disabled="postcode_column === ''"
-                :rounded="true"
-                >Convert
-              </b-button>
-              <hr />
-              <b-field label="Count column (optional)">
-                <b-select
-                  size="is-medium"
-                  placeholder="Count of postcodes"
-                  v-model="counts_column"
+                  Next
+                </b-button>
+              </div>
+              <div class="column">
+                <b-message type="is-info" class="content">
+                  <p>
+                    <b>File tips</b>
+                  </p>
+                  <ol>
+                    <li>Select your CSV file that contains postcodes</li>
+                    <li>The first row should be column headings.</li>
+                    <li>One column should contain UK postcodes.</li>
+                  </ol>
+                </b-message>
+                <b-message type="is-warning" class="content">
+                  <p>
+                    <b>No CSV, no conversion</b>
+                  </p>
+                  <p>
+                    If your data isn't a CSV file you'll need to use software to
+                    save it as a CSV first. Try
+                    <b>Save as</b> in your software.
+                  </p>
+                </b-message>
+              </div>
+            </div>
+          </b-step-item>
+          <b-step-item label="Options" icon="settings">
+            <div class="columns">
+              <div class="column">
+                <b-field label="Postcode column">
+                  <b-select
+                    size="is-medium"
+                    placeholder="Select column"
+                    v-model="postcode_column"
+                  >
+                    <option
+                      v-for="option in columns"
+                      :value="option"
+                      :key="option"
+                      >{{ option }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <br />
+                <b-button
+                  icon-right="chevron-right"
+                  v-on:click="confirmOptions"
+                  :disabled="postcode_column === ''"
+                  :rounded="true"
+                  >Convert
+                </b-button>
+                <hr />
+                <b-field label="Count column (optional)">
+                  <b-select
+                    size="is-medium"
+                    placeholder="Count of postcodes"
+                    v-model="counts_column"
+                  >
+                    <option value></option>
+                    <option
+                      v-for="option in columns.filter(
+                        c => c !== postcode_column
+                      )"
+                      :value="option"
+                      :key="option"
+                      >{{ option }}
+                    </option>
+                  </b-select>
+                </b-field>
+              </div>
+              <div class="column">
+                <b-message type="is-info" class="content">
+                  <p>
+                    <b>Choose your columns</b>
+                  </p>
+                  <p>These lists show the column headings in your data.</p>
+                  <ol>
+                    <li>Select the correct column for the postcodes</li>
+                    <li>Check guidance below on the optional step</li>
+                    <li>
+                      When ready, select the
+                      <strong>Convert</strong> option to continue
+                    </li>
+                  </ol>
+                  <p>
+                    It may take a few minutes depending on how many postcodes
+                    there are.
+                  </p>
+                </b-message>
+                <b-message type="is-warning" class="content">
+                  <p>
+                    <b>Optional step: Library data</b>
+                  </p>
+                  <p>
+                    If your data includes how many people live in each postcode,
+                    select the column this count is held in. The tool will then
+                    be able to count people per LSOA to compile
+                    <a
+                      href="https://schema.librarydata.uk/membership"
+                      target="_blank"
+                      >library membership data
+                    </a>
+                    for you.
+                  </p>
+                  <p>
+                    If each of your rows relates to one person, or you only want
+                    to convert postcodes, you can ignore this option.
+                  </p>
+                </b-message>
+              </div>
+            </div>
+          </b-step-item>
+          <b-step-item label="Download" icon="cloud-download">
+            <div class="columns">
+              <div class="column">
+                <h3 class="content title is-4">Complete</h3>
+                <h4 class="content subtitle is-6">
+                  {{ "Completed in " + getTimeCompleted() + " seconds" }}
+                </h4>
+                <b-table
+                  class="summary-table"
+                  :data="summary_data"
+                  :columns="summary_columns"
+                ></b-table>
+                <br />
+                <b-button
+                  type="is-primary"
+                  icon-right="download"
+                  v-on:click="downloadConvertedFile"
+                  :rounded="true"
+                  >Download converted file</b-button
                 >
-                  <option value></option>
-                  <option
-                    v-for="option in columns.filter(c => c !== postcode_column)"
-                    :value="option"
-                    :key="option"
-                    >{{ option }}
-                  </option>
-                </b-select>
-              </b-field>
+              </div>
+              <div class="column">
+                <b-message class="content" type="is-info">
+                  <p>
+                    <b>Converted file</b>
+                  </p>
+                  <p>These changes have been applied:</p>
+                  <ul>
+                    <li>Postcodes are changed to their LSOA.</li>
+                    <li>
+                      Old postcodes are changed to
+                      <strong>Terminated</strong>.
+                    </li>
+                    <li>
+                      Any that weren't recognised are changed to
+                      <strong>Unknown</strong>.
+                    </li>
+                    <li>
+                      The column header is changed to
+                      <strong>LSOA</strong>.
+                    </li>
+                  </ul>
+                </b-message>
+              </div>
             </div>
-            <div class="column">
-              <b-message type="is-info" class="content">
-                <p>
-                  <b>Choose your columns</b>
-                </p>
-                <p>These lists show the column headings in your data.</p>
-                <ol>
-                  <li>Select the correct column for the postcodes</li>
-                  <li>Check guidance below on the optional step</li>
-                  <li>
-                    When ready, select the
-                    <strong>Convert</strong> option to continue
-                  </li>
-                </ol>
-                <p>
-                  It may take a few minutes depending on how many postcodes
-                  there are.
-                </p>
-              </b-message>
-              <b-message type="is-warning" class="content">
-                <p>
-                  <b>Optional step: Library data</b>
-                </p>
-                <p>
-                  If your data includes how many people live in each postcode,
-                  select the column this count is held in. The tool will then be
-                  able to count people per LSOA to compile
-                  <a
-                    href="https://schema.librarydata.uk/membership"
-                    target="_blank"
-                    >library membership data
-                  </a>
-                  for you.
-                </p>
-                <p>
-                  If each of your rows relates to one person, or you only want
-                  to convert postcodes, you can ignore this option.
-                </p>
-              </b-message>
+            <hr />
+            <div class="columns">
+              <div class="column">
+                <h4 class="content title is-5">Library membership</h4>
+                <h5 class="content subtitle is-6">Prepare your data</h5>
+                <b-field label="Local authority name">
+                  <b-input v-model="authority"></b-input>
+                </b-field>
+                <b-field label="Count date">
+                  <b-datepicker
+                    placeholder="Type or select a date..."
+                    icon="calendar-today"
+                    v-model="extract_date"
+                    editable
+                  ></b-datepicker>
+                </b-field>
+                <b-button
+                  type="is-secondary"
+                  icon-right="download"
+                  v-on:click="downloadSchemaFile"
+                  :disabled="authority === '' || extract_date === null"
+                  :rounded="true"
+                  >Download membership file</b-button
+                >
+              </div>
+              <div class="column">
+                <b-message class="content" type="is-warning">
+                  <p>
+                    <b>Library data</b>
+                  </p>
+                  <p>
+                    LSOAs are required for
+                    <a
+                      href="https://schema.librarydata.uk/membership"
+                      target="_blank"
+                      >library membership data</a
+                    >.
+                  </p>
+                  <p>This tool has calculated a count of members per LSOA.</p>
+                  <ol>
+                    <li>Fill out the name of your library service.</li>
+                    <li>
+                      Select the date the postcodes were extracted from your
+                      database.
+                    </li>
+                    <li>Download the data file ready for checking.</li>
+                  </ol>
+                </b-message>
+              </div>
             </div>
-          </div>
-        </b-step-item>
-        <b-step-item label="Download" icon="cloud-download">
-          <div class="columns">
-            <div class="column">
-              <h3 class="content title is-4">Complete</h3>
-              <h4 class="content subtitle is-6">
-                {{ "Completed in " + getTimeCompleted() + " seconds" }}
-              </h4>
-              <b-table
-                class="summary-table"
-                :data="summary_data"
-                :columns="summary_columns"
-              ></b-table>
-              <br />
-              <b-button
-                type="is-primary"
-                icon-right="download"
-                v-on:click="downloadConvertedFile"
-                :rounded="true"
-                >Download converted file</b-button
-              >
-            </div>
-            <div class="column">
-              <b-message class="content" type="is-info">
-                <p>
-                  <b>Converted file</b>
-                </p>
-                <p>These changes have been applied:</p>
-                <ul>
-                  <li>Postcodes are changed to their LSOA.</li>
-                  <li>
-                    Old postcodes are changed to
-                    <strong>Terminated</strong>.
-                  </li>
-                  <li>
-                    Any that weren't recognised are changed to
-                    <strong>Unknown</strong>.
-                  </li>
-                  <li>
-                    The column header is changed to
-                    <strong>LSOA</strong>.
-                  </li>
-                </ul>
-              </b-message>
-            </div>
-          </div>
-          <hr />
-          <div class="columns">
-            <div class="column">
-              <h4 class="content title is-5">Library membership</h4>
-              <h5 class="content subtitle is-6">Prepare your data</h5>
-              <b-field label="Local authority name">
-                <b-input v-model="authority"></b-input>
-              </b-field>
-              <b-field label="Count date">
-                <b-datepicker
-                  placeholder="Type or select a date..."
-                  icon="calendar-today"
-                  v-model="extract_date"
-                  editable
-                ></b-datepicker>
-              </b-field>
-              <b-button
-                type="is-secondary"
-                icon-right="download"
-                v-on:click="downloadSchemaFile"
-                :disabled="authority === '' || extract_date === null"
-                :rounded="true"
-                >Download membership file</b-button
-              >
-            </div>
-            <div class="column">
-              <b-message class="content" type="is-warning">
-                <p>
-                  <b>Library data</b>
-                </p>
-                <p>
-                  LSOAs are required for
-                  <a
-                    href="https://schema.librarydata.uk/membership"
-                    target="_blank"
-                    >library membership data</a
-                  >.
-                </p>
-                <p>This tool has calculated a count of members per LSOA.</p>
-                <ol>
-                  <li>Fill out the name of your library service.</li>
-                  <li>
-                    Select the date the postcodes were extracted from your
-                    database.
-                  </li>
-                  <li>Download the data file ready for checking.</li>
-                </ol>
-              </b-message>
-            </div>
-          </div>
-        </b-step-item>
-      </b-steps>
-    </div>
+          </b-step-item>
+        </b-steps>
+      </div>
+      <custom-footer />
+    </section>
     <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
       <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
     </b-loading>
-    <custom-footer />
   </div>
 </template>
 

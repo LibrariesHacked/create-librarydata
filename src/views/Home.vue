@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="container">
     <custom-header
       title="Create"
-      subtitle="Tools for building and sharing library data"
+      subtitle="Tools for building and sharing library data."
     />
     <section class="hero">
       <div class="hero-body">

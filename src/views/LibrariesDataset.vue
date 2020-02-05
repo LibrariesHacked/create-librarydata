@@ -1,34 +1,79 @@
 <template>
-  <div class="home">
+  <div>
     <custom-header
       title="Libraries dataset"
-      subtitle="Create and maintain data about your libraries"
+      subtitle="Create and maintain data about your libraries."
     />
-    <div class="container">
-      <file-upload
-        v-bind:file="file"
-        v-on:upload-file="file = $event"
-        v-on:delete-file="file = null"
-      />
-      <hr />
-      <div class="table-container">
-        <b-table
-          class="table is-narrow libraries-table"
-          :data="data"
-          :columns="columns"
-        >
-        </b-table>
+    <section>
+      <div class="container">
+        <div class="column">
+          <b-button type="is-danger" icon-left="upload">Load dataset</b-button
+          >&nbsp;
+          <b-button type="is-danger" icon-left="download">Save dataset</b-button
+          >&nbsp;
+          <br />
+          <br />
+          <b-table
+            class="libraries-table"
+            detail-key="Library name"
+            detailed
+            ref="table"
+            per-page="5"
+            :data="data"
+            :opened-detailed="defaultOpenedDetails"
+            :show-detail-icon="showDetailIcon"
+          >
+            <template slot-scope="props">
+              <b-table-column field="Local authority" label="Local authority">
+                <template slot="header" slot-scope="{ column }">
+                  <b-tooltip :label="column.label" dashed>
+                    {{ column.label }}
+                  </b-tooltip>
+                </template>
+                {{ props.row["Local authority"] }}
+              </b-table-column>
+              <b-table-column field="Library name" label="Library name">
+                {{ props.row["Library name"] }}
+              </b-table-column>
+            </template>
+            <template slot="detail" slot-scope="props">
+              <h2>{{ props.row["Library name"] }}</h2>
+            </template>
+          </b-table>
+          <br />
+          <b-button
+            type="is-text"
+            icon-left="plus"
+            v-on:click="library_form_active = true"
+            >Add library
+          </b-button>
+          <b-loading
+            :is-full-page="true"
+            :active.sync="loading"
+            :can-cancel="false"
+          >
+            <b-icon
+              icon="autorenew"
+              size="is-large"
+              custom-class="mdi-spin"
+            ></b-icon>
+          </b-loading>
+        </div>
       </div>
-    </div>
-    <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
-      <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
-    </b-loading>
+    </section>
     <custom-footer />
+    <b-modal
+      has-modal-card
+      full-screen
+      :active.sync="library_form_active"
+      :can-cancel="true"
+    >
+      <modal-form> </modal-form>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import FileUploadButton from "../components/FileUploadButton";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -39,64 +84,12 @@ export default {
     return {
       loading: false,
       active_step: 0,
+      library_form_active: false,
       file: null,
-      data: [],
-      columns: [
+      data: [
         {
-          field: "local_authority",
-          label: "Local authority"
-        },
-        {
-          field: "library_name",
-          label: "Library name"
-        },
-        {
-          field: "address_1",
-          label: "Address 1"
-        },
-        {
-          field: "address_2",
-          label: "Address 2"
-        },
-        {
-          field: "address_3",
-          label: "Address 3"
-        },
-        {
-          field: "postcode",
-          label: "Postcode"
-        },
-        {
-          field: "statutory",
-          label: "Statutory"
-        },
-        {
-          field: "type_of_library",
-          label: "Type of library"
-        },
-        {
-          field: "year_opened",
-          label: "Year opened"
-        },
-        {
-          field: "year_closed",
-          label: "Year closed"
-        },
-        {
-          field: "",
-          label: "Address 3"
-        },
-        {
-          field: "address_3",
-          label: "Address 3"
-        },
-        {
-          field: "address_3",
-          label: "Address 3"
-        },
-        {
-          field: "address_3",
-          label: "Address 3"
+          "Local authority": "Gloucestershire",
+          "Library name": "Gloucester"
         }
       ]
     };
@@ -123,7 +116,6 @@ export default {
   },
   components: {
     "custom-footer": Footer,
-    "file-upload": FileUploadButton,
     "custom-header": Header
   }
 };

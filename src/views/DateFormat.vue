@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="container">
     <custom-header
       title="Format dates"
-      subtitle="Ensure your dates are formatted consistently"
+      subtitle="Ensure your dates are formatted consistently."
     />
     <custom-footer />
   </div>

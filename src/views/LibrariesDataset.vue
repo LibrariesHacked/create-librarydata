@@ -64,11 +64,16 @@
     <custom-footer />
     <b-modal
       has-modal-card
-      full-screen
       :active.sync="library_form_active"
-      :can-cancel="true"
+      :can-cancel="false"
     >
-      <modal-form> </modal-form>
+      <modal-form>
+        <div class="modal-card">
+          <section class="modal-card-body">
+            <!-- Content ... -->
+          </section>
+        </div>
+      </modal-form>
     </b-modal>
   </div>
 </template>
@@ -121,6 +126,11 @@ export default {
 };
 </script>
 <style>
+.modal-card {
+  border: 1px solid #ccc;
+  border-radius: 6;
+}
+
 .libraries-table table {
   border-collapse: collapse !important;
   background: #f9f9f9;

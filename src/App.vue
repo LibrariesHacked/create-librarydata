@@ -64,6 +64,9 @@ $link: $danger;
 $link-invert: $danger-invert;
 $link-focus-border: $danger;
 
+// Modals
+$modal-background-background-color: rgba(0, 0, 0, 0.1);
+
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";

@@ -7,9 +7,9 @@
     <section>
       <div class="container">
         <div class="column">
-          <b-button type="is-danger" icon-left="upload">Load dataset</b-button
+          <b-button icon-left="upload">Load dataset</b-button
           >&nbsp;
-          <b-button type="is-danger" icon-left="download">Save dataset</b-button
+          <b-button icon-left="download">Save dataset</b-button
           >&nbsp;
           <br />
           <br />
@@ -24,13 +24,13 @@
             :show-detail-icon="showDetailIcon"
           >
             <template slot-scope="props">
-              <b-table-column field="Local authority" label="Local authority">
+              <b-table-column field="Library name" label="Library name">
                 <template slot="header" slot-scope="{ column }">
                   <b-tooltip :label="column.label" dashed>
                     {{ column.label }}
                   </b-tooltip>
                 </template>
-                {{ props.row["Local authority"] }}
+                {{ props.row["Library name"] }}
               </b-table-column>
               <b-table-column field="Library name" label="Library name">
                 {{ props.row["Library name"] }}

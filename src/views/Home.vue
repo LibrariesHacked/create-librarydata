@@ -1,16 +1,10 @@
 <template>
-  <div class="container">
+  <div>
     <custom-header
       title="Create"
       subtitle="Tools for building and sharing library data."
     />
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns"></div>
-        </div>
-      </div>
-    </section>
+    <section></section>
     <custom-footer />
   </div>
 </template>

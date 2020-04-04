@@ -7,10 +7,8 @@
     <section>
       <div class="container">
         <div class="column">
-          <b-button icon-left="upload">Load dataset</b-button
-          >&nbsp;
-          <b-button icon-left="download">Save dataset</b-button
-          >&nbsp;
+          <b-button icon-left="upload">Load dataset</b-button>&nbsp;
+          <b-button icon-left="download">Save dataset</b-button>&nbsp;
           <br />
           <br />
           <b-table

@@ -16,10 +16,12 @@
           <b-step-item label="File" icon="cloud-upload">
             <b-message type="is-danger">
               <p>
-                This tool ensures postcodes are kept secure. Postcode sectors
-                are used to retrieve all possible postcode/LSOA pairings. The
-                correct ones are then chosen, without the full postcodes needing
-                to leave your local PC.
+                <strong>
+                  This tool ensures postcodes are kept secure. All possible
+                  postcode/LSOA pairings are downloaded based upon the postcode
+                  sector. The correct ones are then chosen, without the full
+                  postcodes leaving your local PC.
+                </strong>
               </p>
             </b-message>
             <div class="columns">

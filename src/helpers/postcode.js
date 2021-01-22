@@ -22,11 +22,9 @@ export function extractPostcodeSector(postcode) {
 }
 
 export function getLsoasFromPostcodeSectors(sectors, callback) {
-  axios
-    .post(config.postcode_api + "lsoas?filter=sector", sectors)
-    .then(response => {
-      callback(response.data);
-    });
+  axios.post(config.postcode_api + "lsoas?filter=sector", sectors).then(response => {
+    callback(response.data);
+  });
 }
 
 export function extractLsoaLookupFromPostcodes(postcode_list, callback) {

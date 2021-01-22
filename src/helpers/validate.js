@@ -22,11 +22,7 @@ export async function validateData(schema, data) {
 
 export async function getSchemaDefinition(schema_name) {
   let response = await axios.get(
-    config.schema_path +
-      config.schemas[schema_name].version +
-      "/" +
-      schema_name +
-      ".json"
+    config.schema_path + config.schemas[schema_name].version + "/" + schema_name + ".json"
   );
   return response.data;
 }

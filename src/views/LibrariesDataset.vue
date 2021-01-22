@@ -45,26 +45,14 @@
             v-on:click="library_form_active = true"
             >Add library
           </b-button>
-          <b-loading
-            :is-full-page="true"
-            :active.sync="loading"
-            :can-cancel="false"
-          >
-            <b-icon
-              icon="autorenew"
-              size="is-large"
-              custom-class="mdi-spin"
-            ></b-icon>
+          <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
+            <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
           </b-loading>
         </div>
       </div>
     </section>
     <custom-footer />
-    <b-modal
-      has-modal-card
-      :active.sync="library_form_active"
-      :can-cancel="false"
-    >
+    <b-modal has-modal-card :active.sync="library_form_active" :can-cancel="false">
       <modal-form>
         <div class="modal-card">
           <section class="modal-card-body">

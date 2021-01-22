@@ -16,12 +16,10 @@
           <b-step-item label="File" icon="cloud-upload">
             <b-message type="is-danger">
               <p>
-                <strong>
-                  This tool ensures postcodes are kept secure. All possible
-                  postcode/LSOA pairings are downloaded based upon the postcode
-                  sector. The correct ones are then chosen, without the full
-                  postcodes leaving your local PC.
-                </strong>
+                This tool ensures postcodes are kept secure. All postcode/LSOA pairings
+                are downloaded based upon the postcode sectors in your data. The correct
+                ones are then chosen, without the full postcodes ever leaving your local
+                PC.
               </p>
             </b-message>
             <div class="columns">
@@ -47,9 +45,9 @@
                     <b>File tips</b>
                   </p>
                   <ol>
-                    <li>Select your CSV file that contains postcodes</li>
-                    <li>The first row should be column headings.</li>
-                    <li>One column should contain UK postcodes.</li>
+                    <li>Choose a CSV file that contains postcodes</li>
+                    <li>The first row should be column headings</li>
+                    <li>One column should contain UK postcodes</li>
                   </ol>
                 </b-message>
                 <b-message type="is-warning" class="content">
@@ -57,8 +55,8 @@
                     <b>No CSV, no conversion</b>
                   </p>
                   <p>
-                    If your data isn't a CSV file you'll need to use software to
-                    save it as a CSV first. Try
+                    If your data isn't a CSV file you'll need to use software to save it
+                    as a CSV first. Try
                     <b>Save as</b> in your software.
                   </p>
                 </b-message>
@@ -74,10 +72,7 @@
                     placeholder="Select column"
                     v-model="postcode_column"
                   >
-                    <option
-                      v-for="option in columns"
-                      :value="option"
-                      :key="option"
+                    <option v-for="option in columns" :value="option" :key="option"
                       >{{ option }}
                     </option>
                   </b-select>
@@ -99,9 +94,7 @@
                   >
                     <option value></option>
                     <option
-                      v-for="option in columns.filter(
-                        c => c !== postcode_column
-                      )"
+                      v-for="option in columns.filter(c => c !== postcode_column)"
                       :value="option"
                       :key="option"
                       >{{ option }}
@@ -124,8 +117,7 @@
                     </li>
                   </ol>
                   <p>
-                    It may take a few minutes depending on how many postcodes
-                    there are.
+                    It may take a few minutes depending on how many postcodes there are.
                   </p>
                 </b-message>
                 <b-message type="is-warning" class="content">
@@ -133,19 +125,17 @@
                     <b>Optional step: Library data</b>
                   </p>
                   <p>
-                    If your data includes how many people live in each postcode,
-                    select the column this count is held in. The tool will then
-                    be able to count people per LSOA to compile
-                    <a
-                      href="https://schema.librarydata.uk/membership"
-                      target="_blank"
+                    If your data includes how many people live in each postcode, select
+                    the column this count is held in. The tool will then be able to count
+                    people per LSOA to compile
+                    <a href="https://schema.librarydata.uk/membership" target="_blank"
                       >library membership data
                     </a>
                     for you.
                   </p>
                   <p>
-                    If each of your rows relates to one person, or you only want
-                    to convert postcodes, you can ignore this option.
+                    If each of your rows relates to one person, or you only want to
+                    convert postcodes, you can ignore this option.
                   </p>
                 </b-message>
               </div>
@@ -179,17 +169,17 @@
                   </p>
                   <p>These changes have been applied:</p>
                   <ul>
-                    <li>Postcodes are changed to their LSOA.</li>
+                    <li>Postcodes are changed to their LSOA value</li>
                     <li>
                       Old postcodes are changed to
                       <strong>Terminated</strong>.
                     </li>
                     <li>
-                      Any that weren't recognised are changed to
+                      Postcodes that weren't recognised are changed to
                       <strong>Unknown</strong>.
                     </li>
                     <li>
-                      The column header is changed to
+                      The postcode column header is changed to
                       <strong>LSOA</strong>.
                     </li>
                   </ul>
@@ -224,13 +214,11 @@
               <div class="column">
                 <b-message class="content" type="is-warning">
                   <p>
-                    <b>Library data</b>
+                    <b>Public library open data</b>
                   </p>
                   <p>
                     LSOAs are required for
-                    <a
-                      href="https://schema.librarydata.uk/membership"
-                      target="_blank"
+                    <a href="https://schema.librarydata.uk/membership" target="_blank"
                       >library membership data</a
                     >.
                   </p>
@@ -238,8 +226,7 @@
                   <ol>
                     <li>Fill out the name of your library service.</li>
                     <li>
-                      Select the date the postcodes were extracted from your
-                      database.
+                      Select the date the postcodes were extracted from your database.
                     </li>
                     <li>Download the data file ready for checking.</li>
                   </ol>
@@ -264,6 +251,7 @@ import Header from "../components/Header";
 
 import moment from "moment";
 
+import { saveAs } from "file-saver";
 import * as Papa from "papaparse";
 import * as csvHelper from "../helpers/csv";
 import * as postcodeHelper from "../helpers/postcode";
@@ -328,63 +316,58 @@ export default {
       const postcodes = self.csv_data
         .map(row => row[postcode_column_index])
         .filter(p => p != null && p != self.postcode_column);
-      postcodeHelper.extractLsoaLookupFromPostcodes(
-        postcodes,
-        postcode_lookup => {
-          self.csv_data.forEach((row, idx) => {
-            const postcode = row[postcode_column_index];
-            const stripped = postcode.replace(/\s/g, "");
-            if (idx === 0 && postcode === self.postcode_column) {
-              // This is the header row
-              row[postcode_column_index] = "LSOA";
-            } else {
-              // This is a postcode row
-              this.summary_data[0].total++;
-              let lsoa = "";
-              if (postcode && postcode !== "" && postcode_lookup[stripped]) {
-                lsoa = postcode_lookup[stripped];
-                if (lsoa === "Terminated") {
-                  row[postcode_column_index] = "Terminated";
-                  this.summary_data[0].terminated++;
-                } else if (lsoa === "Unknown") {
-                  row[postcode_column_index] = "Unknown";
-                  this.summary_data[0].unknown++;
-                } else {
-                  // We have a valid lookup
-                  row[postcode_column_index] = lsoa;
-                  this.summary_data[0].converted++;
-                }
-              } else {
+      postcodeHelper.extractLsoaLookupFromPostcodes(postcodes, postcode_lookup => {
+        self.csv_data.forEach((row, idx) => {
+          const postcode = row[postcode_column_index];
+          const stripped = postcode.replace(/\s/g, "");
+          if (idx === 0 && postcode === self.postcode_column) {
+            // This is the header row
+            row[postcode_column_index] = "LSOA";
+          } else {
+            // This is a postcode row
+            this.summary_data[0].total++;
+            let lsoa = "";
+            if (postcode && postcode !== "" && postcode_lookup[stripped]) {
+              lsoa = postcode_lookup[stripped];
+              if (lsoa === "Terminated") {
+                row[postcode_column_index] = "Terminated";
+                this.summary_data[0].terminated++;
+              } else if (lsoa === "Unknown") {
                 row[postcode_column_index] = "Unknown";
                 this.summary_data[0].unknown++;
-                lsoa = "Unknown";
-              }
-              if (lsoa === "Terminated") lsoa = "Unknown";
-              // Ensure our lookup count has the lsoa key value
-              if (!this.lsoas_counted[lsoa]) this.lsoas_counted[lsoa] = 0;
-              if (this.counts_column !== "") {
-                // if count column use that
-                this.lsoas_counted[lsoa] =
-                  this.lsoas_counted[lsoa] + parseInt(row[counts_column_index]);
               } else {
-                // else just add one
-                this.lsoas_counted[lsoa]++;
+                // We have a valid lookup
+                row[postcode_column_index] = lsoa;
+                this.summary_data[0].converted++;
               }
+            } else {
+              row[postcode_column_index] = "Unknown";
+              this.summary_data[0].unknown++;
+              lsoa = "Unknown";
             }
-          });
-          self.active_step = 2;
-          this.loading = false;
-          this.end_time = moment();
-        }
-      );
+            if (lsoa === "Terminated") lsoa = "Unknown";
+            // Ensure our lookup count has the lsoa key value
+            if (!this.lsoas_counted[lsoa]) this.lsoas_counted[lsoa] = 0;
+            if (this.counts_column !== "") {
+              // if count column use that
+              this.lsoas_counted[lsoa] =
+                this.lsoas_counted[lsoa] + parseInt(row[counts_column_index]);
+            } else {
+              // else just add one
+              this.lsoas_counted[lsoa]++;
+            }
+          }
+        });
+        self.active_step = 2;
+        this.loading = false;
+        this.end_time = moment();
+      });
     },
     downloadConvertedFile: function() {
       this.downloadFile("converted.csv", this.csv_data);
     },
     downloadSchemaFile: async function() {
-      let membership_data = [
-        ["Local authority", "Count date", "Area code", "Members"]
-      ];
+      let membership_data = [["Local authority", "Count date", "Area code", "Members"]];
       const date_string = moment(this.extract_date).format("YYYY-MM-DD");
       Object.keys(this.lsoas_counted)
         .filter(k => k !== "Unknown" && k !== "Terminated")
@@ -410,20 +393,8 @@ export default {
       this.downloadFile("membership.csv", membership_data);
     },
     downloadFile: function(filename, data) {
-      var csv = new Blob([Papa.unparse(data)], {
-        type: "text/csv;charset=utf-8;"
-      });
-      if (navigator.msSaveBlob) {
-        navigator.msSaveBlob(csv, filename);
-      } else {
-        //In FF link must be added to DOM to be clicked
-        var link = document.createElement("a");
-        link.href = window.URL.createObjectURL(csv);
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      var blob = new Blob([Papa.unparse(data)], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, filename);
     }
   },
   components: {
@@ -437,7 +408,7 @@ export default {
 <style>
 .summary-table table {
   border-collapse: collapse !important;
-  background: #f9f9f9;
+  background: #fafafa;
 }
 
 .summary-table td {

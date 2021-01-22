@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-field label="Choose file from your computer">
+    <b-field label="Choose a file from your computer">
       <b-upload
         type="is-light"
         accept=".csv"

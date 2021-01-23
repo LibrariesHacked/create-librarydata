@@ -4,6 +4,7 @@ import Router from "vue-router";
 // Our pages/views
 import Home from "./views/Home.vue";
 import LibrariesDataset from "./views/LibrariesDataset.vue";
+import MembershipVisualisation from "./views/MembershipVisualisation.vue";
 import PostcodeToLsoa from "./views/PostcodeToLsoa.vue";
 
 Vue.use(Router);
@@ -26,6 +27,11 @@ export default new Router({
       path: "/libraries",
       name: "libraries",
       component: LibrariesDataset
+    },
+    {
+      path: "/membership-visualisation",
+      name: "membership-visualisation",
+      component: MembershipVisualisation
     }
   ]
 });

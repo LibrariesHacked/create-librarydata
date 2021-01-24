@@ -1,6 +1,6 @@
 import * as Papa from "papaparse";
 
-export function parseFile(rawFile) {
+export const parseFile = rawFile => {
   return new Promise(resolve => {
     let data = [];
     Papa.parse(rawFile, {
@@ -14,4 +14,21 @@ export function parseFile(rawFile) {
       }
     });
   });
-}
+};
+
+export const parseUrl = url => {
+  return new Promise(resolve => {
+    let data = [];
+    Papa.parse(url, {
+      download: true,
+      skipEmptyLines: true,
+      worker: true,
+      step: results => {
+        data.push(results.data);
+      },
+      complete: () => {
+        resolve(data);
+      }
+    });
+  });
+};

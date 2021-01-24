@@ -6,6 +6,18 @@
     />
     <section>
       <div class="container">
+        <b-message type="is-info" title="Information and security">
+          <p>
+            Lower super output areas are census based geographies in the UK, used in
+            official statistics. This tool will covert data that contains postcodes, into
+            their nearest match LSOA.<br /><br />
+          </p>
+          <p>
+            This tool ensures postcodes are kept secure. Possible postcode/LSOA pairings
+            are downloaded based upon the postcode sectors in your data. The correct ones
+            are then chosen on your local PC.
+          </p>
+        </b-message>
         <b-steps
           size="is-medium"
           type="is-danger"
@@ -14,14 +26,6 @@
           :animated="true"
         >
           <b-step-item label="File" icon="cloud-upload">
-            <b-message type="is-danger">
-              <p>
-                This tool ensures postcodes are kept secure. All postcode/LSOA pairings
-                are downloaded based upon the postcode sectors in your data. The correct
-                ones are then chosen, without the full postcodes ever leaving your local
-                PC.
-              </p>
-            </b-message>
             <div class="columns">
               <div class="column">
                 <file-upload
@@ -40,25 +44,19 @@
                 </b-button>
               </div>
               <div class="column">
-                <b-message type="is-info" class="content">
+                <b-message type="is-warning" class="content">
                   <p>
                     <b>File tips</b>
                   </p>
                   <ol>
-                    <li>Choose a CSV file that contains postcodes</li>
+                    <li>
+                      Choose a CSV file that contains postcodes. If your data isn't a CSV
+                      file you'll need to use software to save it as a CSV first. Try
+                      <b>Save as</b> in your software.
+                    </li>
                     <li>The first row should be column headings</li>
                     <li>One column should contain UK postcodes</li>
                   </ol>
-                </b-message>
-                <b-message type="is-warning" class="content">
-                  <p>
-                    <b>No CSV, no conversion</b>
-                  </p>
-                  <p>
-                    If your data isn't a CSV file you'll need to use software to save it
-                    as a CSV first. Try
-                    <b>Save as</b> in your software.
-                  </p>
                 </b-message>
               </div>
             </div>

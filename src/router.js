@@ -3,9 +3,9 @@ import Router from "vue-router";
 
 // Our pages/views
 import Home from "./views/Home.vue";
-import LibrariesDataset from "./views/LibrariesDataset.vue";
-import MembershipVisualisation from "./views/MembershipVisualisation.vue";
-import PostcodeToLsoa from "./views/PostcodeToLsoa.vue";
+import LibrariesData from "./views/LibrariesData.vue";
+import MembershipMap from "./views/MembershipMap.vue";
+import MembershipPostcodeToLsoa from "./views/MembershipPostcodeToLsoa.vue";
 
 Vue.use(Router);
 
@@ -21,17 +21,17 @@ export default new Router({
     {
       path: "/postcode-to-lsoa",
       name: "postcode-to-lsoa",
-      component: PostcodeToLsoa
+      component: MembershipPostcodeToLsoa
     },
     {
       path: "/libraries",
       name: "libraries",
-      component: LibrariesDataset
+      component: LibrariesData
     },
     {
-      path: "/membership-visualisation",
-      name: "membership-visualisation",
-      component: MembershipVisualisation
+      path: "/membership-map",
+      name: "membership-map",
+      component: MembershipMap
     }
   ]
 });

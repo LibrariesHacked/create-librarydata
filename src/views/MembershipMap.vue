@@ -11,13 +11,10 @@
             <b-field label="Membership CSV file URL">
               <b-input v-model="membershipUrl" size="is-medium"></b-input>
             </b-field>
-            <b-field label="Libraries CSV file URL">
-              <b-input v-model="librariesUrl" size="is-medium"></b-input>
-            </b-field>
             <b-button
               type="is-secondary"
               icon-right="map"
-              v-on:click="addLayersToMap"
+              v-on:click="addMembershipData"
               :disabled="membershipUrl === ''"
               :rounded="true"
               >Show on map</b-button
@@ -28,18 +25,9 @@
               <p>
                 <b>View library membership data</b>
               </p>
-              <p>
-                This tool displays data that conforms to the
-              </p>
-              <p>This tool has calculated a count of members per LSOA.</p>
               <ol>
                 <li>
-                  Enter the full URL (including http/https) of the data you wish to view
-                  on library membership
-                </li>
-                <li>
-                  (Optional) Select the date the postcodes were extracted from your
-                  database.
+                  Enter the full URL of the data you wish to view on library membership
                 </li>
                 <li>Select show on map to explore the data.</li>
               </ol>
@@ -52,12 +40,21 @@
             :center.sync="center"
             :mapStyle="mapStyle"
             :zoom.sync="zoom"
+            v-on:click="setLsoaLabelField"
           >
             <MglVectorLayer
-              sourceId="lsoa_boundary"
+              v-if="displayLsoas"
+              sourceId="lsoa_boundaries"
               :source="lsoasSource"
-              layerId="lsoa_boundary"
-              :layer="lsoasLayer"
+              layerId="lsoa_boundaries_fill"
+              :layer="lsoasLayerFill"
+            />
+            <MglVectorLayer
+              v-if="displayLsoas"
+              sourceId="lsoa_boundaries"
+              :source="lsoasSource"
+              layerId="lsoa_boundaries_label"
+              :layer="lsoasLayerLabel"
             />
             <MglGeojsonLayer
               v-if="librariesSource"
@@ -81,6 +78,10 @@ import "../extensions/strings";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
+const config = require("../helpers/config.json");
+
+import * as csvHelper from "../helpers/csv";
+
 import {
   MglMap,
   MglNavigationControl,
@@ -93,20 +94,41 @@ export default {
     return {
       mapStyle: "/style.json",
       center: [-2, 52],
-      zoom: 12,
+      zoom: 6,
       librariesSource: null,
       librariesLayer: {},
       membershipUrl: "",
-      librariesUrl: "",
+      displayLsoas: false,
       lsoasSource: {
         type: "vector",
-        tiles: ["https://api-geography.librarydata.uk/rest/lsoas/{z}/{x}/{y}.mvt"]
+        tiles: [config.lsoa_tiles]
       },
-      lsoasLayer: {
+      lsoasLayerFill: {
         type: "fill",
-        "source-layer": "lsoa_tiles",
+        "source-layer": "lsoa_boundaries",
         paint: {
-          "fill-color": "#ffff00"
+          "fill-color": "#e5e5e5",
+          "fill-opacity": 0.5,
+          "fill-outline-color": "#cccccc"
+        }
+      },
+      lsoasLayerLabel: {
+        type: "symbol",
+        "source-layer": "lsoa_boundaries",
+        layout: {
+          "text-field": ["to-string", ["get", "lsoa11cd"]],
+          "text-font": ["Source Sans Pro Bold"],
+          "symbol-placement": "point",
+          "text-size": 16,
+          "text-allow-overlap": false,
+          "text-line-height": 1
+        },
+        paint: {
+          "text-color": "#55595c",
+          "text-halo-color": "#f1efec",
+          "text-halo-width": 1,
+          "text-halo-blur": 1,
+          "text-opacity": 1
         }
       }
     };
@@ -115,10 +137,35 @@ export default {
     this.mapbox = null;
   },
   methods: {
-    onMapLoaded: event => {
+    onMapLoaded: function(event) {
       this.map = event.map;
     },
-    addLayersToMap: async () => {}
+    setLsoaLabelField: function(lsoas) {
+      let matchField = ["match", ["get", "lsoa11cd"]];
+      let filters = [];
+      lsoas.forEach(lsoa => {
+        filters.push(lsoa[2]);
+        matchField.push(lsoa[2]);
+        matchField.push(lsoa[3].replace("x", "<5"));
+      });
+      matchField.push("");
+      let matchFilter = ["in", ["get", "lsoa11cd"], ["literal", filters]];
+
+      this.lsoasLayerFill.filter = matchFilter;
+      this.lsoasLayerLabel.filter = matchFilter;
+      this.lsoasLayerLabel.layout = {
+        ...this.lsoasLayerLabel.layout,
+        "text-field": matchField
+      };
+
+      this.displayLsoas = true;
+    },
+    addMembershipData: async function() {
+      const data = await csvHelper.parseUrl(
+        "https://cors-anywhere.herokuapp.com/" + this.membershipUrl
+      );
+      this.setLsoaLabelField(data);
+    }
   },
   components: {
     "custom-footer": Footer,

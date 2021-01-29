@@ -22,7 +22,7 @@
         "tableschema": "^1.12.3",
         "vue": "^2.6.12",
         "vue-mapbox": "^0.4.1",
-        "vue-router": "^3.4.9"
+        "vue-router": "^3.5.1"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.5.11",
@@ -62,5 +62,9 @@
     "browserslist": [
         "> 1%",
         "last 2 versions"
-    ]
+    ],
+    "rules": {
+        "comma-dangle": 0,
+        "no-console": 0
+      }
 }

@@ -107,8 +107,8 @@ export default {
         type: "fill",
         "source-layer": "lsoa_boundaries",
         paint: {
-          "fill-color": "#e5e5e5",
-          "fill-opacity": 0.5,
+          "fill-color": "#36a2eb",
+          "fill-opacity": 0,
           "fill-outline-color": "#cccccc"
         }
       },
@@ -142,21 +142,35 @@ export default {
     },
     setLsoaLabelField: function(lsoas) {
       let matchField = ["match", ["get", "lsoa11cd"]];
+      let matchOpacity = ["match", ["get", "lsoa11cd"]];
       let filters = [];
       lsoas.forEach(lsoa => {
+        const members = parseInt(lsoa[3].replace("x", "2"));
         filters.push(lsoa[2]);
         matchField.push(lsoa[2]);
-        matchField.push(lsoa[3].replace("x", "<5"));
+        matchField.push([
+          "concat",
+          [
+            "to-string",
+            ["round", ["*", ["/", members, ["to-number", ["get", "population"]]], 100]]
+          ],
+          "%"
+        ]);
+        matchOpacity.push(lsoa[2]);
+        matchOpacity.push([
+          "+",
+          ["/", members, ["to-number", ["get", "population"]]],
+          0.3
+        ]);
       });
       matchField.push("");
+      matchOpacity.push(0);
       let matchFilter = ["in", ["get", "lsoa11cd"], ["literal", filters]];
 
       this.lsoasLayerFill.filter = matchFilter;
+      this.lsoasLayerFill.paint["fill-opacity"] = matchOpacity;
       this.lsoasLayerLabel.filter = matchFilter;
-      this.lsoasLayerLabel.layout = {
-        ...this.lsoasLayerLabel.layout,
-        "text-field": matchField
-      };
+      this.lsoasLayerLabel.layout["text-field"] = matchField;
 
       this.displayLsoas = true;
     },

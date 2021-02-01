@@ -2,6 +2,7 @@
     "postcode_api": "https://api-geography.azurewebsites.net/rest/postcodes/",
     "schema_path": "https://raw.githubusercontent.com/LibrariesHacked/schema-librarydata/master/archive/",
     "lsoa_tiles": "https://api-geography.librarydata.uk/rest/lsoas/{z}/{x}/{y}.mvt",
+    "authorities_path": "https://api-geography.librarydata.uk/rest/libraryAuthorities",
     "schemas": {
         "membership": {
             "name": "Membership",

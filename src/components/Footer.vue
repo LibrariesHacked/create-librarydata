@@ -1,24 +1,11 @@
 <template>
   <footer class="footer">
     <div class="content container">
-      <div class="columns">
-        <div class="column">
-          <div class="content is-medium">
-            <p>
-              Developed and maintained by
-              <a href="https://www.librarieshacked.org" target="_blank"
-                >Libraries Hacked</a
-              >.
-            </p>
-          </div>
-        </div>
-        <div class="column">
-          <div class="content is-medium">
-            <router-link to="/" exact class="navbar-item has-text-weight-semibold">
-              Home
-            </router-link>
-          </div>
-        </div>
+      <div class="content is-medium">
+        <p>
+          Developed and maintained by
+          <a href="https://www.librarieshacked.org" target="_blank">Libraries Hacked</a>
+        </p>
       </div>
     </div>
   </footer>

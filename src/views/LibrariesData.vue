@@ -7,8 +7,8 @@
     <section>
       <div class="container">
         <div class="column">
-          <b-button icon-left="upload">Load dataset</b-button>&nbsp;
-          <b-button icon-left="download">Save dataset</b-button>&nbsp;
+          <b-button icon-left="upload" size="is-medium">Load dataset</b-button>&nbsp;
+          <b-button icon-left="download" size="is-medium">Save dataset</b-button>&nbsp;
           <br />
           <br />
           <b-table
@@ -43,6 +43,7 @@
             type="is-text"
             icon-left="plus"
             v-on:click="library_form_active = true"
+            size="is-medium"
             >Add library
           </b-button>
           <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">

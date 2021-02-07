@@ -10,8 +10,10 @@
         "deploy": "gh-pages -d dist"
     },
     "dependencies": {
+        "@turf/bbox": "^6.3.0",
         "axios": "^0.21.1",
         "buefy": "^0.8.20",
+        "colorbrewer": "^1.4.0",
         "core-js": "^3.8.3",
         "file-saver": "^2.0.5",
         "map-promisified": "^0.4.0",
@@ -66,5 +68,5 @@
     "rules": {
         "comma-dangle": 0,
         "no-console": 0
-      }
+    }
 }

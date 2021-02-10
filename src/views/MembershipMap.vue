@@ -11,7 +11,9 @@
           <a href="https://schema.librarydata.uk/membership" target="_blank"
             >membership data schema format</a
           >. This can be created using the
-          <a href="/postcode-to-lsoa" target="_blank">postcode to LSOA converter</a>.
+          <a href="/postcode-to-lsoa" target="_blank"
+            >postcode to statistical area converter</a
+          >.
         </b-message>
         <div class="columns">
           <div class="column">
@@ -38,8 +40,16 @@
                 <b>Display options</b>
               </p>
               <ul>
-                <li><b>Population percentage</b>. This shades the map to highlight concentration of members, relative to population. At higher zoom levels in also displays the membership population percentage.</li>
-                <li><b>Areas of deprivation</b>. This used the index of multiple deprivation for each area. 1 represents highly deprived areas, 10 the least deprived areas. Highly deprived areas are shaded in darker shades.</li>
+                <li>
+                  <b>Population percentage</b>. Shades the map to highlight concentration
+                  of membership. When zooming in in also displays the membership
+                  population percentage.
+                </li>
+                <li>
+                  <b>Areas of deprivation</b>. Uses the index of multiple deprivation for
+                  each area. 1 represents highly deprived areas, 10 the least deprived
+                  areas. Highly deprived areas are highlighted.
+                </li>
               </ul>
             </b-message>
           </div>
@@ -177,29 +187,29 @@ export default {
       lsoasSource: {
         type: "vector",
         tiles: [config.lsoa_tiles],
-        promoteId: { lsoa_boundaries: "lsoa11cd" }
+        promoteId: { lsoa_boundaries: "code" }
       },
-      matchFilter: ["in", ["get", "lsoa11cd"], ["literal", []]],
+      matchFilter: ["in", ["get", "code"], ["literal", []]],
       matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
       matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
       lsoasLayerFill: {
         type: "fill",
-        filter: ["in", ["get", "lsoa11cd"], ["literal", []]],
+        filter: ["in", ["get", "code"], ["literal", []]],
         "source-layer": "lsoa_boundaries",
         paint: {
           "fill-color": "rgba(254, 113, 144, 1)",
           "fill-opacity": 0.5
         }
       },
-      matchFieldLsoaPopulation: ["to-string", ["get", "lsoa11cd"]],
-      matchFieldLsoaDeprivation: ["to-string", ["get", "lsoa11cd"]],
+      matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
+      matchFieldLsoaDeprivation: ["to-string", ["get", "code"]],
       lsoasLayerLabel: {
         type: "symbol",
-        filter: ["in", ["get", "lsoa11cd"], ["literal", []]],
+        filter: ["in", ["get", "code"], ["literal", []]],
         "source-layer": "lsoa_boundaries",
         minzoom: 12,
         layout: {
-          "text-field": ["to-string", ["get", "lsoa11cd"]],
+          "text-field": ["to-string", ["get", "code"]],
           "text-font": ["Open Sans Bold"],
           "symbol-placement": "point",
           "text-size": {
@@ -236,8 +246,8 @@ export default {
     },
     setLsoaFields: function(lsoas) {
       let filters = [];
-      let matchFieldLsoaPopulation = ["match", ["get", "lsoa11cd"]];
-      let matchFieldLsoaDeprivation = ["match", ["get", "lsoa11cd"]];
+      let matchFieldLsoaPopulation = ["match", ["get", "code"]];
+      let matchFieldLsoaDeprivation = ["match", ["get", "code"]];
 
       lsoas.forEach(lsoa => {
         const members = parseInt(lsoa[3].replace("x", "2"));
@@ -330,7 +340,7 @@ export default {
       ];
 
       // Only show where lsoas exist in data
-      let matchFilter = ["in", ["get", "lsoa11cd"], ["literal", filters]];
+      let matchFilter = ["in", ["get", "code"], ["literal", filters]];
       this.matchFilter = matchFilter;
 
       // Store permanent definitions
@@ -345,7 +355,7 @@ export default {
       let self = this;
       if (self.lsoaFile.name) {
         const data = await csvHelper.parseFile(self.lsoaFile);
-        this.setLsoaFields(data);
+        this.setLsoaFields(data.slice(1));
         const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
           data[1][0]
         );

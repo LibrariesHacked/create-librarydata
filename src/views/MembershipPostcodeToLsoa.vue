@@ -1,21 +1,22 @@
 <template>
   <div>
     <custom-header
-      title="Library member postcodes to LSOA"
-      subtitle="Use census-based geographies for analysing the location of library users"
+      title="Convert library member postcodes"
+      subtitle="Obtain census-based geography data for analysing the location of library users"
     />
     <section>
       <div class="container">
         <b-message type="is-warning" class="content is-medium">
           <p>
-            Lower super output areas are census-based geographies in the UK, used in
-            official statistics. This tool will covert UK postcodes into their nearest
-            matching LSOA.
+            England and Wales release statistics at Lower-level super output area
+            (census-based) geographic level. In Scotland, Data Zones are most useful, and
+            in Northern Ireland, Small Areas. This tool converts UK postcodes into the
+            most appropriate nearest matching area.
           </p>
           <p>
-            This tool ensures postcodes are kept secure. Multiple postcode/LSOA pairings
-            are downloaded based on the postcode sectors in your data. The correct ones
-            are then chosen on your local PC.
+            Postcodes are kept secure. Postcode and area pairings are downloaded based on
+            the postcode sectors in your data. The correct ones are then chosen on your
+            local PC.
           </p>
         </b-message>
         <b-steps
@@ -50,12 +51,12 @@
                   </p>
                   <ol>
                     <li>
-                      This tool converts CSV files containing postcodes. If your data
-                      isn't in CSV format you'll need to convert it. Try
-                      <b>Save as</b> in your software.
+                      This tool converts postcodes in CSV files. If your data isn't in CSV
+                      format you'll need to convert it. Try '<b>Save as</b>' in your
+                      software.
                     </li>
                     <li>The first row should be column headings</li>
-                    <li>One data column should contain UK postcodes</li>
+                    <li>One column should contain UK postcodes</li>
                   </ol>
                 </b-message>
               </div>
@@ -125,7 +126,7 @@
                   <p>
                     If your data is grouped into counts per postcode, select the column
                     the count is held in. The tool will then be able to count people per
-                    LSOA for you.
+                    area for you.
                   </p>
                   <p>
                     If each of your rows relates to an individual person, or you only want
@@ -153,7 +154,7 @@
                   icon-right="download"
                   v-on:click="downloadConvertedFile"
                   size="is-medium"
-                  >Download converted file</b-button
+                  >Save converted file</b-button
                 >
               </div>
               <div class="column">
@@ -162,7 +163,7 @@
                     <b>Converted file</b>
                   </p>
                   <ul>
-                    <li>Valid postcodes have changed to their LSOA value</li>
+                    <li>Valid postcodes have changed to their statistical area value</li>
                     <li>
                       Old postcodes have changed to
                       <strong>Terminated</strong>.
@@ -173,7 +174,7 @@
                     </li>
                     <li>
                       The postcode column header has changed to
-                      <strong>LSOA</strong>.
+                      <strong>area</strong>.
                     </li>
                   </ul>
                 </b-message>
@@ -214,7 +215,7 @@
                   v-on:click="downloadSchemaFile"
                   :disabled="authority === '' || extract_date === null"
                   size="is-medium"
-                  >Download membership file</b-button
+                  >Save membership file</b-button
                 >
               </div>
               <div class="column">
@@ -223,19 +224,19 @@
                     <b>Public library open data</b>
                   </p>
                   <p>
-                    LSOAs are required for
+                    Census geographies are required for
                     <a href="https://schema.librarydata.uk/membership" target="_blank"
                       >library membership data</a
                     >.
                   </p>
-                  <p>This tool has calculated a count of members per LSOA.</p>
+                  <p>This tool has calculated a count of members per statistical.</p>
                   <ol>
                     <li>Select the name of your library service.</li>
                     <li>
                       Choose a date the postcodes were extracted from your library
                       management system.
                     </li>
-                    <li>Download the data file.</li>
+                    <li>Save the data file.</li>
                   </ol>
                 </b-message>
               </div>

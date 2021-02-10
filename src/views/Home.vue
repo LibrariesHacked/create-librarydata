@@ -8,19 +8,19 @@
       <div class="container">
         <div class="content is-medium">
           <p>
-            This website is a set of tools designed to aid library services in creating
-            and using library open data. Inspired by the
-            <a href="https://schema.librarydata.uk">public library open data schemas</a>,
-            the site will provide tools relating to different datasets from those schemas.
+            These are tools designed to aid library services in creating and using library
+            open data. Inspired by the public library
+            <a href="https://schema.librarydata.uk">open data schemas</a>, this site will
+            provide tools for the different datasets from those schemas.
           </p>
           <h3 class="subtitle has-text-grey">Library membership</h3>
-          <ul>
-            <li>
-              <router-link to="/postcode-to-lsoa" exact class="has-text-weight-semibold">
-                Create: postcode to LSOA converter
-              </router-link>
-            </li>
-          </ul>
+          <router-link to="/postcode-to-lsoa" exact>
+            Postcode to statistical geography converter
+          </router-link>
+          <br />
+          <router-link to="/membership-map" exact>
+            Visualise membership on a map
+          </router-link>
         </div>
       </div>
     </section>

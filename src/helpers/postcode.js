@@ -16,7 +16,7 @@ export function extractPostcodeSector(postcode) {
   const re = /[a-zA-Z]+\d\d?[a-zA-Z]?\s*\d+/;
   if (postcode) {
     let match = postcode.match(re);
-    if (match && match.length > 0) return match[0];
+    if (match && match.length > 0) return match[0].substring(0, 6);
   }
   return null;
 }

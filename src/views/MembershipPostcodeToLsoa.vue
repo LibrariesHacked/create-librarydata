@@ -8,15 +8,15 @@
       <div class="container">
         <b-message type="is-warning" class="content is-medium">
           <p>
-            England and Wales release statistics at Lower-level super output area
-            (census-based) geographic level. In Scotland, Data Zones are most useful, and
-            in Northern Ireland, Small Areas. This tool converts UK postcodes into the
-            most appropriate nearest matching area.
+            England and Wales release statistics at Lower super output area (census-based)
+            geographic level. In Scotland, Data Zones are most useful, and in Northern
+            Ireland, Small Areas. This tool converts UK postcodes into the most
+            appropriate nearest matching area.
           </p>
           <p>
-            Postcodes are kept secure. Postcode and area pairings are downloaded based on
-            the postcode sectors in your data. The correct ones are then chosen on your
-            local PC.
+            Full postcodes are kept secure. Postcode and area pairings are downloaded
+            based on the postcode sectors in your data. The correct ones are then chosen
+            on your local PC.
           </p>
         </b-message>
         <b-steps
@@ -51,9 +51,8 @@
                   </p>
                   <ol>
                     <li>
-                      This tool converts postcodes in CSV files. If your data isn't in CSV
-                      format you'll need to convert it. Try '<b>Save as</b>' in your
-                      software.
+                      This tool loads CSV files. If your data isn't in CSV format you'll
+                      need to convert it. Try '<b>Save as</b>' in your software.
                     </li>
                     <li>The first row should be column headings</li>
                     <li>One column should contain UK postcodes</li>
@@ -129,8 +128,8 @@
                     area for you.
                   </p>
                   <p>
-                    If each of your rows relates to an individual person, or you only want
-                    to convert postcodes, you can ignore this option.
+                    If each of your rows relates to an individual person you can ignore
+                    this option.
                   </p>
                 </b-message>
               </div>
@@ -163,7 +162,7 @@
                     <b>Converted file</b>
                   </p>
                   <ul>
-                    <li>Valid postcodes have changed to their statistical area value</li>
+                    <li>Valid postcodes have changed to their statistical area</li>
                     <li>
                       Old postcodes have changed to
                       <strong>Terminated</strong>.
@@ -229,14 +228,14 @@
                       >library membership data</a
                     >.
                   </p>
-                  <p>This tool has calculated a count of members per statistical.</p>
+                  <p>This tool has calculated a count of members per statistical area.</p>
                   <ol>
-                    <li>Select the name of your library service.</li>
+                    <li>Select the name of your library service</li>
                     <li>
                       Choose a date the postcodes were extracted from your library
-                      management system.
+                      management system
                     </li>
-                    <li>Save the data file.</li>
+                    <li>Save the data file</li>
                   </ol>
                 </b-message>
               </div>

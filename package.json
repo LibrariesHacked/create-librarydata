@@ -13,8 +13,8 @@
         "@turf/bbox": "^6.3.0",
         "axios": "^0.21.1",
         "buefy": "^0.8.20",
-        "colorbrewer": "^1.4.0",
-        "core-js": "^3.8.3",
+        "colorbrewer": "^1.5.1",
+        "core-js": "^3.10.0",
         "file-saver": "^2.0.5",
         "map-promisified": "^0.4.0",
         "mapbox-gl": "^1.13.0",
@@ -24,6 +24,7 @@
         "tableschema": "^1.12.4",
         "vue": "^2.6.12",
         "vue-mapbox": "^0.4.1",
+        "vue-markdown-plus": "^2.0.17",
         "vue-router": "^3.5.1"
     },
     "devDependencies": {
@@ -39,6 +40,7 @@
         "gh-pages": "^3.1.0",
         "node-sass": "^4.13.0",
         "prettier": "^1.19.1",
+        "raw-loader": "^4.0.2",
         "sass-loader": "^8.0.2",
         "vue-template-compiler": "^2.6.10"
     },

@@ -2,21 +2,21 @@
   <div>
     <custom-header
       title="Convert library member postcodes"
-      subtitle="Obtain census-based geography data for analysing the location of library users"
+      subtitle="Obtain census-based areas for the locations of library members"
     />
-    <section>
+    <section class="main">
       <div class="container">
         <b-message type="is-warning" class="content is-medium">
           <p>
-            England and Wales release statistics at Lower super output area (census-based)
-            geographic level. In Scotland, Data Zones are most useful, and in Northern
+            England and Wales release statistics at Lower super output area geographic
+            level (census-based). In Scotland, Data Zones are most useful, and in Northern
             Ireland, Small Areas. This tool converts UK postcodes into the most
             appropriate nearest matching area.
           </p>
           <p>
-            Full postcodes are kept secure. Postcode and area pairings are downloaded
-            based on the postcode sectors in your data. The correct ones are then chosen
-            on your local PC.
+            Full postcodes are kept secure. A selection of postcode/area pairings are
+            downloaded based on the postcode <b>sectors</b> in your data. The correct
+            areas are then chosen on your local PC.
           </p>
         </b-message>
         <b-steps
@@ -64,7 +64,7 @@
           <b-step-item label="Options" icon="settings">
             <div class="columns">
               <div class="column">
-                <b-field label="Postcode column">
+                <b-field label="Postcode column" custom-class="is-medium">
                   <b-select
                     size="is-medium"
                     placeholder="Select column"
@@ -84,7 +84,7 @@
                   >Convert
                 </b-button>
                 <hr />
-                <b-field label="Count column (optional)">
+                <b-field label="Count column (optional)" custom-class="is-medium">
                   <b-select
                     size="is-medium"
                     placeholder="Count of postcodes"
@@ -184,7 +184,7 @@
               <div class="column">
                 <h4 class="content title is-5">Library membership</h4>
                 <h5 class="content subtitle is-6">Prepare your data</h5>
-                <b-field label="Library service name">
+                <b-field label="Library service name" custom-class="is-medium">
                   <b-select
                     size="is-medium"
                     placeholder="Library service"
@@ -199,7 +199,7 @@
                     </option>
                   </b-select>
                 </b-field>
-                <b-field label="Count date">
+                <b-field label="Count date" custom-class="is-medium">
                   <b-datepicker
                     size="is-medium"
                     placeholder="Type or select a date..."
@@ -416,6 +416,9 @@ export default {
 </script>
 
 <style>
+.main {
+  padding: 20px;
+}
 .summary-table table {
   border-collapse: collapse !important;
   background: #fafafa;

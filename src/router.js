@@ -1,11 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-// Our pages/views
+import Accessibility from "./views/Accessibility.vue";
 import Home from "./views/Home.vue";
 import LibrariesData from "./views/LibrariesData.vue";
 import MembershipMap from "./views/MembershipMap.vue";
 import MembershipPostcodeToLsoa from "./views/MembershipPostcodeToLsoa.vue";
+import Privacy from "./views/Privacy.vue";
 
 Vue.use(Router);
 
@@ -32,6 +33,16 @@ export default new Router({
       path: "/membership-map",
       name: "membership-map",
       component: MembershipMap
+    },
+    {
+      path: "/privacy",
+      name: "privacy",
+      component: Privacy
+    },
+    {
+      path: "/accessibility",
+      name: "accessibility",
+      component: Accessibility
     }
   ]
 });

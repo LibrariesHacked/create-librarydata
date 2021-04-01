@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <custom-header
       title="Format dates"
       subtitle="Ensure your dates are formatted consistently."

@@ -1,12 +1,9 @@
 <template>
   <div>
     <custom-header title="Membership map" subtitle="Explore library membership data" />
-    <section>
+    <section class="main">
       <div class="container">
         <b-message class="content is-medium" type="is-warning">
-          <p>
-            <b>Viewing library membership data</b>
-          </p>
           You need library membership data in the
           <a href="https://schema.librarydata.uk/membership" target="_blank"
             >membership data schema format</a
@@ -17,16 +14,13 @@
         </b-message>
         <div class="columns">
           <div class="column">
-            <b-field class="file">
-              <b-upload v-model="lsoaFile" expanded>
-                <a class="button is-primary is-fullwidth is-medium">
-                  <b-icon icon="upload"></b-icon>
-                  <span>{{ lsoaFile.name || "Click to load file" }}</span>
-                </a>
-              </b-upload>
-            </b-field>
+            <file-upload
+              v-bind:file="lsoaFile"
+              v-on:upload-file="lsoaFile = $event"
+              v-on:delete-file="lsoaFile = null"
+            />
             <b-button
-              :disabled="!lsoaFile.name"
+              :disabled="lsoaFile === null"
               size="is-medium"
               type="is-secondary"
               icon-right="account-multiple-plus"
@@ -46,15 +40,15 @@
                   population percentage.
                 </li>
                 <li>
-                  <b>Areas of deprivation</b>. Uses the index of multiple deprivation for
-                  each area. 1 represents highly deprived areas, 10 the least deprived
-                  areas. Highly deprived areas are highlighted.
+                  <b>Areas of deprivation</b>. Shades the map to highlight highly deprived
+                  areas. Uses the index of multiple deprivation for each area. 1
+                  represents highly deprived areas, 10 the least deprived.
                 </li>
               </ul>
             </b-message>
           </div>
         </div>
-        <b-field>
+        <b-field custom-class="is-medium">
           <b-radio
             v-model="mapDisplay"
             size="is-medium"
@@ -118,6 +112,7 @@
 <script>
 import "../extensions/strings";
 
+import FileUpload from "../components/FileUpload";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -155,7 +150,7 @@ export default {
         type: "line",
         minzoom: 10,
         paint: {
-          "line-color": "#763F45",
+          "line-color": "#697B89",
           "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 22, 8]
         }
       },
@@ -178,12 +173,12 @@ export default {
           "text-line-height": 1
         },
         paint: {
-          "text-color": "#763F45",
+          "text-color": "#697B89",
           "text-halo-color": "#fafaf8",
           "text-halo-width": 2
         }
       },
-      lsoaFile: {},
+      lsoaFile: null,
       lsoasSource: {
         type: "vector",
         tiles: [config.lsoa_tiles],
@@ -223,7 +218,7 @@ export default {
           "text-line-height": 1
         },
         paint: {
-          "text-color": "#763F45",
+          "text-color": "#697B89",
           "text-halo-color": "#fafaf8",
           "text-halo-width": 1
         }
@@ -370,6 +365,7 @@ export default {
   components: {
     "custom-footer": Footer,
     "custom-header": Header,
+    "file-upload": FileUpload,
     MglGeojsonLayer,
     MglMap,
     MglNavigationControl,
@@ -379,6 +375,9 @@ export default {
 </script>
 
 <style>
+.main {
+  padding: 20px;
+}
 .mapboxgl-canvas {
   left: 0;
 }

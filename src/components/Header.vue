@@ -1,12 +1,11 @@
 <template>
-  <section class="header">
+  <section class="header has-background-white">
     <div class="container">
       <div class="content">
         <h1 class="title has-text-primary">{{ title }}</h1>
         <h2 class="subtitle has-text-grey">{{ subtitle }}</h2>
       </div>
     </div>
-    <hr />
   </section>
 </template>
 <script>
@@ -20,6 +19,6 @@ export default {
 </script>
 <style scoped>
 .header {
-  margin: 20px;
+  padding: 20px;
 }
 </style>

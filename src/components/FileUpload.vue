@@ -1,18 +1,19 @@
 <template>
   <section>
-    <b-field label="Choose a file from your computer">
+    <b-field label="Choose a file from your computer" custom-class="is-medium">
       <b-upload
         type="is-light"
         accept=".csv"
         v-on:input="$emit('upload-file', $event)"
         drag-drop
+        expanded
       >
         <section class="section">
           <div class="content has-text-centered">
             <p>
               <b-icon icon="upload" size="is-medium"> </b-icon>
             </p>
-            <p>Drop your CSV file here or click to add</p>
+            <p>Load CSV file</p>
           </div>
         </section>
       </b-upload>

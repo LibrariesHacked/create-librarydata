@@ -7,6 +7,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
+        "predeploy": "vue-cli-service build",
         "deploy": "gh-pages -d dist"
     },
     "dependencies": {
@@ -14,7 +15,7 @@
         "axios": "^0.21.1",
         "buefy": "^0.8.20",
         "colorbrewer": "^1.5.1",
-        "core-js": "^3.10.0",
+        "core-js": "^3.10.1",
         "file-saver": "^2.0.5",
         "map-promisified": "^0.4.0",
         "mapbox-gl": "^1.13.0",

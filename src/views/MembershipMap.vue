@@ -19,6 +19,7 @@
               v-on:upload-file="lsoaFile = $event"
               v-on:delete-file="lsoaFile = null"
             />
+            <br/>
             <b-button
               :disabled="lsoaFile === null"
               size="is-medium"
@@ -88,6 +89,7 @@
             :layer="lsoasLayerLabel"
           />
           <MglNavigationControl position="bottom-right" />
+          <MglFullscreenControl position="top-right" />
           <MglGeojsonLayer
             v-if="authoritySource !== null"
             sourceId="authority_boundary_source"
@@ -127,6 +129,7 @@ import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 
 import {
   MglMap,
+  MglFullscreenControl,
   MglNavigationControl,
   MglGeojsonLayer,
   MglVectorLayer
@@ -290,48 +293,48 @@ export default {
           ]
         ],
         0,
-        colorbrewer.OrRd[9][0],
+        colorbrewer.default.OrRd[9][0],
         5,
-        colorbrewer.OrRd[9][1],
+        colorbrewer.default.OrRd[9][1],
         10,
-        colorbrewer.OrRd[9][2],
+        colorbrewer.default.OrRd[9][2],
         15,
-        colorbrewer.OrRd[9][3],
+        colorbrewer.default.OrRd[9][3],
         20,
-        colorbrewer.OrRd[9][4],
+        colorbrewer.default.OrRd[9][4],
         25,
-        colorbrewer.OrRd[9][5],
+        colorbrewer.default.OrRd[9][5],
         30,
-        colorbrewer.OrRd[9][6],
+        colorbrewer.default.OrRd[9][6],
         35,
-        colorbrewer.OrRd[9][7],
+        colorbrewer.default.OrRd[9][7],
         40,
-        colorbrewer.OrRd[9][8]
+        colorbrewer.default.OrRd[9][8]
       ];
       let matchColourLsoaDeprivation = [
         "interpolate",
         ["linear"],
         ["to-number", ["get", "imd"]],
         1,
-        colorbrewer.OrRd[9][8],
+        colorbrewer.default.OrRd[9][8],
         2,
-        colorbrewer.OrRd[9][7],
+        colorbrewer.default.OrRd[9][7],
         3,
-        colorbrewer.OrRd[9][6],
+        colorbrewer.default.OrRd[9][6],
         4,
-        colorbrewer.OrRd[9][5],
+        colorbrewer.default.OrRd[9][5],
         5,
-        colorbrewer.OrRd[9][4],
+        colorbrewer.default.OrRd[9][4],
         6,
-        colorbrewer.OrRd[9][3],
+        colorbrewer.default.OrRd[9][3],
         7,
-        colorbrewer.OrRd[9][2],
+        colorbrewer.default.OrRd[9][2],
         8,
-        colorbrewer.OrRd[9][1],
+        colorbrewer.default.OrRd[9][1],
         9,
-        colorbrewer.OrRd[9][0],
+        colorbrewer.default.OrRd[9][0],
         10,
-        colorbrewer.OrRd[9][0]
+        colorbrewer.default.OrRd[9][0]
       ];
 
       // Only show where lsoas exist in data
@@ -368,6 +371,7 @@ export default {
     "file-upload": FileUpload,
     MglGeojsonLayer,
     MglMap,
+    MglFullscreenControl,
     MglNavigationControl,
     MglVectorLayer
   }

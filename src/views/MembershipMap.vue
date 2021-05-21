@@ -51,24 +51,20 @@
             </v-container>
           </v-col>
         </v-row>
-        <b-field custom-class="is-medium">
-          <b-radio
-            v-model="mapDisplay"
-            size="is-medium"
-            native-value="populationPercentage"
-            v-on:input="setDisplayOptions"
-          >
-            Display population percentage
-          </b-radio>
-          <b-radio
-            v-model="mapDisplay"
-            size="is-medium"
-            native-value="imd"
-            v-on:input="setDisplayOptions"
-          >
-            Display areas of deprivation
-          </b-radio>
-        </b-field>
+        <v-radio-group
+          v-model="mapDisplay"
+          v-on:change="setDisplayOptions"
+          row
+        >
+          <v-radio
+            label="Display population percentage"
+            value="populationPercentage"
+          ></v-radio>
+          <v-radio
+            label="Display areas of deprivation"
+            value="imd"
+          ></v-radio>
+        </v-radio-group>
         <MglMap
           container="map-container"
           :minZoom="minZoom"

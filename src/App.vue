@@ -1,79 +1,51 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <v-app>
+    <v-app-bar app flat color="white" clipped-left>
+      <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
+      <v-container>
+        <v-toolbar-title>Create</v-toolbar-title>
+      </v-container>
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" app clipped>
+      <v-list nav dense>
+        <v-list-item-group color="indigo">
+          <v-list-item
+            :to="'/'"
+            active-class="highlighted"
+            :class="'/' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+
+    <v-footer app>
+      <custom-footer />
+    </v-footer>
+  </v-app>
 </template>
-<style lang="scss">
-// Import Bulma's core
-@import "~bulma/sass/utilities/_all";
 
-// Set your colors
-$primary: #36a2eb;
-$primary-invert: findColorInvert($primary);
+<script>
+import Footer from "./components/Footer";
 
-$success: #4bc0c0;
-$success-invert: findColorInvert($success);
+export default {
+  name: "App",
 
-$warning: #ffce56;
-$warning-invert: findColorInvert($warning);
+  components: {
+    "custom-footer": Footer
+  },
 
-$danger: #fe7190;
-$danger-invert: findColorInvert($danger);
-
-$colors: (
-  "white": (
-    $white,
-    $black
-  ),
-  "black": (
-    $black,
-    $white
-  ),
-  "light": (
-    $light,
-    $light-invert
-  ),
-  "dark": (
-    $dark,
-    $dark-invert
-  ),
-  "primary": (
-    $primary,
-    $primary-invert
-  ),
-  "info": (
-    $info,
-    $info-invert
-  ),
-  "success": (
-    $success,
-    $success-invert
-  ),
-  "warning": (
-    $warning,
-    $warning-invert
-  ),
-  "danger": (
-    $danger,
-    $danger-invert
-  )
-);
-
-// Links
-$link: $danger;
-$link-invert: $danger-invert;
-$link-focus-border: $danger;
-
-// Modals
-$modal-background-background-color: rgba(0, 0, 0, 0.1);
-
-// Import Bulma and Buefy styles
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
-</style>
-
-<style>
-.hero {
-  border-bottom: 1px solid #e5e5e5 !important;
-}
-</style>
+  data: () => ({
+    drawer: true
+  })
+};
+</script>

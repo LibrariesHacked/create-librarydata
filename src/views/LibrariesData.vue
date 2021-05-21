@@ -5,7 +5,7 @@
       subtitle="Create and maintain data about your libraries."
     />
     <section>
-      <div class="container">
+      <v-container>
         <div class="column">
           <b-button icon-left="upload" size="is-medium">Load dataset</b-button>&nbsp;
           <b-button icon-left="download" size="is-medium">Save dataset</b-button>&nbsp;
@@ -50,9 +50,8 @@
             <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
           </b-loading>
         </div>
-      </div>
+      </v-container>
     </section>
-    <custom-footer />
     <b-modal has-modal-card :active.sync="library_form_active" :can-cancel="false">
       <modal-form>
         <div class="modal-card">
@@ -66,7 +65,6 @@
 </template>
 
 <script>
-import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 import * as Papa from "papaparse";
@@ -107,7 +105,6 @@ export default {
     }
   },
   components: {
-    "custom-footer": Footer,
     "custom-header": Header
   }
 };

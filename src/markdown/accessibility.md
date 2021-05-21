@@ -1,5 +1,3 @@
-## Accessibility
-
 We want as many people as possible to be able to use this website. For example, that means you should be able to:
 
 - change colours, contrast levels and fonts
@@ -12,7 +10,7 @@ We've also made the website text as simple as possible to understand.
 
 [AbilityNet](https://mcmw.abilitynet.org.uk/) has advice on making your device easier to use if you have a disability.
 
-### Technical information about this website's accessibility
+## Technical information about this website's accessibility
 
 This website is in development and being used by pilot library services. During this time it is being tested for accessibility issues. This is being done using Government Digital Service, [Doing a basic accessibility check](https://www.gov.uk/government/publications/doing-a-basic-accessibility-check-if-you-cant-do-a-detailed-one/doing-a-basic-accessibility-check-if-you-cant-do-a-detailed-one).
 

@@ -1,34 +1,16 @@
 <template>
   <section>
-    <b-field label="Choose a file from your computer" custom-class="is-medium">
-      <b-upload
-        type="is-light"
-        accept=".csv"
-        v-on:input="$emit('upload-file', $event)"
-        drag-drop
-        expanded
-      >
-        <section class="section">
-          <div class="content has-text-centered">
-            <p>
-              <b-icon icon="upload" size="is-medium"> </b-icon>
-            </p>
-            <p>Load CSV file</p>
-          </div>
-        </section>
-      </b-upload>
-    </b-field>
-
-    <div class="tags">
-      <span class="tag is-medium is-info" v-if="file">
-        {{ file.name }}
-        <button
-          class="delete is-medium"
-          type="button"
-          v-on:click="$emit('delete-file')"
-        ></button>
-      </span>
-    </div>
+    <v-file-input
+      accept="text/csv"
+      chips
+      counter
+      show-size
+      small-chips
+      multiple
+      label="Choose a file from your computer"
+      :value="file"
+      v-on:change="$emit('change-files', $event)"
+    ></v-file-input>
   </section>
 </template>
 

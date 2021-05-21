@@ -1,9 +1,9 @@
 <template>
   <div>
     <custom-header title="Membership map" subtitle="Explore library membership data" />
-    <section class="main">
-      <div class="container">
-        <b-message class="content is-medium" type="is-warning">
+    <section>
+      <v-container>
+        <p>
           You need library membership data in the
           <a href="https://schema.librarydata.uk/membership" target="_blank"
             >membership data schema format</a
@@ -11,44 +11,46 @@
           <a href="/postcode-to-lsoa" target="_blank"
             >postcode to statistical area converter</a
           >.
-        </b-message>
-        <div class="columns">
-          <div class="column">
-            <file-upload
-              v-bind:file="lsoaFile"
-              v-on:upload-file="lsoaFile = $event"
-              v-on:delete-file="lsoaFile = null"
-            />
-            <br/>
-            <b-button
-              :disabled="lsoaFile === null"
-              size="is-medium"
-              type="is-secondary"
-              icon-right="account-multiple-plus"
-              v-on:click="addMembershipData"
-              >Add members to map</b-button
-            >
-          </div>
-          <div class="column">
-            <b-message class="content is-medium" type="is-info">
-              <p>
-                <b>Display options</b>
-              </p>
-              <ul>
-                <li>
-                  <b>Population percentage</b>. Shades the map to highlight concentration
-                  of membership. When zooming in in also displays the membership
-                  population percentage.
-                </li>
-                <li>
-                  <b>Areas of deprivation</b>. Shades the map to highlight highly deprived
-                  areas. Uses the index of multiple deprivation for each area. 1
-                  represents highly deprived areas, 10 the least deprived.
-                </li>
-              </ul>
-            </b-message>
-          </div>
-        </div>
+        </p>
+        <v-row no-gutters>
+          <v-col cols="12" sm="6">
+            <v-container>
+              <file-upload
+                v-bind:file="lsoaFiles"
+                v-on:change-files="lsoaFiles = $event"
+                v-on:delete-file="lsoaFiles = null"
+              />
+              <br />
+              <v-btn
+                color="primary"
+                :disabled="lsoaFiles.length === 0"
+                v-on:click="addMembershipData"
+                >Add members to map
+              </v-btn>
+            </v-container>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-container>
+              <v-alert border="right" color="blue" text type="info">
+                <p>
+                  <b>Display options</b>
+                </p>
+                <ul>
+                  <li>
+                    <b>Population percentage</b>. Shades the map to highlight
+                    concentration of membership. When zooming in in also displays the
+                    membership population percentage.
+                  </li>
+                  <li>
+                    <b>Areas of deprivation</b>. Shades the map to highlight highly
+                    deprived areas. Uses the index of multiple deprivation for each area.
+                    1 represents highly deprived areas, 10 the least deprived.
+                  </li>
+                </ul>
+              </v-alert>
+            </v-container>
+          </v-col>
+        </v-row>
         <b-field custom-class="is-medium">
           <b-radio
             v-model="mapDisplay"
@@ -105,8 +107,7 @@
             :layer="authorityLayerLabel"
           />
         </MglMap>
-      </div>
-      <custom-footer />
+      </v-container>
     </section>
   </div>
 </template>
@@ -115,7 +116,7 @@
 import "../extensions/strings";
 
 import FileUpload from "../components/FileUpload";
-import Footer from "../components/Footer";
+
 import Header from "../components/Header";
 
 const config = require("../helpers/config.json");
@@ -181,7 +182,7 @@ export default {
           "text-halo-width": 2
         }
       },
-      lsoaFile: null,
+      lsoaFiles: [],
       lsoasSource: {
         type: "vector",
         tiles: [config.lsoa_tiles],
@@ -351,8 +352,8 @@ export default {
     },
     addMembershipData: async function() {
       let self = this;
-      if (self.lsoaFile.name) {
-        const data = await csvHelper.parseFile(self.lsoaFile);
+      if (self.lsoaFiles[0].name) {
+        const data = await csvHelper.parseFile(self.lsoaFiles[0]);
         this.setLsoaFields(data.slice(1));
         const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
           data[1][0]
@@ -366,7 +367,6 @@ export default {
     }
   },
   components: {
-    "custom-footer": Footer,
     "custom-header": Header,
     "file-upload": FileUpload,
     MglGeojsonLayer,

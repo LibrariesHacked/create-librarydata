@@ -4,221 +4,230 @@
       title="Convert library member postcodes"
       subtitle="Obtain census-based areas for the locations of library members"
     />
-    <section class="main">
-      <div class="container">
-        <b-message type="is-warning" class="content is-medium">
-          <p>
-            England and Wales release statistics at Lower super output area geographic
-            level (census-based). In Scotland, Data Zones are most useful, and in Northern
-            Ireland, Small Areas. This tool converts UK postcodes into the most
-            appropriate nearest matching area.
-          </p>
-          <p>
-            Full postcodes are kept secure. A selection of postcode/area pairings are
-            downloaded based on the postcode <b>sectors</b> in your data. The correct
-            areas are then chosen on your local PC.
-          </p>
-        </b-message>
-        <b-steps
-          size="is-medium"
-          type="is-danger"
-          v-model="active_step"
-          :has-navigation="false"
-          :animated="true"
-        >
-          <b-step-item label="File" icon="cloud-upload">
-            <div class="columns">
-              <div class="column">
-                <file-upload
-                  v-bind:file="file"
-                  v-on:upload-file="file = $event"
-                  v-on:delete-file="file = null"
-                />
-                <br />
-                <b-button
-                  icon-right="chevron-right"
-                  v-on:click="confirmFile"
-                  :disabled="file === null"
-                  size="is-medium"
-                >
-                  Next
-                </b-button>
-              </div>
-              <div class="column">
-                <b-message type="is-info" class="content is-medium">
-                  <p>
-                    <b>File tips</b>
-                  </p>
-                  <ol>
-                    <li>
-                      This tool loads CSV files. If your data isn't in CSV format you'll
-                      need to convert it. Try '<b>Save as</b>' in your software.
-                    </li>
-                    <li>The first row should be column headings</li>
-                    <li>One column should contain UK postcodes</li>
-                  </ol>
-                </b-message>
-              </div>
-            </div>
-          </b-step-item>
-          <b-step-item label="Options" icon="settings">
-            <div class="columns">
-              <div class="column">
-                <b-field label="Postcode column" custom-class="is-medium">
-                  <b-select
-                    size="is-medium"
-                    placeholder="Select column"
+    <section>
+      <v-container>
+        <p>
+          England and Wales release statistics at the census-based Lower super output area
+          geographic level. In Scotland, Data Zones are most useful, and in Northern
+          Ireland, Small Areas. This tool converts UK postcodes into the most appropriate
+          matching area.
+        </p>
+        <p>
+          Postcodes are kept secure. A selection of postcode/area pairings are downloaded
+          based on the postcode <b>sectors</b> in your data. The correct areas are then
+          chosen on your local PC.
+        </p>
+        <v-stepper v-model="active_step" vertical flat>
+          <v-stepper-step :complete="active_step > 1" step="1" color="secondary" editable>
+            Load postcodes
+          </v-stepper-step>
+          <v-stepper-content step="1">
+            <v-row no-gutters>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <file-upload v-bind:file="files" v-on:change-files="files = $event" />
+                  <v-btn
+                    color="primary"
+                    depressed
+                    :disabled="files.length === 0"
+                    v-on:click="confirmFile"
+                  >
+                    Next
+                  </v-btn>
+                </v-container>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <v-alert border="right" color="blue" text type="info">
+                    <p>
+                      <b>File tips</b>
+                    </p>
+                    <ol>
+                      <li>
+                        This tool loads CSV files. If your data isn't in CSV format you'll
+                        need to convert it. Try <b>Save as</b> in your software.
+                      </li>
+                      <li>The first row should be column headings</li>
+                      <li>One column should contain UK postcodes</li>
+                    </ol>
+                  </v-alert>
+                </v-container>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+          <v-stepper-step color="secondary" :complete="active_step > 2" step="2">
+            Choose conversion options
+          </v-stepper-step>
+          <v-stepper-content step="2">
+            <v-row no-gutters>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <v-select
                     v-model="postcode_column"
-                  >
-                    <option v-for="option in columns" :value="option" :key="option"
-                      >{{ option }}
-                    </option>
-                  </b-select>
-                </b-field>
-                <br />
-                <b-button
-                  icon-right="chevron-right"
-                  v-on:click="confirmOptions"
-                  :disabled="postcode_column === ''"
-                  size="is-medium"
-                  >Convert
-                </b-button>
-                <hr />
-                <b-field label="Count column (optional)" custom-class="is-medium">
-                  <b-select
-                    size="is-medium"
-                    placeholder="Count of postcodes"
-                    v-model="counts_column"
-                  >
-                    <option value></option>
-                    <option
-                      v-for="option in columns.filter(c => c !== postcode_column)"
+                    :items="columns"
+                    label="Select column"
+                    outlined
+                  ></v-select>
+                  <v-btn
+                    color="primary"
+                    depressed
+                    v-on:click="confirmOptions"
+                    :disabled="postcode_column === ''"
+                    >Convert
+                  </v-btn>
+                  <v-container>
+                    <v-subheader>My columns include a count</v-subheader>
+                    <v-select
                       :value="option"
-                      :key="option"
-                      >{{ option }}
-                    </option>
-                  </b-select>
-                </b-field>
-              </div>
-              <div class="column">
-                <b-message type="is-info" class="content is-medium">
-                  <p>
-                    <b>Choose your columns</b>
-                  </p>
-                  <p>The column headings in your data should be displayed.</p>
-                  <ol>
-                    <li>Select the correct column for the postcodes</li>
-                    <li>Check guidance below on the optional step</li>
-                    <li>
-                      When ready, select the
-                      <strong>Convert</strong> option to continue
-                    </li>
-                  </ol>
-                  <p>
-                    It may take a few minutes depending on number of postcodes.
-                  </p>
-                </b-message>
-                <b-message type="is-warning" class="content is-medium">
-                  <p>
-                    <b>Optional: counts of people</b>
-                  </p>
-                  <p>
-                    If your data is grouped into counts per postcode, select the column
-                    the count is held in. The tool will then be able to count people per
-                    area for you.
-                  </p>
-                  <p>
-                    If each of your rows relates to an individual person you can ignore
-                    this option.
-                  </p>
-                </b-message>
-              </div>
-            </div>
-          </b-step-item>
-          <b-step-item label="Download" icon="cloud-download">
-            <div class="columns">
-              <div class="column">
-                <h3 class="content title is-4">Complete</h3>
-                <h4 class="content subtitle is-6">
-                  {{ "Completed in " + getTimeCompleted() + " seconds" }}
-                </h4>
-                <b-table
-                  class="summary-table"
-                  :data="summary_data"
-                  :columns="summary_columns"
-                ></b-table>
-                <br />
-                <b-button
-                  type="is-primary"
-                  icon-right="download"
-                  v-on:click="downloadConvertedFile"
-                  size="is-medium"
-                  >Save converted file</b-button
-                >
-              </div>
-              <div class="column">
-                <b-message class="content is-medium" type="is-info">
-                  <p>
-                    <b>Converted file</b>
-                  </p>
-                  <ul>
-                    <li>Valid postcodes have changed to their statistical area</li>
-                    <li>
-                      Old postcodes have changed to
-                      <strong>Terminated</strong>.
-                    </li>
-                    <li>
-                      Postcodes that weren't recognised have changed to
-                      <strong>Unknown</strong>.
-                    </li>
-                    <li>
-                      The postcode column header has changed to
-                      <strong>area</strong>.
-                    </li>
-                  </ul>
-                </b-message>
-              </div>
-            </div>
-            <hr />
-            <div class="columns">
-              <div class="column">
-                <h4 class="content title is-5">Library membership</h4>
-                <h5 class="content subtitle is-6">Prepare your data</h5>
-                <b-field label="Library service name" custom-class="is-medium">
-                  <b-select
-                    size="is-medium"
-                    placeholder="Library service"
+                      :items="columns.filter(c => c !== postcode_column)"
+                      :disabled="
+                        postcode_column === '' ||
+                          columns.filter(c => c !== postcode_column).length === 0
+                      "
+                      label="Count column (optional)"
+                      outlined
+                    ></v-select>
+                  </v-container>
+                </v-container>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <v-alert border="right" color="blue" text type="info">
+                    <p>
+                      <b>Choose your columns</b>
+                    </p>
+                    <p>The column headings in your data should be displayed.</p>
+                    <ol>
+                      <li>Select the correct column for the postcodes</li>
+                      <li>Check guidance below on the optional step</li>
+                      <li>
+                        When ready, select the
+                        <strong>Convert</strong> option to continue
+                      </li>
+                    </ol>
+                    <br />
+                    <p>
+                      It may take a few minutes depending on number of postcodes.
+                    </p>
+                  </v-alert>
+                  <v-alert border="right" color="orange" text type="warning">
+                    <p>
+                      <b>Optional: counts of people</b>
+                    </p>
+                    <p>
+                      If your data is grouped into counts per postcode, select the column
+                      the count is held in. The tool will then be able to count people per
+                      area for you.
+                    </p>
+                    <p>
+                      If each of your rows relates to an individual person you can ignore
+                      this option.
+                    </p>
+                  </v-alert>
+                </v-container>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+          <v-stepper-step color="secondary" :complete="active_step > 3" step="3">
+            Results
+          </v-stepper-step>
+          <v-stepper-content step="3">
+            <v-row no-gutters>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <v-subheader>
+                    {{ "Completed in " + getTimeCompleted() + " seconds" }}
+                  </v-subheader>
+                  <v-data-table
+                    dense
+                    disable-filtering
+                    disable-pagination
+                    disable-sort
+                    hide-default-footer
+                    :headers="summary_columns"
+                    :items="summary_data"
+                    item-key="total"
+                  ></v-data-table>
+                  <br />
+                  <v-btn color="primary" depressed v-on:click="downloadConvertedFile"
+                    >Save converted file
+                  </v-btn>
+                </v-container>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <v-alert border="right" color="blue" text type="info">
+                    <p>
+                      <b>Saving converted file - what to expect</b>
+                    </p>
+                    <ul>
+                      <li>Valid postcodes are changed to their statistical area</li>
+                      <li>
+                        Postcodes that are no longer valid are changed to
+                        <strong>Terminated</strong>.
+                      </li>
+                      <li>
+                        Postcodes not recognised changed to
+                        <strong>Unknown</strong>.
+                      </li>
+                      <li>
+                        The postcode column header changed to
+                        <strong>Area</strong>.
+                      </li>
+                    </ul>
+                  </v-alert>
+                </v-container>
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters>
+              <v-col cols="12" sm="6">
+                <v-container>
+                  <h4>Library membership data</h4>
+                  <br />
+                  <v-select
                     v-model="authority"
+                    :items="library_services"
+                    label="Library service name"
+                    outlined
+                  ></v-select>
+                  <v-dialog
+                    ref="dialog"
+                    v-model="modal"
+                    :return-value.sync="extract_date"
+                    persistent
+                    width="290px"
                   >
-                    <option value></option>
-                    <option
-                      v-for="service in library_services"
-                      :value="service"
-                      :key="service"
-                      >{{ service }}
-                    </option>
-                  </b-select>
-                </b-field>
-                <b-field label="Count date" custom-class="is-medium">
-                  <b-datepicker
-                    size="is-medium"
-                    placeholder="Type or select a date..."
-                    icon="calendar-today"
-                    v-model="extract_date"
-                    editable
-                  ></b-datepicker>
-                </b-field>
-                <b-button
-                  type="is-primary"
-                  icon-right="download"
-                  v-on:click="downloadSchemaFile"
-                  :disabled="authority === '' || extract_date === null"
-                  size="is-medium"
-                  >Save membership file</b-button
-                >
-              </div>
-              <div class="column">
-                <b-message class="content is-medium" type="is-warning">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="date"
+                        label="Count date"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="modal = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn text color="primary" @click="$refs.dialog.save(date)">
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-dialog>
+                  <v-btn
+                    depressed
+                    v-on:click="downloadSchemaFile"
+                    :disabled="authority === '' || extract_date === null"
+                    >Save membership file</v-btn
+                  >
+                </v-container>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-alert border="right" color="orange" text type="warning">
                   <p>
                     <b>Public library open data</b>
                   </p>
@@ -237,22 +246,27 @@
                     </li>
                     <li>Save the data file</li>
                   </ol>
-                </b-message>
-              </div>
-            </div>
-          </b-step-item>
-        </b-steps>
-      </div>
-      <custom-footer />
+                </v-alert>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+        </v-stepper>
+      </v-container>
     </section>
-    <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
-      <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
-    </b-loading>
+    <v-dialog v-model="loading" persistent width="300">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Please wait</span>
+        </v-card-title>
+        <v-card-text>
+          <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import Footer from "../components/Footer";
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
 
@@ -272,19 +286,19 @@ export default {
       end_time: null,
       loading: false,
       loading_message: "",
-      active_step: 0,
+      active_step: 1,
       columns: [],
-      file: null,
+      files: [],
       postcode_column: "",
       counts_column: "",
       csv_data: [],
       lsoas_counted: {},
       summary_data: [{ total: 0, converted: 0, terminated: 0, unknown: 0 }],
       summary_columns: [
-        { field: "total", label: "Total" },
-        { field: "converted", label: "Successful" },
-        { field: "terminated", label: "Terminated" },
-        { field: "unknown", label: "Unknown" }
+        { value: "total", text: "Total" },
+        { value: "converted", text: "Successful" },
+        { value: "terminated", text: "Terminated" },
+        { value: "unknown", text: "Unknown" }
       ],
       authority: "",
       extract_date: null,
@@ -303,11 +317,11 @@ export default {
     confirmFile: async function() {
       let self = this;
       self.loading = true;
-      if (self.file !== null) {
-        const data = await csvHelper.parseFile(self.file);
+      if (self.files.length > 0) {
+        const data = await csvHelper.parseFile(self.files[0]);
         self.columns = data[0];
         self.csv_data = data;
-        self.active_step = 1;
+        self.active_step = 2;
         self.loading = false;
       }
     },
@@ -368,7 +382,7 @@ export default {
             }
           }
         });
-        self.active_step = 2;
+        self.active_step = 3;
         this.loading = false;
         this.end_time = moment();
       });
@@ -408,27 +422,14 @@ export default {
     }
   },
   components: {
-    "custom-footer": Footer,
     "file-upload": FileUpload,
     "custom-header": Header
   }
 };
 </script>
 
-<style>
-.main {
-  padding: 20px;
-}
-.summary-table table {
-  border-collapse: collapse !important;
-  background: #fafafa;
-}
-
-.summary-table td {
-  border: 1px solid #e5e5e5 !important;
-}
-
-.summary-table th {
-  border: 1px solid #e5e5e5 !important;
+<style scoped>
+tbody tr:hover {
+  background-color: transparent !important;
 }
 </style>

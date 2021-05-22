@@ -8,7 +8,19 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app clipped>
-      <v-list nav dense>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Application
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            subtext
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+      <v-list nav dense rounded>
         <v-list-item-group color="indigo">
           <v-list-item
             :to="'/'"
@@ -21,6 +33,24 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-list-group
+          :value="false"
+          no-action
+          prepend-icon="mdi-account-circle"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Membership</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/'"
+            active-class="highlighted"
+            :class="'/' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Postcode converter</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -45,7 +75,7 @@ export default {
   },
 
   data: () => ({
-    drawer: true
+    drawer: null
   })
 };
 </script>

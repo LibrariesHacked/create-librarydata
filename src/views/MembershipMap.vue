@@ -51,19 +51,12 @@
             </v-container>
           </v-col>
         </v-row>
-        <v-radio-group
-          v-model="mapDisplay"
-          v-on:change="setDisplayOptions"
-          row
-        >
+        <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" row>
           <v-radio
             label="Display population percentage"
             value="populationPercentage"
           ></v-radio>
-          <v-radio
-            label="Display areas of deprivation"
-            value="imd"
-          ></v-radio>
+          <v-radio label="Display areas of deprivation" value="imd"></v-radio>
         </v-radio-group>
         <MglMap
           container="map-container"

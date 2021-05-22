@@ -1,9 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar app flat color="white" clipped-left>
+    <v-app-bar app dense flat color="green" dark clipped-left>
       <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
       <v-container>
         <v-toolbar-title>Create</v-toolbar-title>
+        <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
 
@@ -11,10 +12,10 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Application
+            Library data tools
           </v-list-item-title>
           <v-list-item-subtitle>
-            subtext
+            Building and analysing library data
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -33,22 +34,25 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <v-list-group
-          :value="false"
-          no-action
-          prepend-icon="mdi-account-circle"
-        >
+        <v-list-group :value="false" no-action prepend-icon="mdi-account-circle">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Membership</v-list-item-title>
             </v-list-item-content>
           </template>
           <v-list-item
-            :to="'/'"
+            :to="'/postcode-to-lsoa'"
             active-class="highlighted"
-            :class="'/' === $route.path ? 'highlighted' : ''"
+            :class="'/postcode-to-lsoa' === $route.path ? 'highlighted' : ''"
           >
             <v-list-item-title>Postcode converter</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            :to="'/membership-map'"
+            active-class="highlighted"
+            :class="'/membership-map' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Membership map</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>

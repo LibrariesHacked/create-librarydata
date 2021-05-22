@@ -22,6 +22,7 @@
               />
               <br />
               <v-btn
+                depressed
                 color="primary"
                 :disabled="lsoaFiles.length === 0"
                 v-on:click="addMembershipData"

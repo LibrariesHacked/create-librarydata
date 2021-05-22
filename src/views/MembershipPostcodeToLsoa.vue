@@ -219,7 +219,8 @@
                     </v-date-picker>
                   </v-dialog>
                   <v-btn
-                    depressed
+                    text
+                    color="primary"
                     v-on:click="downloadSchemaFile"
                     :disabled="authority === '' || extract_date === null"
                     >Save membership file</v-btn

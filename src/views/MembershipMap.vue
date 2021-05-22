@@ -80,6 +80,12 @@
             layerId="lsoa_boundaries_label"
             :layer="lsoasLayerLabel"
           />
+          <MglVectorLayer
+            sourceId="libraries"
+            :source="librariesSource"
+            layerId="libraries_circles"
+            :layer="librariesLayerCircles"
+          />
           <MglNavigationControl position="bottom-right" />
           <MglFullscreenControl position="top-right" />
           <MglGeojsonLayer
@@ -178,6 +184,10 @@ export default {
         tiles: [config.lsoa_tiles],
         promoteId: { lsoa_boundaries: "code" }
       },
+      librariesSource: {
+        type: "vector",
+        tiles: [config.libraries_tiles]
+      },
       matchFilter: ["in", ["get", "code"], ["literal", []]],
       matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
       matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
@@ -192,6 +202,42 @@ export default {
       },
       matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
       matchFieldLsoaDeprivation: ["to-string", ["get", "code"]],
+      librariesLayerCircles: {
+        type: "circle",
+        filter: ['!', ['has', 'Year closed']],
+        "source-layer": "libraries",
+        paint: {
+                  'circle-radius': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    5, 3,
+                    18, 12
+                  ],
+                  'circle-color': ['match', ['get', 'Library type'], 'LAL', '#1b5e20', 'LAL-', '#388e3c', 'CL', '#0d47a1', 'CRL', '#e65100', 'ICL', '#bf360c', '#bf360c'],
+                  'circle-stroke-width': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    5, 1,
+                    18, 4
+                  ],
+                  'circle-stroke-color': '#ffffff',
+                  'circle-stroke-opacity': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    5, 0.8,
+                    18, 1
+                  ],
+                  'circle-opacity': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    5, 0.4,
+                    18, 0.9
+                  ]
+                }},
       lsoasLayerLabel: {
         type: "symbol",
         filter: ["in", ["get", "code"], ["literal", []]],

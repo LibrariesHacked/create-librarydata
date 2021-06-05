@@ -37,6 +37,20 @@
         <v-list-group :value="false" no-action prepend-icon="mdi-account-circle">
           <template v-slot:activator>
             <v-list-item-content>
+              <v-list-item-title>Libraries</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/library-locations'"
+            active-class="highlighted"
+            :class="'/library-locations' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Library locations</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-account-circle">
+          <template v-slot:activator>
+            <v-list-item-content>
               <v-list-item-title>Membership</v-list-item-title>
             </v-list-item-content>
           </template>

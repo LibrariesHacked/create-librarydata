@@ -1,14 +1,14 @@
 <template>
   <div>
     <custom-header
-      title="Libraries dataset"
-      subtitle="Create and maintain data about your libraries."
+      title="Library locations"
+      subtitle="Create and maintain data about your library buildings."
     />
     <section>
       <v-container>
         <div class="column">
-          <b-button icon-left="upload" size="is-medium">Load dataset</b-button>&nbsp;
-          <b-button icon-left="download" size="is-medium">Save dataset</b-button>&nbsp;
+          <v-btn>Load dataset</v-btn>&nbsp;
+          <v-btn>Save dataset</v-btn>&nbsp;
           <br />
           <br />
           <b-table

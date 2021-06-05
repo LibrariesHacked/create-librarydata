@@ -25,8 +25,8 @@ export default new Router({
       component: MembershipPostcodeToLsoa
     },
     {
-      path: "/libraries",
-      name: "libraries",
+      path: "/library-locations",
+      name: "library-locations",
       component: LibrariesData
     },
     {

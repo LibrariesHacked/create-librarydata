@@ -6,87 +6,175 @@
     />
     <section>
       <v-container>
-        <div class="column">
-          <v-btn>Load dataset</v-btn>&nbsp;
-          <v-btn>Save dataset</v-btn>&nbsp;
-          <br />
-          <br />
-          <b-table
-            class="libraries-table"
-            detail-key="Library name"
-            detailed
-            ref="table"
-            per-page="5"
-            :data="data"
-            :opened-detailed="defaultOpenedDetails"
-            :show-detail-icon="showDetailIcon"
+          <v-data-table
+            :headers="headers"
+            :items="libraries"
+            sort-by="name"
           >
-            <template slot-scope="props">
-              <b-table-column field="Library name" label="Library name">
-                <template slot="header" slot-scope="{ column }">
-                  <b-tooltip :label="column.label" dashed>
-                    {{ column.label }}
-                  </b-tooltip>
-                </template>
-                {{ props.row["Library name"] }}
-              </b-table-column>
-              <b-table-column field="Library name" label="Library name">
-                {{ props.row["Library name"] }}
-              </b-table-column>
+            <template v-slot:top>
+              <v-toolbar
+                flat
+              >
+                <v-spacer></v-spacer>
+                <v-dialog
+                  v-model="dialog"
+                  max-width="500px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      text
+                      color="primary"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      Add library
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">{{ formTitle }}</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
+                              v-model="editedItem['Library name']"
+                              label="Library name"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        text
+                        @click="close"
+                      >
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        @click="save"
+                      >
+                        Save
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn text @click="closeDelete">Cancel</v-btn>
+                      <v-btn text @click="deleteItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-toolbar>
             </template>
-            <template slot="detail" slot-scope="props">
-              <h2>{{ props.row["Library name"] }}</h2>
+            <template v-slot:item.actions="{ item }">
+              <v-icon
+                small
+                class="mr-2"
+                @click="editItem(item)"
+              >
+                mdi-pencil
+              </v-icon>
+              <v-icon
+                small
+                @click="deleteItem(item)"
+              >
+                mdi-delete
+              </v-icon>
             </template>
-          </b-table>
-          <br />
-          <b-button
-            type="is-text"
-            icon-left="plus"
-            v-on:click="library_form_active = true"
-            size="is-medium"
-            >Add library
-          </b-button>
-          <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false">
-            <b-icon icon="autorenew" size="is-large" custom-class="mdi-spin"></b-icon>
-          </b-loading>
-        </div>
+            <template v-slot:no-data>
+              <file-upload
+                v-bind:file="libraryFiles"
+                v-on:change-files="libraryFiles = $event"
+                v-on:delete-file="libraryFiles = []"
+              />
+              <br />
+              <v-btn
+                depressed
+                color="primary"
+                :disabled="libraryFiles.length === 0"
+                v-on:click="loadLibraries"
+                >Load libraries
+              </v-btn>
+            </template>
+          </v-data-table>
+
+          <v-btn>Save libraries</v-btn>
       </v-container>
     </section>
-    <b-modal has-modal-card :active.sync="library_form_active" :can-cancel="false">
-      <modal-form>
-        <div class="modal-card">
-          <section class="modal-card-body">
-            <!-- Content ... -->
-          </section>
-        </div>
-      </modal-form>
-    </b-modal>
   </div>
 </template>
 
 <script>
+import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
 
+import * as csvHelper from "../helpers/csv";
 import * as Papa from "papaparse";
 
 export default {
   data() {
     return {
-      loading: false,
-      active_step: 0,
       library_form_active: false,
-      file: null,
-      data: [
+      libraryFiles: [],
+      dialog: false,
+      dialogDelete: false,
+      headers: [
         {
-          "Local authority": "Gloucestershire",
-          "Library name": "Gloucester"
-        }
-      ]
+          text: 'Name',
+          align: 'start',
+          value: '1',
+        },
+        {
+          text: 'Address 1',
+          align: 'start',
+          value: '2',
+        },
+        { text: 'Postcode', value: '5' },
+        { text: 'Statutory', value: '7' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      libraries: [],
+      editedIndex: -1,
+      editedItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+      defaultItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
     };
   },
   methods: {
-    confirmFile: async function() {},
-    confirmOptions: function() {},
+    loadLibraries: async function() {
+      let self = this;
+      if (self.libraryFiles[0].name) {
+        const data = await csvHelper.parseFile(self.libraryFiles[0]);
+        this.libraries = data.splice(1);
+      }
+    },
     downloadFile: function(filename, data) {
       var csv = new Blob([Papa.unparse(data)], {
         type: "text/csv;charset=utf-8;"
@@ -105,29 +193,10 @@ export default {
     }
   },
   components: {
-    "custom-header": Header
+    "custom-header": Header,
+    "file-upload": FileUpload,
   }
 };
 </script>
-<style>
-.modal-card {
-  border: 1px solid #ccc;
-  border-radius: 6;
-}
-
-.libraries-table table {
-  border-collapse: collapse !important;
-  background: #f9f9f9;
-}
-
-.libraries-table td {
-  border: 1px solid #e5e5e5 !important;
-}
-
-.libraries-table th {
-  border: 1px solid #e5e5e5 !important;
-  font-weight: 700 !important;
-  font-size: 0.9em !important;
-  color: #7a7a7a !important;
-}
+<style scoped>
 </style>

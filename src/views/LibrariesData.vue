@@ -34,7 +34,6 @@
                     <v-card-title>
                       <span class="text-h5">{{ formTitle }}</span>
                     </v-card-title>
-
                     <v-card-text>
                       <v-container>
                         <v-row>
@@ -51,7 +50,6 @@
                         </v-row>
                       </v-container>
                     </v-card-text>
-
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn
@@ -71,11 +69,11 @@
                 </v-dialog>
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
-                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                    <v-card-title class="text-h5">Remove this library?</v-card-title>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn text @click="closeDelete">Cancel</v-btn>
-                      <v-btn text @click="deleteItemConfirm">OK</v-btn>
+                      <v-btn text color="secondary" @click="closeDelete">Cancel</v-btn>
+                      <v-btn text color="danger" @click="deleteItemConfirm">OK</v-btn>
                       <v-spacer></v-spacer>
                     </v-card-actions>
                   </v-card>
@@ -103,9 +101,9 @@
                 v-on:change-files="libraryFiles = $event"
                 v-on:delete-file="libraryFiles = []"
               />
-              <br />
               <v-btn
-                depressed
+                class="ma-2"
+                text
                 color="primary"
                 :disabled="libraryFiles.length === 0"
                 v-on:click="loadLibraries"
@@ -114,7 +112,7 @@
             </template>
           </v-data-table>
 
-          <v-btn>Save libraries</v-btn>
+          <v-btn depressed>Save libraries</v-btn>
       </v-container>
     </section>
   </div>
@@ -151,23 +149,75 @@ export default {
       ],
       libraries: [],
       editedIndex: -1,
-      editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
+      editedItem: {},
       defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+        "Local authority": "",
+        "Library name": "",
+        "Address 1": "",
+        "Address 2": "",
+        "Address 3": "",
+        "Postcode": "",
+        "Unique property reference number": "",
+        "Statutory": "",
+        "Type of library": "",
+        "Year opened": "",
+        "Year closed": "",
+        "Monday hours": "",
+        "Tuesday hours": "",
+        "Wednesday hours": "",
+        "Thursday hours": "",
+        "Friday hours": "",
+        "Saturday hours": "",
+        "Sunday hours": "",
+        "Special hours": "",
+        "Colocated": "",
+        "Colocated with": "",
+        "Notes": "",
+        "URL": "",
+        "Email address": ""
       },
     };
   },
   methods: {
+    editItem (item) {
+      this.editedIndex = this.libraries.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+    deleteItem (item) {
+        this.editedIndex = this.libraries.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+
+      deleteItemConfirm () {
+        this.libraries.splice(this.editedIndex, 1)
+        this.closeDelete()
+      },
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        } else {
+          this.desserts.push(this.editedItem)
+        }
+        this.close()
+      },
     loadLibraries: async function() {
       let self = this;
       if (self.libraryFiles[0].name) {

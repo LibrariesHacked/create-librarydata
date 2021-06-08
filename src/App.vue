@@ -34,7 +34,7 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <v-list-group :value="false" no-action prepend-icon="mdi-account-circle">
+        <v-list-group :value="false" no-action prepend-icon="mdi-domain">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Libraries</v-list-item-title>

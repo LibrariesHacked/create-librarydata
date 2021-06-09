@@ -366,7 +366,7 @@ export default {
     addMembershipData: async function() {
       let self = this;
       if (self.lsoaFiles[0].name) {
-        const data = await csvHelper.parseFile(self.lsoaFiles[0]);
+        const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
         this.setLsoaFields(data.slice(1));
         const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
           data[1][0]

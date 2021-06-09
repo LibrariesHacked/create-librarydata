@@ -319,7 +319,7 @@ export default {
       let self = this;
       self.loading = true;
       if (self.files.length > 0) {
-        const data = await csvHelper.parseFile(self.files[0]);
+        const data = await csvHelper.parseFile(self.files[0], false);
         self.columns = data[0];
         self.csv_data = data;
         self.active_step = 2;

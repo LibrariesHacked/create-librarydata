@@ -17,8 +17,11 @@
               >
                 <v-spacer></v-spacer>
                 <v-dialog
+                  persistent
                   v-model="dialog"
                   max-width="500px"
+                  overlay-opacity="0.2"
+                  content-class="elevation-0"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -43,8 +46,60 @@
                             md="4"
                           >
                             <v-text-field
+                              v-model="editedItem['Local authority']"
+                              label="Local authority"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
                               v-model="editedItem['Library name']"
                               label="Library name"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
+                              v-model="editedItem['Unique property reference number']"
+                              label="UPRN"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
+                              v-model="editedItem['Address 1']"
+                              label="Address 1"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
+                              v-model="editedItem['Address 2']"
+                              label="Address 2"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            sm="6"
+                            md="4"
+                          >
+                            <v-text-field
+                              v-model="editedItem['Address 3']"
+                              label="Address 3"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -67,13 +122,14 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-                <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-dialog persistent overlay-opacity="0.2"
+                  content-class="elevation-0" v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5">Remove this library?</v-card-title>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn text color="secondary" @click="closeDelete">Cancel</v-btn>
-                      <v-btn text color="danger" @click="deleteItemConfirm">OK</v-btn>
+                      <v-btn text color="primary" @click="closeDelete">Cancel</v-btn>
+                      <v-btn text color="error" @click="deleteItemConfirm">OK</v-btn>
                       <v-spacer></v-spacer>
                     </v-card-actions>
                   </v-card>
@@ -111,8 +167,7 @@
               </v-btn>
             </template>
           </v-data-table>
-
-          <v-btn depressed>Save libraries</v-btn>
+          <v-btn text>Save libraries</v-btn>
       </v-container>
     </section>
   </div>
@@ -136,20 +191,22 @@ export default {
         {
           text: 'Name',
           align: 'start',
-          value: '1',
+          value: 'Library name',
         },
         {
           text: 'Address 1',
           align: 'start',
-          value: '2',
+          value: 'Address 1',
         },
-        { text: 'Postcode', value: '5' },
-        { text: 'Statutory', value: '7' },
+        { text: 'Postcode', value: 'Postcode' },
+        { text: 'Statutory', value: 'Statutory' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       libraries: [],
       editedIndex: -1,
-      editedItem: {},
+      editedItem: {
+      
+      },
       defaultItem: {
         "Local authority": "",
         "Library name": "",
@@ -221,8 +278,8 @@ export default {
     loadLibraries: async function() {
       let self = this;
       if (self.libraryFiles[0].name) {
-        const data = await csvHelper.parseFile(self.libraryFiles[0]);
-        this.libraries = data.splice(1);
+        const data = await csvHelper.parseFile(self.libraryFiles[0], true);
+        this.libraries = data;
       }
     },
     downloadFile: function(filename, data) {

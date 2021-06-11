@@ -2,7 +2,7 @@
   <div>
     <custom-header
       title="Library locations"
-      subtitle="Create and maintain data about your library buildings."
+      subtitle="Create and maintain data on your library buildings."
     />
     <section>
       <v-container>
@@ -18,7 +18,7 @@
                 <v-spacer></v-spacer>
                 <v-dialog
                   persistent
-                  v-model="dialog"
+                  v-model="dialogMainLibrary"
                   max-width="500px"
                   overlay-opacity="0.2"
                   content-class="elevation-0"
@@ -34,87 +34,335 @@
                     </v-btn>
                   </template>
                   <v-card>
-                    <v-card-title>
-                      <span class="text-h5">{{ formTitle }}</span>
-                    </v-card-title>
                     <v-card-text>
                       <v-container>
-                        <v-row>
+                        <template>
+                          <v-tabs v-model="dialogTab">
+                            <v-tab>Main details</v-tab>
+                            <v-tab>Location</v-tab>
+                            <v-tab>Opening hours</v-tab>
+                            <v-tab-item>
+                              <v-container><p>For information on the required information for each library see the </p></v-container>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    v-model="editedItem['Local authority']"
+                                    label="Local authority"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Library name']"
+                                    label="Library name"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-select
+                                    v-model="editedItem['Type of library']"
+                                    label="Type of library"
+                                    :items="['LL', 'No']"
+                                    dense
+                                    outlined
+                                    rounded
+                                  ></v-select>
+                                </v-col>
+                              </v-row>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-select
+                                    v-model="editedItem['Statutory']"
+                                    :items="['Yes', 'No']"
+                                    label="Statutory"
+                                    dense
+                                    outlined
+                                    rounded
+                                  ></v-select>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Year opened']"
+                                    label="Year opened"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Year closed']"
+                                    label="Year closed"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+                              <v-row>
                           <v-col
                             cols="12"
                             sm="6"
-                            md="4"
+                            md="6"
                           >
                             <v-text-field
-                              v-model="editedItem['Local authority']"
-                              label="Local authority"
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Email address']"
+                              label="Email address"
                             ></v-text-field>
                           </v-col>
                           <v-col
                             cols="12"
                             sm="6"
-                            md="4"
+                            md="6"
                           >
                             <v-text-field
-                              v-model="editedItem['Library name']"
-                              label="Library name"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col
-                            cols="12"
-                            sm="6"
-                            md="4"
-                          >
-                            <v-text-field
-                              v-model="editedItem['Unique property reference number']"
-                              label="UPRN"
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['URL']"
+                              label="Website"
                             ></v-text-field>
                           </v-col>
                         </v-row>
-                        <v-row>
+                            </v-tab-item>
+                            <v-tab-item>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Address 1']"
+                                    label="Address 1"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Address 2']"
+                                    label="Address 2"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="4"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Address 3']"
+                                    label="Address 3"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="6"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Postcode']"
+                                    label="Postcode"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="6"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Unique property reference number']"
+                                    label="Unique property reference number"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+                            </v-tab-item>
+                            <v-tab-item>
+                              <v-row>
                           <v-col
                             cols="12"
                             sm="6"
-                            md="4"
+                            md="6"
                           >
                             <v-text-field
-                              v-model="editedItem['Address 1']"
-                              label="Address 1"
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Monday staffed hours']"
+                              label="Monday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Tuesday staffed hours']"
+                              label="Tuesday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Wednesday staffed hours']"
+                              label="Wednesday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Thursday staffed hours']"
+                              label="Thursday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Friday staffed hours']"
+                              label="Friday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Saturday staffed hours']"
+                              label="Saturday staffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Sunday staffed hours']"
+                              label="Sunday staffed"
                             ></v-text-field>
                           </v-col>
                           <v-col
                             cols="12"
                             sm="6"
-                            md="4"
+                            md="6"
                           >
                             <v-text-field
-                              v-model="editedItem['Address 2']"
-                              label="Address 2"
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Monday unstaffed hours']"
+                              label="Monday unstaffed"
                             ></v-text-field>
-                          </v-col>
-                          <v-col
-                            cols="12"
-                            sm="6"
-                            md="4"
-                          >
                             <v-text-field
-                              v-model="editedItem['Address 3']"
-                              label="Address 3"
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Tuesday unstaffed hours']"
+                              label="Tuesday unstaffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Wednesday unstaffed hours']"
+                              label="Wednesday unstaffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Thursday unstaffed hours']"
+                              label="Thursday unstaffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Friday unstaffed hours']"
+                              label="Friday unstaffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Saturday unstaffed hours']"
+                              label="Saturday unstaffed"
+                            ></v-text-field>
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="editedItem['Sunday unstaffed hours']"
+                              label="Sunday unstaffed"
                             ></v-text-field>
                           </v-col>
                         </v-row>
+                            </v-tab-item>
+                          </v-tabs>
+                        </template>
                       </v-container>
                     </v-card-text>
                     <v-card-actions>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="close"
+                      >
+                        Opening hours
+                      </v-btn>
                       <v-spacer></v-spacer>
                       <v-btn
                         text
+                        color="primary"
                         @click="close"
                       >
                         Cancel
                       </v-btn>
                       <v-btn
                         text
+                        color="success"
                         @click="save"
                       >
                         Save
@@ -167,7 +415,7 @@
               </v-btn>
             </template>
           </v-data-table>
-          <v-btn text>Save libraries</v-btn>
+          <v-btn :disabled="libraryFiles.length === 0" text color="success">Save libraries</v-btn>
       </v-container>
     </section>
   </div>
@@ -185,7 +433,8 @@ export default {
     return {
       library_form_active: false,
       libraryFiles: [],
-      dialog: false,
+      dialogMainLibrary: false,
+      dialogOpeningHours: false,
       dialogDelete: false,
       headers: [
         {
@@ -219,13 +468,20 @@ export default {
         "Type of library": "",
         "Year opened": "",
         "Year closed": "",
-        "Monday hours": "",
-        "Tuesday hours": "",
-        "Wednesday hours": "",
-        "Thursday hours": "",
-        "Friday hours": "",
-        "Saturday hours": "",
-        "Sunday hours": "",
+        "Monday staffed hours": "",
+        "Tuesday staffed hours": "",
+        "Wednesday staffed hours": "",
+        "Thursday staffed hours": "",
+        "Friday staffed hours": "",
+        "Saturday staffed hours": "",
+        "Sunday staffed hours": "",
+        "Monday unstaffed hours": "",
+        "Tuesday unstaffed hours": "",
+        "Wednesday unstaffed hours": "",
+        "Thursday unstaffed hours": "",
+        "Friday unstaffed hours": "",
+        "Saturday unstaffed hours": "",
+        "Sunday unstaffed hours": "",
         "Special hours": "",
         "Colocated": "",
         "Colocated with": "",
@@ -239,7 +495,7 @@ export default {
     editItem (item) {
       this.editedIndex = this.libraries.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      this.dialogMainLibrary = true
     },
     deleteItem (item) {
         this.editedIndex = this.libraries.indexOf(item)
@@ -252,7 +508,7 @@ export default {
         this.closeDelete()
       },
       close () {
-        this.dialog = false
+        this.dialogMainLibrary = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1

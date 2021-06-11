@@ -81,6 +81,14 @@
     </v-footer>
   </v-app>
 </template>
+<style lang="scss">
+.v-btn, .v-tab {
+  text-transform:none !important;
+}
+.v-text-field--outlined >>> fieldset {
+  border-color: #e5e5e5;
+}
+</style>
 
 <script>
 import Footer from "./components/Footer";

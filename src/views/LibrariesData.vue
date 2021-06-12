@@ -42,51 +42,65 @@
                             <v-tab>Location</v-tab>
                             <v-tab>Opening hours</v-tab>
                             <v-tab-item>
-                              <v-container><p>For information on the required information for each library see the </p></v-container>
+                              <v-container>
+                                <v-alert color="primary" text type="info">
+                                  For more information on each field see the <a href="https://schema.librarydata.uk/libraries" target="_blank">Library locations dataset</a>.
+                                </v-alert>
+                              </v-container>
                               <v-row>
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
-                                  <v-text-field
+                                  <v-select
                                     v-model="editedItem['Local authority']"
-                                    label="Local authority"
-                                  ></v-text-field>
+                                    :items="library_services"
+                                    label="Service"
+                                    outlined
+                                    rounded
+                                    dense
+                                  ></v-select>
                                 </v-col>
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
                                   <v-text-field
                                     dense
                                     outlined
                                     rounded
                                     v-model="editedItem['Library name']"
-                                    label="Library name"
+                                    label="Name"
                                   ></v-text-field>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="6"
-                                  md="4"
-                                >
-                                  <v-select
-                                    v-model="editedItem['Type of library']"
-                                    label="Type of library"
-                                    :items="['LL', 'No']"
-                                    dense
-                                    outlined
-                                    rounded
-                                  ></v-select>
                                 </v-col>
                               </v-row>
                               <v-row>
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
+                                >
+                                  <v-select
+                                    v-model="editedItem['Type of library']"
+                                    label="Type"
+                                    :items="[
+                                      {text: 'Local authority', value: 'LAL'}, 
+                                      {text: 'Local authority (unstaffed)', value: 'LAL-'}, 
+                                      {text: 'Commisioned', value: 'CL'}, 
+                                      {text: 'Community-run', value: 'CRL'},
+                                      {text: 'Independent', value: 'IL'}
+                                    ]"
+                                    dense
+                                    outlined
+                                    rounded
+                                  ></v-select>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="6"
+                                  md="6"
                                 >
                                   <v-select
                                     v-model="editedItem['Statutory']"
@@ -97,10 +111,12 @@
                                     rounded
                                   ></v-select>
                                 </v-col>
+                              </v-row>
+                              <v-row>
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
                                   <v-text-field
                                     dense
@@ -114,7 +130,7 @@
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
                                   <v-text-field
                                     dense
@@ -156,6 +172,7 @@
                         </v-row>
                             </v-tab-item>
                             <v-tab-item>
+                              <v-container></v-container>
                               <v-row>
                                 <v-col
                                   cols="12"
@@ -227,7 +244,8 @@
                               </v-row>
                             </v-tab-item>
                             <v-tab-item>
-                              <v-row>
+                              <v-container></v-container>
+                        <v-row>
                           <v-col
                             cols="12"
                             sm="6"
@@ -345,13 +363,6 @@
                       </v-container>
                     </v-card-text>
                     <v-card-actions>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="close"
-                      >
-                        Opening hours
-                      </v-btn>
                       <v-spacer></v-spacer>
                       <v-btn
                         text
@@ -428,9 +439,12 @@ import Header from "../components/Header";
 import * as csvHelper from "../helpers/csv";
 import * as Papa from "papaparse";
 
+const config = require("../helpers/config.json");
+
 export default {
   data() {
     return {
+      library_services: config.library_services,
       library_form_active: false,
       libraryFiles: [],
       dialogMainLibrary: false,

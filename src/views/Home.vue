@@ -12,6 +12,14 @@
           <a href="https://schema.librarydata.uk">open data schemas project</a>, the tools
           are tailored for the different datasets documented in that work.
         </p>
+        <h2>Library locations</h2>
+        <ol>
+          <li>
+            <router-link to="/library-locations" exact
+              >Editor for library locations dataset</router-link
+            >
+          </li>
+        </ol>
         <h2>Library membership</h2>
         <ol>
           <li>

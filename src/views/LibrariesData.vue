@@ -177,7 +177,7 @@
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
                                   <v-text-field
                                     dense
@@ -190,7 +190,7 @@
                                 <v-col
                                   cols="12"
                                   sm="6"
-                                  md="4"
+                                  md="6"
                                 >
                                   <v-text-field
                                     dense
@@ -198,19 +198,6 @@
                                     rounded
                                     v-model="editedItem['Address 2']"
                                     label="Address 2"
-                                  ></v-text-field>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="6"
-                                  md="4"
-                                >
-                                  <v-text-field
-                                    dense
-                                    outlined
-                                    rounded
-                                    v-model="editedItem['Address 3']"
-                                    label="Address 3"
                                   ></v-text-field>
                                 </v-col>
                               </v-row>
@@ -224,14 +211,29 @@
                                     dense
                                     outlined
                                     rounded
-                                    v-model="editedItem['Postcode']"
-                                    label="Postcode"
+                                    v-model="editedItem['Address 3']"
+                                    label="Address 3"
                                   ></v-text-field>
                                 </v-col>
                                 <v-col
                                   cols="12"
                                   sm="6"
                                   md="6"
+                                >
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    rounded
+                                    v-model="editedItem['Postcode']"
+                                    label="Postcode"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="12"
+                                  md="9"
                                 >
                                   <v-text-field
                                     dense

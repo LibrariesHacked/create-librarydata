@@ -8,6 +8,10 @@
     "membership": {
       "name": "Membership",
       "version": "0.3.0"
+    },
+    "libraries": {
+      "name": "Library locations",
+      "version": "0.3.0"
     }
   },
   "library_services": [

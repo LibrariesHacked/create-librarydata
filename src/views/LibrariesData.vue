@@ -380,6 +380,8 @@ import * as Papa from "papaparse";
 
 const config = require("../helpers/config.json");
 
+import * as schema from '../helpers/validate';
+
 export default {
   data() {
     return {
@@ -472,6 +474,8 @@ export default {
       });
     },
     save() {
+      // Data validation
+
       if (this.editedIndex > -1) {
         Object.assign(this.libraries[this.editedIndex], this.editedItem);
       } else {

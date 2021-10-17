@@ -2,6 +2,7 @@ module.exports = {
   configureWebpack: (config) => {
     var webpack = require('webpack')
     var adjusted = {
+      devtool: 'source-map',
       module: {
         rules: [
           {

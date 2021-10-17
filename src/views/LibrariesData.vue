@@ -315,8 +315,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="close"> Cancel </v-btn>
-                    <v-btn text color="success" @click="save"> Save </v-btn>
+                    <v-btn text color="primary" @click="close">Cancel</v-btn>
+                    <v-btn text color="success" @click="save">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -415,9 +415,9 @@ export default {
         "Address 1": "",
         "Address 2": "",
         "Address 3": "",
-        Postcode: "",
+        "Postcode": "",
         "Unique property reference number": "",
-        Statutory: "",
+        "Statutory": "",
         "Type of library": "",
         "Year opened": "",
         "Year closed": "",
@@ -436,10 +436,10 @@ export default {
         "Saturday unstaffed hours": "",
         "Sunday unstaffed hours": "",
         "Special hours": "",
-        Colocated: "",
+        "Colocated": "",
         "Colocated with": "",
-        Notes: "",
-        URL: "",
+        "Notes": "",
+        "URL": "",
         "Email address": ""
       }
     };
@@ -473,15 +473,18 @@ export default {
         this.editedIndex = -1;
       });
     },
-    save() {
+    async save() {
       // Data validation
+      const valid = await schema.validateData("membership", this.editedItem);
 
-      if (this.editedIndex > -1) {
-        Object.assign(this.libraries[this.editedIndex], this.editedItem);
-      } else {
-        this.libraries.push(this.editedItem);
+      if (valid) {
+        if (this.editedIndex > -1) {
+          Object.assign(this.libraries[this.editedIndex], this.editedItem);
+        } else {
+          this.libraries.push(this.editedItem);
+        }
       }
-      this.close();
+
     },
     loadLibraries: async function () {
       let self = this;

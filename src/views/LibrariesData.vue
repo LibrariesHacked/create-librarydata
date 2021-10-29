@@ -63,7 +63,7 @@
                               </v-col>
                             </v-row>
                             <v-row>
-                              <v-col cols="12" sm="6" md="6">
+                              <v-col cols="12" sm="7" md="7">
                                 <v-select
                                   v-model="editedItem['Type of library']"
                                   label="Type"
@@ -82,7 +82,7 @@
                                   rounded
                                 ></v-select>
                               </v-col>
-                              <v-col cols="12" sm="6" md="6">
+                              <v-col cols="12" sm="5" md="5">
                                 <v-select
                                   v-model="editedItem['Statutory']"
                                   :items="['Yes', 'No']"
@@ -191,7 +191,7 @@
                               </v-col>
                             </v-row>
                             <v-row>
-                              <v-col cols="12" sm="12" md="9">
+                              <v-col cols="12" sm="12" md="12">
                                 <v-text-field
                                   dense
                                   outlined
@@ -418,7 +418,7 @@ export default {
         "Postcode": "",
         "Unique property reference number": "",
         "Statutory": "",
-        "Type of library": "",
+        "Type of library": "LAL",
         "Year opened": "",
         "Year closed": "",
         "Monday staffed hours": "",

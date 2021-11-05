@@ -26,7 +26,7 @@
                   <v-card-text>
                     <v-container>
                       <template>
-                        <v-tabs v-model="dialogTab">
+                        <v-tabs>
                           <v-tab>Main details</v-tab>
                           <v-tab>Location</v-tab>
                           <v-tab>Opening hours</v-tab>
@@ -206,55 +206,18 @@
                             <v-container></v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="6">
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Monday staffed hours']"
-                                  label="Monday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Tuesday staffed hours']"
-                                  label="Tuesday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Wednesday staffed hours']"
-                                  label="Wednesday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Thursday staffed hours']"
-                                  label="Thursday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Friday staffed hours']"
-                                  label="Friday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Saturday staffed hours']"
-                                  label="Saturday staffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Sunday staffed hours']"
-                                  label="Sunday staffed"
-                                ></v-text-field>
+                                <div v-for="day in days" :key="day">
+                                  <v-subheader>{{day}} staffed</v-subheader>
+                                  <v-btn icon color="primary">
+                                    <v-icon>mdi-plus</v-icon>
+                                  </v-btn>
+                                  <v-chip
+                                    close
+                                    close-icon="mdi-delete"
+                                    color="red"
+                                    outlined
+                                  ></v-chip>
+                                </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="6">
                                 <v-text-field
@@ -316,7 +279,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="close">Cancel</v-btn>
-                    <v-btn text color="success" @click="save">Save</v-btn>
+                    <v-btn text color="success" @click="save">Ok</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -380,7 +343,7 @@ import * as Papa from "papaparse";
 
 const config = require("../helpers/config.json");
 
-import * as schema from '../helpers/validate';
+import * as schema from "../helpers/validate";
 
 export default {
   data() {
@@ -388,6 +351,15 @@ export default {
       library_services: config.library_services,
       library_form_active: false,
       libraryFiles: [],
+      days: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
       dialogMainLibrary: false,
       dialogOpeningHours: false,
       dialogDelete: false,
@@ -415,9 +387,9 @@ export default {
         "Address 1": "",
         "Address 2": "",
         "Address 3": "",
-        "Postcode": "",
+        Postcode: "",
         "Unique property reference number": "",
-        "Statutory": "",
+        Statutory: "",
         "Type of library": "LAL",
         "Year opened": "",
         "Year closed": "",
@@ -436,10 +408,10 @@ export default {
         "Saturday unstaffed hours": "",
         "Sunday unstaffed hours": "",
         "Special hours": "",
-        "Colocated": "",
+        Colocated: "",
         "Colocated with": "",
-        "Notes": "",
-        "URL": "",
+        Notes: "",
+        URL: "",
         "Email address": ""
       }
     };
@@ -475,7 +447,9 @@ export default {
     },
     async save() {
       // Data validation
-      const valid = await schema.validateData("membership", this.editedItem);
+      const valid = await schema.validate("libraries", [
+        Object.keys(this.editedItem).map((k) => this.editedItem[k])
+      ]);
 
       if (valid) {
         if (this.editedIndex > -1) {
@@ -483,8 +457,8 @@ export default {
         } else {
           this.libraries.push(this.editedItem);
         }
+        this.close();
       }
-
     },
     loadLibraries: async function () {
       let self = this;

@@ -31,16 +31,14 @@
                           <v-tab>Location</v-tab>
                           <v-tab>Opening hours</v-tab>
                           <v-tab-item>
-                            <v-container>
-                              <v-alert color="primary" text type="info">
-                                For more information on each field see the
-                                <a
-                                  href="https://schema.librarydata.uk/libraries"
-                                  target="_blank"
-                                  >Library locations dataset</a
-                                >.
-                              </v-alert>
-                            </v-container>
+                            <v-alert color="primary" text type="info">
+                              For guidance see the
+                              <a
+                                href="https://schema.librarydata.uk/libraries"
+                                target="_blank"
+                                >Library locations dataset</a
+                              >
+                            </v-alert>
                             <v-row>
                               <v-col cols="12" sm="6" md="6">
                                 <v-select
@@ -63,7 +61,7 @@
                               </v-col>
                             </v-row>
                             <v-row>
-                              <v-col cols="12" sm="7" md="7">
+                              <v-col cols="12" sm="8" md="8">
                                 <v-select
                                   v-model="editedItem['Type of library']"
                                   label="Type"
@@ -82,7 +80,7 @@
                                   rounded
                                 ></v-select>
                               </v-col>
-                              <v-col cols="12" sm="5" md="5">
+                              <v-col cols="12" sm="4" md="4">
                                 <v-select
                                   v-model="editedItem['Statutory']"
                                   :items="['Yes', 'No']"
@@ -207,68 +205,49 @@
                             <v-row>
                               <v-col cols="12" sm="6" md="6">
                                 <div v-for="day in days" :key="day">
-                                  <v-subheader>{{day}} staffed</v-subheader>
-                                  <v-btn icon color="primary">
-                                    <v-icon>mdi-plus</v-icon>
+                                  <v-subheader>{{ day }} staffed</v-subheader>
+                                  <v-btn
+                                    icon
+                                    color="primary"
+                                    @click="addOpeningHoursEntry"
+                                  >
+                                    <v-icon>mdi-calendar-plus</v-icon>
                                   </v-btn>
                                   <v-chip
+                                    v-for="session in editedItem[day + ' staffed hours']
+                                      ? editedItem[day + ' staffed hours'].split(',')
+                                      : ''"
+                                    :key="session"
+                                    small
+                                    label
                                     close
                                     close-icon="mdi-delete"
-                                    color="red"
-                                    outlined
-                                  ></v-chip>
+                                    color="default"
+                                  >{{session}}</v-chip>
                                 </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="6">
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Monday unstaffed hours']"
-                                  label="Monday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Tuesday unstaffed hours']"
-                                  label="Tuesday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Wednesday unstaffed hours']"
-                                  label="Wednesday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Thursday unstaffed hours']"
-                                  label="Thursday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Friday unstaffed hours']"
-                                  label="Friday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Saturday unstaffed hours']"
-                                  label="Saturday unstaffed"
-                                ></v-text-field>
-                                <v-text-field
-                                  dense
-                                  outlined
-                                  rounded
-                                  v-model="editedItem['Sunday unstaffed hours']"
-                                  label="Sunday unstaffed"
-                                ></v-text-field>
+                                <div v-for="day in days" :key="day">
+                                  <v-subheader>{{ day }} unstaffed</v-subheader>
+                                  <v-btn
+                                    icon
+                                    color="primary"
+                                    @click="addOpeningHoursEntry"
+                                  >
+                                    <v-icon>mdi-calendar-plus</v-icon>
+                                  </v-btn>
+                                  <v-chip
+                                    v-for="session in editedItem[day + ' unstaffed hours']
+                                      ? editedItem[day + ' unstaffed hours'].split(',')
+                                      : ''"
+                                    :key="session"
+                                    small
+                                    label
+                                    close
+                                    close-icon="mdi-delete"
+                                    color="default"
+                                  >{{session}}</v-chip>
+                                </div>
                               </v-col>
                             </v-row>
                           </v-tab-item>
@@ -295,7 +274,28 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="closeDelete">Cancel</v-btn>
-                    <v-btn text color="error" @click="deleteItemConfirm">OK</v-btn>
+                    <v-btn text color="error" @click="deleteItemConfirm">Ok</v-btn>
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-dialog
+                persistent
+                overlay-opacity="0.2"
+                content-class="elevation-0"
+                v-model="dialogOpeningHoursEntry"
+                max-width="500px"
+              >
+                <v-card>
+                  <v-card-title class="text-h5">Add opening hours session</v-card-title>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="closeOpeningHoursEntry"
+                      >Cancel</v-btn
+                    >
+                    <v-btn text color="success" @click="confirmOpeningHoursEntry"
+                      >Ok</v-btn
+                    >
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
@@ -363,6 +363,7 @@ export default {
       dialogMainLibrary: false,
       dialogOpeningHours: false,
       dialogDelete: false,
+      dialogOpeningHoursEntry: false,
       headers: [
         {
           text: "Name",
@@ -444,6 +445,15 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+    },
+    addOpeningHoursEntry() {
+      this.dialogOpeningHoursEntry = true;
+    },
+    closeOpeningHoursEntry() {
+      this.dialogOpeningHoursEntry = false;
+    },
+    confirmOpeningHoursEntry() {
+      this.dialogOpeningHoursEntry = false;
     },
     async save() {
       // Data validation

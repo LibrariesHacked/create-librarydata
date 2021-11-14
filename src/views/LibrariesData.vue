@@ -288,6 +288,37 @@
               >
                 <v-card>
                   <v-card-title class="text-h5">Add opening hours session</v-card-title>
+                  <v-card-text>
+                    <v-menu
+                      ref="openingHoursOpenMenu"
+                      v-model="openingHoursOpenMenu"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="openingHoursOpen"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          dense
+                          outlined
+                          rounded
+                          v-model="openingHoursOpen"
+                          label="Open"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker
+                        v-model="openingHoursOpen"
+                        full-width
+                        @click:minute="$refs.menu.save(openingHoursOpen)"
+                      ></v-time-picker>
+                    </v-menu>
+                  </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="closeOpeningHoursEntry"

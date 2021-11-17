@@ -209,7 +209,7 @@
                                   <v-btn
                                     icon
                                     color="primary"
-                                    @click="addOpeningHoursEntry"
+                                    @click="addOpeningHoursEntry(day + ' staffed hours')"
                                   >
                                     <v-icon>mdi-calendar-plus</v-icon>
                                   </v-btn>
@@ -232,7 +232,7 @@
                                   <v-btn
                                     icon
                                     color="primary"
-                                    @click="addOpeningHoursEntry"
+                                    @click="addOpeningHoursEntry(day + ' unstaffed hours')"
                                   >
                                     <v-icon>mdi-calendar-plus</v-icon>
                                   </v-btn>
@@ -289,35 +289,70 @@
                 <v-card>
                   <v-card-title class="text-h5">Add opening hours session</v-card-title>
                   <v-card-text>
-                    <v-menu
-                      ref="openingHoursOpenMenu"
-                      v-model="openingHoursOpenMenu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      :return-value.sync="openingHoursOpen"
-                      transition="scale-transition"
-                      offset-y
-                      max-width="290px"
-                      min-width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          dense
-                          outlined
-                          rounded
-                          v-model="openingHoursOpen"
-                          label="Open"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-time-picker
-                        v-model="openingHoursOpen"
-                        full-width
-                        @click:minute="$refs.menu.save(openingHoursOpen)"
-                      ></v-time-picker>
-                    </v-menu>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="6">
+                        <v-menu
+                          ref="openingHoursOpenMenu"
+                          v-model="openingHoursOpenMenuOpen"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          :return-value.sync="openingHoursOpen"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="openingHoursOpen"
+                              label="Open"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-time-picker
+                            v-model="openingHoursOpen"
+                            full-width
+                            @click:minute="$refs.openingHoursOpenMenu.save(openingHoursOpen)"
+                          ></v-time-picker>
+                        </v-menu>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <v-menu
+                          ref="openingHoursCloseMenu"
+                          v-model="openingHoursCloseMenuOpen"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          :return-value.sync="openingHoursClose"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              dense
+                              outlined
+                              rounded
+                              v-model="openingHoursClose"
+                              label="Close"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-time-picker
+                            v-model="openingHoursClose"
+                            full-width
+                            @click:minute="$refs.openingHoursCloseMenu.save(openingHoursClose)"
+                          ></v-time-picker>
+                        </v-menu>
+                      </v-col>
+                    </v-row>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -395,6 +430,11 @@ export default {
       dialogOpeningHours: false,
       dialogDelete: false,
       dialogOpeningHoursEntry: false,
+      openingHoursOpenMenuOpen: false,
+      openingHoursCloseMenuOpen: false,
+      openingHoursEditKey: null,
+      openingHoursOpen: null,
+      openingHoursClose: null,
       headers: [
         {
           text: "Name",
@@ -477,13 +517,17 @@ export default {
         this.editedIndex = -1;
       });
     },
-    addOpeningHoursEntry() {
+    addOpeningHoursEntry(key) {
+      this.openingHoursEditKey = key;
       this.dialogOpeningHoursEntry = true;
     },
     closeOpeningHoursEntry() {
       this.dialogOpeningHoursEntry = false;
     },
     confirmOpeningHoursEntry() {
+      var sessions = this.editedItem[this.openingHoursEditKey].split(",");
+      sessions.push(`${this.openingHoursOpen}-${this.openingHoursClose}`);
+      this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
     },
     async save() {

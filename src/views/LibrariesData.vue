@@ -203,49 +203,31 @@
                           <v-tab-item>
                             <v-container></v-container>
                             <v-row>
-                              <v-col cols="12" sm="6" md="6">
+                              <v-col cols="12" sm="6" md="6" v-for="hourType in openingHourTypes" :key="hourType">
                                 <div v-for="day in days" :key="day">
-                                  <v-subheader>{{ day }} staffed</v-subheader>
-                                  <v-btn
-                                    icon
-                                    color="primary"
-                                    @click="addOpeningHoursEntry(day + ' staffed hours')"
-                                  >
-                                    <v-icon>mdi-calendar-plus</v-icon>
-                                  </v-btn>
+                                  <div class="text-subtitle-2">
+                                    <v-btn
+                                      icon
+                                      color="primary"
+                                      @click="addOpeningHoursEntry(day + ' ' + hourType + ' hours')"
+                                    >
+                                      <v-icon>mdi-plus-circle</v-icon>
+                                    </v-btn>
+                                    {{ day }} {{hourType}}
+                                  </div>
+                                  
                                   <v-chip
-                                    v-for="session in editedItem[day + ' staffed hours']
-                                      ? editedItem[day + ' staffed hours'].split(',')
+                                    class="ma-1"
+                                    v-for="session in editedItem[day + ' ' + hourType + ' hours']
+                                      ? editedItem[day + ' ' + hourType + ' hours'].split(',')
                                       : ''"
                                     :key="session"
                                     small
                                     label
                                     close
                                     close-icon="mdi-delete"
-                                    color="default"
-                                  >{{session}}</v-chip>
-                                </div>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="6">
-                                <div v-for="day in days" :key="day">
-                                  <v-subheader>{{ day }} unstaffed</v-subheader>
-                                  <v-btn
-                                    icon
                                     color="primary"
-                                    @click="addOpeningHoursEntry(day + ' unstaffed hours')"
-                                  >
-                                    <v-icon>mdi-calendar-plus</v-icon>
-                                  </v-btn>
-                                  <v-chip
-                                    v-for="session in editedItem[day + ' unstaffed hours']
-                                      ? editedItem[day + ' unstaffed hours'].split(',')
-                                      : ''"
-                                    :key="session"
-                                    small
-                                    label
-                                    close
-                                    close-icon="mdi-delete"
-                                    color="default"
+                                    @click:close="removeOpeningHoursEntry(day + ' ' + hourType + ' hours', session)"
                                   >{{session}}</v-chip>
                                 </div>
                               </v-col>
@@ -426,6 +408,7 @@ export default {
         "Saturday",
         "Sunday"
       ],
+      openingHourTypes: ['staffed', 'unstaffed'],
       dialogMainLibrary: false,
       dialogOpeningHours: false,
       dialogDelete: false,
@@ -520,6 +503,12 @@ export default {
     addOpeningHoursEntry(key) {
       this.openingHoursEditKey = key;
       this.dialogOpeningHoursEntry = true;
+    },
+    removeOpeningHoursEntry(key, session) {
+      var sessions = this.editedItem[key].split(",");
+      sessions.splice(sessions.indexOf(session), 1);
+      this.editedItem[key] = sessions.join(",");
+      this.dialogOpeningHoursEntry = false;
     },
     closeOpeningHoursEntry() {
       this.dialogOpeningHoursEntry = false;

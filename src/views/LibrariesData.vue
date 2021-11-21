@@ -6,6 +6,12 @@
     />
     <section>
       <v-container>
+        <v-alert color="primary" text type="info">
+          For guidance see the
+          <a href="https://schema.librarydata.uk/libraries" target="_blank"
+            >Library locations dataset</a
+          >
+        </v-alert>
         <v-data-table :headers="headers" :items="libraries" sort-by="name">
           <template v-slot:top>
             <v-toolbar flat>
@@ -31,14 +37,7 @@
                           <v-tab>Location</v-tab>
                           <v-tab>Opening hours</v-tab>
                           <v-tab-item>
-                            <v-alert color="primary" text type="info">
-                              For guidance see the
-                              <a
-                                href="https://schema.librarydata.uk/libraries"
-                                target="_blank"
-                                >Library locations dataset</a
-                              >
-                            </v-alert>
+                            <v-container></v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="6">
                                 <v-select
@@ -203,23 +202,37 @@
                           <v-tab-item>
                             <v-container></v-container>
                             <v-row>
-                              <v-col cols="12" sm="6" md="6" v-for="hourType in openingHourTypes" :key="hourType">
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="6"
+                                v-for="hourType in openingHourTypes"
+                                :key="hourType"
+                              >
                                 <div v-for="day in days" :key="day">
                                   <div class="text-subtitle-2">
                                     <v-btn
                                       icon
                                       color="primary"
-                                      @click="addOpeningHoursEntry(day + ' ' + hourType + ' hours')"
+                                      @click="
+                                        addOpeningHoursEntry(
+                                          day + ' ' + hourType + ' hours'
+                                        )
+                                      "
                                     >
                                       <v-icon>mdi-plus-circle</v-icon>
                                     </v-btn>
-                                    {{ day }} {{hourType}}
+                                    {{ day }} {{ hourType }}
                                   </div>
-                                  
+
                                   <v-chip
                                     class="ma-1"
-                                    v-for="session in editedItem[day + ' ' + hourType + ' hours']
-                                      ? editedItem[day + ' ' + hourType + ' hours'].split(',')
+                                    v-for="session in editedItem[
+                                      day + ' ' + hourType + ' hours'
+                                    ]
+                                      ? editedItem[day + ' ' + hourType + ' hours'].split(
+                                          ','
+                                        )
                                       : ''"
                                     :key="session"
                                     small
@@ -227,8 +240,14 @@
                                     close
                                     close-icon="mdi-delete"
                                     color="primary"
-                                    @click:close="removeOpeningHoursEntry(day + ' ' + hourType + ' hours', session)"
-                                  >{{session}}</v-chip>
+                                    @click:close="
+                                      removeOpeningHoursEntry(
+                                        day + ' ' + hourType + ' hours',
+                                        session
+                                      )
+                                    "
+                                    >{{ session }}</v-chip
+                                  >
                                 </div>
                               </v-col>
                             </v-row>
@@ -299,7 +318,9 @@
                           <v-time-picker
                             v-model="openingHoursOpen"
                             full-width
-                            @click:minute="$refs.openingHoursOpenMenu.save(openingHoursOpen)"
+                            @click:minute="
+                              $refs.openingHoursOpenMenu.save(openingHoursOpen)
+                            "
                           ></v-time-picker>
                         </v-menu>
                       </v-col>
@@ -330,7 +351,9 @@
                           <v-time-picker
                             v-model="openingHoursClose"
                             full-width
-                            @click:minute="$refs.openingHoursCloseMenu.save(openingHoursClose)"
+                            @click:minute="
+                              $refs.openingHoursCloseMenu.save(openingHoursClose)
+                            "
                           ></v-time-picker>
                         </v-menu>
                       </v-col>
@@ -375,7 +398,7 @@
           text
           color="success"
           @click="download"
-          >Save libraries</v-btn
+          >Save file</v-btn
         >
       </v-container>
     </section>
@@ -408,7 +431,7 @@ export default {
         "Saturday",
         "Sunday"
       ],
-      openingHourTypes: ['staffed', 'unstaffed'],
+      openingHourTypes: ["staffed", "unstaffed"],
       dialogMainLibrary: false,
       dialogOpeningHours: false,
       dialogDelete: false,
@@ -519,20 +542,13 @@ export default {
       this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
     },
-    async save() {
-      // Data validation
-      const valid = await schema.validate("libraries", [
-        Object.keys(this.editedItem).map((k) => this.editedItem[k])
-      ]);
-
-      if (valid) {
-        if (this.editedIndex > -1) {
-          Object.assign(this.libraries[this.editedIndex], this.editedItem);
-        } else {
-          this.libraries.push(this.editedItem);
-        }
-        this.close();
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.libraries[this.editedIndex], this.editedItem);
+      } else {
+        this.libraries.push(this.editedItem);
       }
+      this.close();
     },
     loadLibraries: async function () {
       let self = this;

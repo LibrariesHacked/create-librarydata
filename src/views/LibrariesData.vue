@@ -45,7 +45,6 @@
                                   :items="library_services"
                                   label="Service"
                                   outlined
-                                  rounded
                                   dense
                                 ></v-select>
                               </v-col>
@@ -53,7 +52,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Library name']"
                                   label="Name"
                                 ></v-text-field>
@@ -76,7 +74,6 @@
                                   ]"
                                   dense
                                   outlined
-                                  rounded
                                 ></v-select>
                               </v-col>
                               <v-col cols="12" sm="4" md="4">
@@ -86,7 +83,6 @@
                                   label="Statutory"
                                   dense
                                   outlined
-                                  rounded
                                 ></v-select>
                               </v-col>
                             </v-row>
@@ -95,7 +91,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Year opened']"
                                   label="Year opened"
                                   type="number"
@@ -105,7 +100,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Year closed']"
                                   label="Year closed"
                                   type="number"
@@ -117,7 +111,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Email address']"
                                   label="Email address"
                                 ></v-text-field>
@@ -126,7 +119,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['URL']"
                                   label="Website"
                                 ></v-text-field>
@@ -137,7 +129,6 @@
                                 <v-textarea
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Notes']"
                                   label="Notes"
                                   full-width
@@ -152,7 +143,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Address 1']"
                                   label="Address 1"
                                 ></v-text-field>
@@ -161,7 +151,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Address 2']"
                                   label="Address 2"
                                 ></v-text-field>
@@ -172,7 +161,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Address 3']"
                                   label="Address 3"
                                 ></v-text-field>
@@ -181,7 +169,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Postcode']"
                                   label="Postcode"
                                 ></v-text-field>
@@ -192,7 +179,6 @@
                                 <v-text-field
                                   dense
                                   outlined
-                                  rounded
                                   v-model="editedItem['Unique property reference number']"
                                   label="Unique property reference number"
                                 ></v-text-field>
@@ -307,7 +293,6 @@
                             <v-text-field
                               dense
                               outlined
-                              rounded
                               v-model="openingHoursOpen"
                               label="Open"
                               readonly
@@ -340,7 +325,6 @@
                             <v-text-field
                               dense
                               outlined
-                              rounded
                               v-model="openingHoursClose"
                               label="Close"
                               readonly

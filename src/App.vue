@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app dense flat color="green" dark clipped-left>
+    <v-app-bar app flat outlined clipped-left>
       <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
       <v-container>
         <v-toolbar-title>Create</v-toolbar-title>
@@ -8,21 +8,16 @@
       </v-container>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app clipped>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Library data tools
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Building and analysing library data
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-      <v-list nav dense rounded>
-        <v-list-item-group color="indigo">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      clipped
+      hide-overlay
+      light
+      class="elevation-0"
+    >
+      <v-list nav dense>
+        <v-list-item-group>
           <v-list-item
             :to="'/'"
             active-class="highlighted"
@@ -34,6 +29,20 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-calendar-star">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Events</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/events'"
+            active-class="highlighted"
+            :class="'/events' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Events dataset</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
         <v-list-group :value="false" no-action prepend-icon="mdi-domain">
           <template v-slot:activator>
             <v-list-item-content>
@@ -41,25 +50,46 @@
             </v-list-item-content>
           </template>
           <v-list-item
-            :to="'/library-locations'"
+            :to="'/libraries'"
             active-class="highlighted"
-            :class="'/library-locations' === $route.path ? 'highlighted' : ''"
+            :class="'/libraries' === $route.path ? 'highlighted' : ''"
           >
-            <v-list-item-title>Library locations</v-list-item-title>
+            <v-list-item-title>Libraries dataset</v-list-item-title>
           </v-list-item>
         </v-list-group>
-        <v-list-group :value="false" no-action prepend-icon="mdi-account-circle">
+        <v-list-group :value="false" no-action prepend-icon="mdi-book-account-outline ">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Loans</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/loans'"
+            active-class="highlighted"
+            :class="'/loans' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Loans dataset</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-account-multiple">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Membership</v-list-item-title>
             </v-list-item-content>
           </template>
           <v-list-item
+            :to="'/membership'"
+            active-class="highlighted"
+            :class="'/membership' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Membership dataset</v-list-item-title>
+          </v-list-item>
+          <v-list-item
             :to="'/postcode-to-lsoa'"
             active-class="highlighted"
             :class="'/postcode-to-lsoa' === $route.path ? 'highlighted' : ''"
           >
-            <v-list-item-title>Postcode converter</v-list-item-title>
+            <v-list-item-title>Postcode converter tool</v-list-item-title>
           </v-list-item>
           <v-list-item
             :to="'/membership-map'"
@@ -69,6 +99,61 @@
             <v-list-item-title>Membership map</v-list-item-title>
           </v-list-item>
         </v-list-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-bus-clock">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Mobile libraries</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/library-loans'"
+            active-class="highlighted"
+            :class="'/mobile-library-stops' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Mobile library stops dataset</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-shoe-print">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Visits</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/physical-visits'"
+            active-class="highlighted"
+            :class="'/physical-visits' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Physical visits dataset</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group :value="false" no-action prepend-icon="mdi-bookshelf">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Catalogue</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            :to="'/stock-summary'"
+            active-class="highlighted"
+            :class="'/stock-summary' === $route.path ? 'highlighted' : ''"
+          >
+            <v-list-item-title>Stock summary dataset</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-divider></v-divider>
+        <v-list-item
+          :to="'/login'"
+          active-class="highlighted"
+          :class="'/login' === $route.path ? 'highlighted' : ''"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-login</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Log in</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -82,8 +167,9 @@
   </v-app>
 </template>
 <style lang="scss">
-.v-btn, .v-tab {
-  text-transform:none !important;
+.v-btn,
+.v-tab {
+  text-transform: none !important;
 }
 .v-text-field--outlined >>> fieldset {
   border-color: #e5e5e5;

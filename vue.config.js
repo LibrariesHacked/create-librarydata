@@ -15,8 +15,7 @@ module.exports = {
         fallback: {
           fs: false,
           http: false,
-          https: false,
-          stream: require.resolve("stream-browserify")
+          https: false
         }
       },
       plugins: [

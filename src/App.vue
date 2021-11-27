@@ -106,7 +106,7 @@
             </v-list-item-content>
           </template>
           <v-list-item
-            :to="'/library-loans'"
+            :to="'/mobile-library-stops'"
             active-class="highlighted"
             :class="'/mobile-library-stops' === $route.path ? 'highlighted' : ''"
           >

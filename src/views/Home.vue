@@ -2,16 +2,15 @@
   <div>
     <custom-header
       title="Create"
-      subtitle="Tools for building and analysing library data"
+      subtitle="Tools for creating, publishing, and analysing library data"
     />
     <section>
       <v-container>
-        <p>
-          These are tools designed to aid library services in creating and using library
-          open data. Inspired by the public library
-          <a href="https://schema.librarydata.uk">open data schemas project</a>, the tools
-          are tailored for the different datasets documented in that work.
-        </p>
+        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+      </v-container>
+    </section>
+    <section>
+      <v-container>
         <h2>Library locations</h2>
         <ol>
           <li>
@@ -40,9 +39,13 @@
 <script>
 import Header from "../components/Header";
 
+import MarkDownData from "../markdown/home.md";
+
 export default {
   data() {
-    return {};
+    return {
+      mdText: MarkDownData
+    };
   },
   methods: {},
   components: { "custom-header": Header }

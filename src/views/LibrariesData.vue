@@ -1,15 +1,25 @@
 <template>
   <div>
     <custom-header
-      title="Library locations"
-      subtitle="Create and maintain data on your library buildings."
+      title="Libraries"
+      subtitle="Location opening hours, types, and contact details"
     />
     <section>
       <v-container>
+        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+      </v-container>
+    </section>
+    <section>
+      <v-container>
+        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+      </v-container>
+    </section>
+    <section>
+      <v-container>
         <v-alert color="primary" text type="info">
-          For guidance see the
+          For full guidance see the
           <a href="https://schema.librarydata.uk/libraries" target="_blank"
-            >Library locations dataset</a
+            >Library locations dataset schema</a
           >
         </v-alert>
         <v-data-table :headers="headers" :items="libraries" sort-by="name">
@@ -398,11 +408,12 @@ import * as Papa from "papaparse";
 
 const config = require("../helpers/config.json");
 
-import * as schema from "../helpers/validate";
+import MarkDownData from "../markdown/librariesdata.md";
 
 export default {
   data() {
     return {
+      mdText: MarkDownData,
       library_services: config.library_services,
       library_form_active: false,
       libraryFiles: [],

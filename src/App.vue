@@ -13,7 +13,6 @@
       app
       clipped
       hide-overlay
-      light
       class="elevation-0"
     >
       <v-list nav dense>

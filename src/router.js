@@ -13,6 +13,7 @@ import MobileLibraryStopsData from "./views/MobileLibraryStopsData.vue";
 import PhysicalVisitsData from "./views/PhysicalVisitsData.vue";
 import StockSummaryData from "./views/StockSummaryData.vue";
 import Privacy from "./views/Privacy.vue";
+import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
@@ -79,6 +80,11 @@ export default new Router({
       path: "/accessibility",
       name: "accessibility",
       component: Accessibility
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
     }
   ]
 });

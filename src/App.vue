@@ -153,6 +153,18 @@
             <v-list-item-title>Log in</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          :to="'/profile'"
+          active-class="highlighted"
+          :class="'/profile' === $route.path ? 'highlighted' : ''"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

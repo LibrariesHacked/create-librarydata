@@ -14,6 +14,7 @@ import PhysicalVisitsData from "./views/PhysicalVisitsData.vue";
 import StockSummaryData from "./views/StockSummaryData.vue";
 import Privacy from "./views/Privacy.vue";
 import Login from "./views/Login.vue";
+import Profile from "./views/Profile.vue";
 
 Vue.use(Router);
 
@@ -23,68 +24,73 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Home",
       component: Home
     },
     {
       path: "/events",
-      name: "events",
+      name: "Events",
       component: EventsData
     },
     {
       path: "/libraries",
-      name: "libraries",
+      name: "Libraries",
       component: LibrariesData
     },
     {
       path: "/loans",
-      name: "loans",
+      name: "Loans",
       component: LoansData
     },
     {
       path: "/membership",
-      name: "membership",
+      name: "Membership",
       component: MembershipData
     },
     {
       path: "/postcode-to-lsoa",
-      name: "postcode-to-lsoa",
+      name: "Membership postcode to LSOA",
       component: MembershipPostcodeToLsoa
     },
     {
       path: "/membership-map",
-      name: "membership-map",
+      name: "Membership map",
       component: MembershipMap
     },
     {
       path: "/mobile-library-stops",
-      name: "mobile-library-stops",
+      name: "Mobile library stops",
       component: MobileLibraryStopsData
     },
     {
       path: "/physical-visits",
-      name: "physical-visits",
+      name: "Physical visits",
       component: PhysicalVisitsData
     },
     {
       path: "/stock-summary",
-      name: "stock-summary",
+      name: "Stock summary",
       component: StockSummaryData
     },
     {
       path: "/privacy",
-      name: "privacy",
+      name: "Privacy",
       component: Privacy
     },
     {
       path: "/accessibility",
-      name: "accessibility",
+      name: "Accessibility",
       component: Accessibility
     },
     {
       path: "/login",
-      name: "login",
+      name: "Login",
       component: Login
+    },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: Profile
     }
   ]
 });

@@ -77,6 +77,9 @@ export default {
       message: ""
     };
   },
+  created: function(){      
+     this.stripLoginKey();   
+  },
   methods: {
     async login() {
       this.loading = true;
@@ -91,6 +94,15 @@ export default {
         }
       }
       this.loading = false;
+    },
+    stripLoginKey: function(){
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const key = urlParams.get('key');
+      if (key) {
+        this.$store.commit('setLoginKey', key);
+        this.$router.push('/profile');
+      }
     }
   },
   components: { "custom-header": Header, VueMarkdownPlus }

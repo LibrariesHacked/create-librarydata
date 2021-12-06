@@ -8,8 +8,14 @@ const store = new Vuex.Store({
     loginKey: null
   },
   mutations: {
-    login(state, key) {
+    initialiseStore(state) {
+      if (localStorage.getItem('loginKey')) state.loginKey = localStorage.getItem('loginKey');
+    },
+    setLoginKey(state, key) {
+      localStorage.setItem('loginKey', key);
       state.loginKey = key;
     }
   }
 });
+
+export default store;

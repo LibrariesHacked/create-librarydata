@@ -142,6 +142,7 @@
         </v-list-group>
         <v-divider></v-divider>
         <v-list-item
+          v-if="!this.$store.state.loginKey"
           :to="'/login'"
           active-class="highlighted"
           :class="'/login' === $route.path ? 'highlighted' : ''"
@@ -153,7 +154,16 @@
             <v-list-item-title>Log in</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item v-if="this.$store.state.loginKey" @click="logout">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Log out</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item
+          v-if="this.$store.state.loginKey"
           :to="'/profile'"
           active-class="highlighted"
           :class="'/profile' === $route.path ? 'highlighted' : ''"
@@ -192,11 +202,14 @@ import Footer from "./components/Footer";
 
 export default {
   name: "App",
-
   components: {
     "custom-footer": Footer
   },
-
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  },
   data: () => ({
     drawer: null
   })

@@ -14,6 +14,15 @@ const store = new Vuex.Store({
     setLoginKey(state, key) {
       localStorage.setItem('loginKey', key);
       state.loginKey = key;
+    },
+    logout(state) {
+      localStorage.removeItem('loginKey');
+      state.loginKey = null;
+    }
+  },
+  actions: {
+    logout({ commit }) {
+      commit('logout');
     }
   }
 });

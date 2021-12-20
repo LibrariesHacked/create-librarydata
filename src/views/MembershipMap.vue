@@ -143,7 +143,7 @@ export default {
       center: [-2, 52],
       zoom: 7,
       minZoom: 5,
-      maxZoom: 14,
+      maxZoom: 16,
       mapDisplay: "populationPercentage",
       authoritySource: null,
       authorityLayerLine: {

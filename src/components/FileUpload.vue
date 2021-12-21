@@ -3,14 +3,12 @@
     <v-file-input
       accept="text/csv"
       chips
-      counter
       show-size
-      small-chips
-      multiple
-      label="Choose a file from your computer"
+      label="Choose a file"
       :value="file"
       v-on:change="$emit('change-files', $event)"
       outlined
+      multiple
     ></v-file-input>
   </section>
 </template>

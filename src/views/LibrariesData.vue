@@ -12,7 +12,7 @@
     <section>
       <v-container>
         <v-stepper v-model="active_step" vertical flat outlined>
-          <v-stepper-step :complete="active_step > 1" step="1" color="secondary">
+          <v-stepper-step :complete="active_step > 1" step="1">
             Load libraries
           </v-stepper-step>
           <v-stepper-content step="1">
@@ -27,10 +27,10 @@
               color="primary"
               :disabled="libraryFiles.length === 0"
               v-on:click="loadLibraries"
-              >Load libraries
-            </v-btn></v-stepper-content
-          >
-          <v-stepper-step :complete="active_step > 2" step="2" color="secondary">
+              >Next
+            </v-btn>
+          </v-stepper-content>
+          <v-stepper-step :complete="active_step > 2" step="2">
             Edit libraries
           </v-stepper-step>
           <v-stepper-content step="2">
@@ -393,7 +393,7 @@
           <v-stepper-step :complete="active_step > 3" step="3" color="secondary">
             Save and publish
           </v-stepper-step>
-          <v-stepper-content>
+          <v-stepper-content step="3">
             <v-btn
               :disabled="libraryFiles.length === 0"
               text
@@ -560,7 +560,8 @@ export default {
       let self = this;
       if (self.libraryFiles[0].name) {
         const data = await csvHelper.parseFile(self.libraryFiles[0], true);
-        this.libraries = data;
+        self.libraries = data;
+        self.active_step = 2;
       }
     },
     download() {

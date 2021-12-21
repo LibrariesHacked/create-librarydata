@@ -10,6 +10,7 @@
       label="Choose a file from your computer"
       :value="file"
       v-on:change="$emit('change-files', $event)"
+      outlined
     ></v-file-input>
   </section>
 </template>

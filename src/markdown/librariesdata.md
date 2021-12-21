@@ -1,0 +1,1 @@
+For full guidance see the <a href="https://schema.librarydata.uk/libraries" target="_blank">**library locations dataset schema**</a>.

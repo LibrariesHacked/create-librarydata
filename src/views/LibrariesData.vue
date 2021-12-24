@@ -16,11 +16,7 @@
             Load libraries
           </v-stepper-step>
           <v-stepper-content step="1">
-            <file-upload
-              v-bind:file="libraryFiles"
-              v-on:change-files="libraryFiles = $event"
-              v-on:delete-file="libraryFiles = []"
-            />
+            <service-select />
             <v-btn
               class="ma-2"
               text
@@ -65,14 +61,12 @@
                                     <v-select
                                       v-model="editedItem['Local authority']"
                                       :items="library_services"
-                                      label="Service"
+                                      label="Choose a library service"
                                       outlined
-                                      dense
                                     ></v-select>
                                   </v-col>
                                   <v-col cols="12" sm="6" md="6">
                                     <v-text-field
-                                      dense
                                       outlined
                                       v-model="editedItem['Library name']"
                                       label="Name"
@@ -411,6 +405,7 @@
 <script>
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
+import ServiceSelect from "../components/ServiceSelect";
 
 import * as csvHelper from "../helpers/csv";
 import * as Papa from "papaparse";
@@ -586,7 +581,7 @@ export default {
   },
   components: {
     "custom-header": Header,
-    "file-upload": FileUpload,
+    "service-select": ServiceSelect,
     VueMarkdownPlus
   }
 };

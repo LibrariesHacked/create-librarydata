@@ -16,12 +16,12 @@
             Load libraries
           </v-stepper-step>
           <v-stepper-content step="1">
-            <service-select />
+            <service-select @change="selected_service = $event" />
             <v-btn
               class="ma-2"
               text
               color="primary"
-              :disabled="libraryFiles.length === 0"
+              :disabled="selected_service == null"
               v-on:click="loadLibraries"
               >Next
             </v-btn>
@@ -389,7 +389,6 @@
           </v-stepper-step>
           <v-stepper-content step="3">
             <v-btn
-              :disabled="libraryFiles.length === 0"
               text
               color="success"
               @click="download"
@@ -403,7 +402,6 @@
 </template>
 
 <script>
-import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
 import ServiceSelect from "../components/ServiceSelect";
 
@@ -419,10 +417,10 @@ export default {
   data() {
     return {
       active_step: 1,
+      selected_service: null,
       mdText: MarkDownData,
       library_services: config.library_services,
       library_form_active: false,
-      libraryFiles: [],
       days: [
         "Monday",
         "Tuesday",
@@ -553,6 +551,14 @@ export default {
     },
     loadLibraries: async function () {
       let self = this;
+
+      // Work out the file URL 
+      let service = this.selected_service;
+      service = service.replace(/(?u)[^-\w.]/i, '').strip().replace(' ', '_').toLowerCase();
+
+      const url = `${config.libraries_data_url}/${service}.csv`;
+
+      // Access file from URL
       if (self.libraryFiles[0].name) {
         const data = await csvHelper.parseFile(self.libraryFiles[0], true);
         self.libraries = data;

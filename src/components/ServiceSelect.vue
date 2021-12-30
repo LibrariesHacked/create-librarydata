@@ -2,6 +2,8 @@
   <section>
     <v-select
       :items="library_services"
+      item-text="nice_name"
+      item-value="code"
       label="Choose a library service"
       outlined
       :value="value"
@@ -11,16 +13,27 @@
 </template>
 
 <script>
-const config = require("../helpers/config.json");
+const authoritiesHelper = require("../helpers/libraryAuthorities.js");
 
 export default {
   data() {
     return {
-      library_services: config.library_services,
+      library_services: []
+    };
+  },
+  created() {
+    this.library_services = this.$store.state.library_services;
+    if (this.library_services.length === 0) {
+      this.getServices();
     }
   },
   props: ["value"],
   methods: {
+    async getServices() {
+      let res = await authoritiesHelper.getLibraryAuthorities();
+      this.$store.commit("setServices", res);
+      this.library_services = this.$store.state.library_services;
+    },
     update(newValue) {
       this.$emit("change", newValue);
     }

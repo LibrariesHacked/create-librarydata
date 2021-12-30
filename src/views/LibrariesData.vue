@@ -554,16 +554,11 @@ export default {
 
       // Work out the file URL 
       let service = this.selected_service;
-      service = service.replace(/(?u)[^-\w.]/i, '').strip().replace(' ', '_').toLowerCase();
 
-      const url = `${config.libraries_data_url}/${service}.csv`;
-
-      // Access file from URL
-      if (self.libraryFiles[0].name) {
-        const data = await csvHelper.parseFile(self.libraryFiles[0], true);
-        self.libraries = data;
-        self.active_step = 2;
-      }
+      const url = `${config.libraries_data_url}${service}`;
+      const data = await csvHelper.parseUrl(url);
+      self.libraries = data;
+      self.active_step = 2;
     },
     download() {
       this.downloadFile("libraries.csv", this.libraries);

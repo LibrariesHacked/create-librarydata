@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    loginKey: null
+    loginKey: null,
+    library_services: []
   },
   mutations: {
     initialiseStore(state) {
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
     logout(state) {
       localStorage.removeItem('loginKey');
       state.loginKey = null;
+    },
+    setServices(state, library_services) {
+      state.library_services = library_services;
     }
   },
   actions: {

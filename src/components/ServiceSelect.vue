@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-select
-      :items="library_services"
+      :items="library_services.sort((a, b) => a.name.localeCompare(b.name))"
       item-text="nice_name"
       item-value="code"
       label="Choose a library service"

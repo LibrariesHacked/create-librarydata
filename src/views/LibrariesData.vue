@@ -11,10 +11,19 @@
     </section>
     <section>
       <v-container>
-        <v-stepper v-model="active_step" vertical flat outlined>
-          <v-stepper-step :complete="active_step > 1" step="1">
-            Load libraries
-          </v-stepper-step>
+        <v-stepper v-model="active_step" flat outlined elevation="0">
+          <v-stepper-header class="elevation-0">
+            <v-stepper-step :complete="active_step > 1" step="1" color="secondary" editable>
+              Load libraries
+            </v-stepper-step>
+            <v-stepper-step :complete="active_step > 2" step="2" color="secondary" editable>
+              Edit libraries
+            </v-stepper-step>
+            <v-stepper-step :complete="active_step > 3" step="3" color="secondary">
+              Save
+            </v-stepper-step>
+          </v-stepper-header>
+
           <v-stepper-content step="1">
             <service-select @change="selected_service = $event" />
             <v-btn
@@ -26,9 +35,7 @@
               >Next
             </v-btn>
           </v-stepper-content>
-          <v-stepper-step :complete="active_step > 2" step="2">
-            Edit libraries
-          </v-stepper-step>
+
           <v-stepper-content step="2">
             <v-data-table :headers="headers" :items="libraries" sort-by="name">
               <template v-slot:top>
@@ -383,17 +390,10 @@
               </template>
               <template v-slot:no-data> </template>
             </v-data-table>
+            <v-btn text color="success" @click="publish">Finalise publishing</v-btn>
           </v-stepper-content>
-          <v-stepper-step :complete="active_step > 3" step="3" color="secondary">
-            Save and publish
-          </v-stepper-step>
           <v-stepper-content step="3">
-            <v-btn
-              text
-              color="success"
-              @click="download"
-              >Save file</v-btn
-            >
+            <v-btn text color="success" @click="download">Save file</v-btn>
           </v-stepper-content>
         </v-stepper>
       </v-container>
@@ -541,6 +541,9 @@ export default {
       this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
     },
+    publish() {
+      this.active_step = 3;
+    },
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.libraries[this.editedIndex], this.editedItem);
@@ -552,7 +555,7 @@ export default {
     loadLibraries: async function () {
       let self = this;
 
-      // Work out the file URL 
+      // Work out the file URL
       let service = this.selected_service;
 
       const url = `${config.libraries_data_url}${service}`;
@@ -561,7 +564,7 @@ export default {
       self.active_step = 2;
     },
     download() {
-      this.downloadFile("libraries.csv", this.libraries);
+      this.downloadFile(`${this.selected_service}_libraries.csv`, this.libraries);
     },
     downloadFile: function (filename, data) {
       var csv = new Blob([Papa.unparse(data)], {

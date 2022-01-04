@@ -13,26 +13,35 @@
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
-            <v-stepper-step :complete="active_step > 1" step="1" color="secondary" editable>
-              Load libraries
+            <v-stepper-step :complete="active_step > 1" step="1" color="primary" editable>
+              Load
             </v-stepper-step>
-            <v-stepper-step :complete="active_step > 2" step="2" color="secondary" editable>
-              Edit libraries
+            <v-stepper-step :complete="active_step > 2" step="2" color="primary" :editable="active_step > 1">
+              Edit
             </v-stepper-step>
-            <v-stepper-step :complete="active_step > 3" step="3" color="secondary">
-              Save
+            <v-stepper-step :complete="active_step > 3" step="3" color="primary">
+              Publish
             </v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-content step="1">
-            <service-select @change="selected_service = $event" />
+            <v-container>
+              <service-select @change="selected_service = $event" />
+            </v-container>
+            
             <v-btn
               class="ma-2"
               text
               color="primary"
               :disabled="selected_service == null"
               v-on:click="loadLibraries"
-              >Next
+              >Edit libraries
+              <v-icon
+                right
+                dark
+              >
+                mdi-chevron-right
+              </v-icon>
             </v-btn>
           </v-stepper-content>
 
@@ -45,11 +54,11 @@
                     persistent
                     v-model="dialogMainLibrary"
                     max-width="500px"
-                    overlay-opacity="0.2"
+                    overlay-opacity="0.3"
                     content-class="elevation-0"
                   >
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn text color="primary" v-bind="attrs" v-on="on">
+                      <v-btn text color="secondary" v-bind="attrs" v-on="on">
                         Add library
                       </v-btn>
                     </template>
@@ -65,12 +74,7 @@
                                 <v-container></v-container>
                                 <v-row>
                                   <v-col cols="12" sm="6" md="6">
-                                    <v-select
-                                      v-model="editedItem['Local authority']"
-                                      :items="library_services"
-                                      label="Choose a library service"
-                                      outlined
-                                    ></v-select>
+                                    <service-select @change="editedItem['Local authority'] = $event" />
                                   </v-col>
                                   <v-col cols="12" sm="6" md="6">
                                     <v-text-field
@@ -269,14 +273,14 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="close">Cancel</v-btn>
+                        <v-btn text color="secondary" @click="close">Cancel</v-btn>
                         <v-btn text color="success" @click="save">Ok</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
                   <v-dialog
                     persistent
-                    overlay-opacity="0.2"
+                    overlay-opacity="0.3"
                     content-class="elevation-0"
                     v-model="dialogDelete"
                     max-width="500px"
@@ -285,7 +289,7 @@
                       <v-card-title class="text-h5">Remove this library?</v-card-title>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="closeDelete">Cancel</v-btn>
+                        <v-btn text color="secondary" @click="closeDelete">Cancel</v-btn>
                         <v-btn text color="error" @click="deleteItemConfirm">Ok</v-btn>
                         <v-spacer></v-spacer>
                       </v-card-actions>
@@ -293,7 +297,7 @@
                   </v-dialog>
                   <v-dialog
                     persistent
-                    overlay-opacity="0.2"
+                    overlay-opacity="0.3"
                     content-class="elevation-0"
                     v-model="dialogOpeningHoursEntry"
                     max-width="500px"
@@ -372,7 +376,7 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="closeOpeningHoursEntry"
+                        <v-btn text color="secondary" @click="closeOpeningHoursEntry"
                           >Cancel</v-btn
                         >
                         <v-btn text color="success" @click="confirmOpeningHoursEntry"
@@ -390,7 +394,7 @@
               </template>
               <template v-slot:no-data> </template>
             </v-data-table>
-            <v-btn text color="success" @click="publish">Finalise publishing</v-btn>
+            <v-btn text color="primary" @click="publish">Publish</v-btn>
           </v-stepper-content>
           <v-stepper-content step="3">
             <v-btn text color="success" @click="download">Save file</v-btn>

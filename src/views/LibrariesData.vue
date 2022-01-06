@@ -394,10 +394,11 @@
               </template>
               <template v-slot:no-data> </template>
             </v-data-table>
-            <v-btn text color="primary" @click="publish">Publish</v-btn>
+            <v-btn text color="primary" @click="goToPublish">Publish</v-btn>
           </v-stepper-content>
           <v-stepper-content step="3">
             <v-btn text color="success" @click="download">Save file</v-btn>
+            <v-btn text color="success" @click="publishChanges">Publish changes</v-btn>
           </v-stepper-content>
         </v-stepper>
       </v-container>
@@ -545,7 +546,7 @@ export default {
       this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
     },
-    publish() {
+    goToPublish() {
       this.active_step = 3;
     },
     save() {
@@ -585,7 +586,10 @@ export default {
         link.click();
         document.body.removeChild(link);
       }
-    }
+    },
+    publishChanges: async function () {
+      
+    },
   },
   components: {
     "custom-header": Header,

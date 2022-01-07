@@ -14,11 +14,18 @@
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
             <v-stepper-step :complete="active_step > 1" step="1" color="primary" editable>
-              Load
+              Select library service
             </v-stepper-step>
-            <v-stepper-step :complete="active_step > 2" step="2" color="primary" :editable="active_step > 1">
+            <v-divider></v-divider>
+            <v-stepper-step
+              :complete="active_step > 2"
+              step="2"
+              color="primary"
+              :editable="active_step > 1"
+            >
               Edit
             </v-stepper-step>
+            <v-divider></v-divider>
             <v-stepper-step :complete="active_step > 3" step="3" color="primary">
               Publish
             </v-stepper-step>
@@ -26,375 +33,387 @@
 
           <v-stepper-content step="1">
             <v-container>
-              <service-select @change="selected_service = $event" />
-            </v-container>
-            
-            <v-btn
-              class="ma-2"
-              text
-              color="primary"
-              :disabled="selected_service == null"
-              v-on:click="loadLibraries"
-              >Edit libraries
-              <v-icon
-                right
+              <v-alert
+                color="info"
                 dark
+                icon="mdi-school"
+                prominent
+                border="left"
+                outlined
               >
-                mdi-chevron-right
-              </v-icon>
-            </v-btn>
+                Get started by choosing a library service from the list. All UK library services are displayed in alphabetical order.
+              </v-alert>
+              <service-select @change="selected_service = $event" />
+              <v-btn
+                color="primary"
+                outlined
+                large
+                :loading="loadingServiceData"
+                :disabled="selected_service == null"
+                v-on:click="loadLibraries"
+              >
+                Edit library data
+                <v-icon right dark>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-container>
           </v-stepper-content>
 
           <v-stepper-content step="2">
-            <v-data-table :headers="headers" :items="libraries" sort-by="name">
-              <template v-slot:top>
-                <v-toolbar flat>
-                  <v-spacer></v-spacer>
-                  <v-dialog
-                    persistent
-                    v-model="dialogMainLibrary"
-                    max-width="500px"
-                    overlay-opacity="0.3"
-                    content-class="elevation-0"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn text color="secondary" v-bind="attrs" v-on="on">
-                        Add library
-                      </v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-text>
-                        <v-container>
-                          <template>
-                            <v-tabs>
-                              <v-tab>Main details</v-tab>
-                              <v-tab>Location</v-tab>
-                              <v-tab>Opening hours</v-tab>
-                              <v-tab-item>
-                                <v-container></v-container>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <service-select @change="editedItem['Local authority'] = $event" />
-                                  </v-col>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      outlined
-                                      v-model="editedItem['Library name']"
-                                      label="Name"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="8" md="8">
-                                    <v-select
-                                      v-model="editedItem['Type of library']"
-                                      label="Type"
-                                      :items="[
-                                        { text: 'Local authority', value: 'LAL' },
-                                        {
-                                          text: 'Local authority (unstaffed)',
-                                          value: 'LAL-'
-                                        },
-                                        { text: 'Commisioned', value: 'CL' },
-                                        { text: 'Community-run', value: 'CRL' },
-                                        { text: 'Independent', value: 'IL' }
-                                      ]"
-                                      dense
-                                      outlined
-                                    ></v-select>
-                                  </v-col>
-                                  <v-col cols="12" sm="4" md="4">
-                                    <v-select
-                                      v-model="editedItem['Statutory']"
-                                      :items="['Yes', 'No']"
-                                      label="Statutory"
-                                      dense
-                                      outlined
-                                    ></v-select>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Year opened']"
-                                      label="Year opened"
-                                      type="number"
-                                    ></v-text-field>
-                                  </v-col>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Year closed']"
-                                      label="Year closed"
-                                      type="number"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Email address']"
-                                      label="Email address"
-                                    ></v-text-field>
-                                  </v-col>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['URL']"
-                                      label="Website"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="12" md="12">
-                                    <v-textarea
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Notes']"
-                                      label="Notes"
-                                      full-width
-                                    ></v-textarea>
-                                  </v-col>
-                                </v-row>
-                              </v-tab-item>
-                              <v-tab-item>
-                                <v-container></v-container>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Address 1']"
-                                      label="Address 1"
-                                    ></v-text-field>
-                                  </v-col>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Address 2']"
-                                      label="Address 2"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Address 3']"
-                                      label="Address 3"
-                                    ></v-text-field>
-                                  </v-col>
-                                  <v-col cols="12" sm="6" md="6">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="editedItem['Postcode']"
-                                      label="Postcode"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                                <v-row>
-                                  <v-col cols="12" sm="12" md="12">
-                                    <v-text-field
-                                      dense
-                                      outlined
-                                      v-model="
-                                        editedItem['Unique property reference number']
-                                      "
-                                      label="Unique property reference number"
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                              </v-tab-item>
-                              <v-tab-item>
-                                <v-container></v-container>
-                                <v-row>
-                                  <v-col
-                                    cols="12"
-                                    sm="6"
-                                    md="6"
-                                    v-for="hourType in openingHourTypes"
-                                    :key="hourType"
-                                  >
-                                    <div v-for="day in days" :key="day">
-                                      <div class="text-subtitle-2">
-                                        <v-btn
-                                          icon
+            <v-container>
+              <v-data-table :headers="headers" :items="libraries" sort-by="name" disable-sort>
+                <template v-slot:top>
+                  <v-toolbar flat>
+                    <v-spacer></v-spacer>
+                    <v-dialog
+                      persistent
+                      v-model="dialogMainLibrary"
+                      max-width="500px"
+                      overlay-opacity="0.3"
+                      content-class="elevation-0"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn text color="success" v-bind="attrs" v-on="on">
+                          <v-icon left dark>mdi-plus</v-icon>
+                          Add library
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-text>
+                          <v-container>
+                            <template>
+                              <v-tabs>
+                                <v-tab>Main details</v-tab>
+                                <v-tab>Location</v-tab>
+                                <v-tab>Opening hours</v-tab>
+                                <v-tab-item>
+                                  <v-container></v-container>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <service-select
+                                        @change="editedItem['Local authority'] = $event"
+                                      />
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        outlined
+                                        v-model="editedItem['Library name']"
+                                        label="Name"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="8" md="8">
+                                      <v-select
+                                        v-model="editedItem['Type of library']"
+                                        label="Type"
+                                        :items="[
+                                          { text: 'Local authority', value: 'LAL' },
+                                          {
+                                            text: 'Local authority (unstaffed)',
+                                            value: 'LAL-'
+                                          },
+                                          { text: 'Commisioned', value: 'CL' },
+                                          { text: 'Community-run', value: 'CRL' },
+                                          { text: 'Independent', value: 'IL' }
+                                        ]"
+                                        dense
+                                        outlined
+                                      ></v-select>
+                                    </v-col>
+                                    <v-col cols="12" sm="4" md="4">
+                                      <v-select
+                                        v-model="editedItem['Statutory']"
+                                        :items="['Yes', 'No']"
+                                        label="Statutory"
+                                        dense
+                                        outlined
+                                      ></v-select>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Year opened']"
+                                        label="Year opened"
+                                        type="number"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Year closed']"
+                                        label="Year closed"
+                                        type="number"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Email address']"
+                                        label="Email address"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['URL']"
+                                        label="Website"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                      <v-textarea
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Notes']"
+                                        label="Notes"
+                                        full-width
+                                      ></v-textarea>
+                                    </v-col>
+                                  </v-row>
+                                </v-tab-item>
+                                <v-tab-item>
+                                  <v-container></v-container>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Address 1']"
+                                        label="Address 1"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Address 2']"
+                                        label="Address 2"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Address 3']"
+                                        label="Address 3"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="editedItem['Postcode']"
+                                        label="Postcode"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                      <v-text-field
+                                        dense
+                                        outlined
+                                        v-model="
+                                          editedItem['Unique property reference number']
+                                        "
+                                        label="Unique property reference number"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                </v-tab-item>
+                                <v-tab-item>
+                                  <v-container></v-container>
+                                  <v-row>
+                                    <v-col
+                                      cols="12"
+                                      sm="6"
+                                      md="6"
+                                      v-for="hourType in openingHourTypes"
+                                      :key="hourType"
+                                    >
+                                      <div v-for="day in days" :key="day">
+                                        <div class="text-subtitle-2">
+                                          <v-btn
+                                            icon
+                                            color="primary"
+                                            @click="
+                                              addOpeningHoursEntry(
+                                                day + ' ' + hourType + ' hours'
+                                              )
+                                            "
+                                          >
+                                            <v-icon>mdi-plus-circle</v-icon>
+                                          </v-btn>
+                                          {{ day }} {{ hourType }}
+                                        </div>
+
+                                        <v-chip
+                                          class="ma-1"
+                                          v-for="session in editedItem[
+                                            day + ' ' + hourType + ' hours'
+                                          ]
+                                            ? editedItem[
+                                                day + ' ' + hourType + ' hours'
+                                              ].split(',')
+                                            : ''"
+                                          :key="session"
+                                          small
+                                          label
+                                          close
+                                          close-icon="mdi-delete"
                                           color="primary"
-                                          @click="
-                                            addOpeningHoursEntry(
-                                              day + ' ' + hourType + ' hours'
+                                          @click:close="
+                                            removeOpeningHoursEntry(
+                                              day + ' ' + hourType + ' hours',
+                                              session
                                             )
                                           "
+                                          >{{ session }}</v-chip
                                         >
-                                          <v-icon>mdi-plus-circle</v-icon>
-                                        </v-btn>
-                                        {{ day }} {{ hourType }}
                                       </div>
-
-                                      <v-chip
-                                        class="ma-1"
-                                        v-for="session in editedItem[
-                                          day + ' ' + hourType + ' hours'
-                                        ]
-                                          ? editedItem[
-                                              day + ' ' + hourType + ' hours'
-                                            ].split(',')
-                                          : ''"
-                                        :key="session"
-                                        small
-                                        label
-                                        close
-                                        close-icon="mdi-delete"
-                                        color="primary"
-                                        @click:close="
-                                          removeOpeningHoursEntry(
-                                            day + ' ' + hourType + ' hours',
-                                            session
-                                          )
-                                        "
-                                        >{{ session }}</v-chip
-                                      >
-                                    </div>
-                                  </v-col>
-                                </v-row>
-                              </v-tab-item>
-                            </v-tabs>
-                          </template>
-                        </v-container>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="secondary" @click="close">Cancel</v-btn>
-                        <v-btn text color="success" @click="save">Ok</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                  <v-dialog
-                    persistent
-                    overlay-opacity="0.3"
-                    content-class="elevation-0"
-                    v-model="dialogDelete"
-                    max-width="500px"
-                  >
-                    <v-card>
-                      <v-card-title class="text-h5">Remove this library?</v-card-title>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="secondary" @click="closeDelete">Cancel</v-btn>
-                        <v-btn text color="error" @click="deleteItemConfirm">Ok</v-btn>
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                  <v-dialog
-                    persistent
-                    overlay-opacity="0.3"
-                    content-class="elevation-0"
-                    v-model="dialogOpeningHoursEntry"
-                    max-width="500px"
-                  >
-                    <v-card>
-                      <v-card-title class="text-h5"
-                        >Add opening hours session</v-card-title
-                      >
-                      <v-card-text>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="6">
-                            <v-menu
-                              ref="openingHoursOpenMenu"
-                              v-model="openingHoursOpenMenuOpen"
-                              :close-on-content-click="false"
-                              :nudge-right="40"
-                              :return-value.sync="openingHoursOpen"
-                              transition="scale-transition"
-                              offset-y
-                              max-width="290px"
-                              min-width="290px"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                  dense
-                                  outlined
+                                    </v-col>
+                                  </v-row>
+                                </v-tab-item>
+                              </v-tabs>
+                            </template>
+                          </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="secondary" @click="close">Cancel</v-btn>
+                          <v-btn text color="success" @click="save">Ok</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    <v-dialog
+                      persistent
+                      overlay-opacity="0.3"
+                      content-class="elevation-0"
+                      v-model="dialogDelete"
+                      max-width="500px"
+                    >
+                      <v-card>
+                        <v-card-title class="text-h5">Remove this library?</v-card-title>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="secondary" @click="closeDelete"
+                            >Cancel</v-btn
+                          >
+                          <v-btn text color="error" @click="deleteItemConfirm">Ok</v-btn>
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    <v-dialog
+                      persistent
+                      overlay-opacity="0.3"
+                      content-class="elevation-0"
+                      v-model="dialogOpeningHoursEntry"
+                      max-width="500px"
+                    >
+                      <v-card>
+                        <v-card-title class="text-h5"
+                          >Add opening hours session</v-card-title
+                        >
+                        <v-card-text>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="6">
+                              <v-menu
+                                ref="openingHoursOpenMenu"
+                                v-model="openingHoursOpenMenuOpen"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="openingHoursOpen"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    v-model="openingHoursOpen"
+                                    label="Open"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                  ></v-text-field>
+                                </template>
+                                <v-time-picker
                                   v-model="openingHoursOpen"
-                                  label="Open"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                                ></v-text-field>
-                              </template>
-                              <v-time-picker
-                                v-model="openingHoursOpen"
-                                full-width
-                                @click:minute="
-                                  $refs.openingHoursOpenMenu.save(openingHoursOpen)
-                                "
-                              ></v-time-picker>
-                            </v-menu>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="6">
-                            <v-menu
-                              ref="openingHoursCloseMenu"
-                              v-model="openingHoursCloseMenuOpen"
-                              :close-on-content-click="false"
-                              :nudge-right="40"
-                              :return-value.sync="openingHoursClose"
-                              transition="scale-transition"
-                              offset-y
-                              max-width="290px"
-                              min-width="290px"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                  dense
-                                  outlined
+                                  full-width
+                                  @click:minute="
+                                    $refs.openingHoursOpenMenu.save(openingHoursOpen)
+                                  "
+                                ></v-time-picker>
+                              </v-menu>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                              <v-menu
+                                ref="openingHoursCloseMenu"
+                                v-model="openingHoursCloseMenuOpen"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="openingHoursClose"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <v-text-field
+                                    dense
+                                    outlined
+                                    v-model="openingHoursClose"
+                                    label="Close"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                  ></v-text-field>
+                                </template>
+                                <v-time-picker
                                   v-model="openingHoursClose"
-                                  label="Close"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                                ></v-text-field>
-                              </template>
-                              <v-time-picker
-                                v-model="openingHoursClose"
-                                full-width
-                                @click:minute="
-                                  $refs.openingHoursCloseMenu.save(openingHoursClose)
-                                "
-                              ></v-time-picker>
-                            </v-menu>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="secondary" @click="closeOpeningHoursEntry"
-                          >Cancel</v-btn
-                        >
-                        <v-btn text color="success" @click="confirmOpeningHoursEntry"
-                          >Ok</v-btn
-                        >
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-toolbar>
-              </template>
-              <template v-slot:item.actions="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-                <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-              </template>
-              <template v-slot:no-data> </template>
-            </v-data-table>
-            <v-btn text color="primary" @click="goToPublish">Publish</v-btn>
+                                  full-width
+                                  @click:minute="
+                                    $refs.openingHoursCloseMenu.save(openingHoursClose)
+                                  "
+                                ></v-time-picker>
+                              </v-menu>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="secondary" @click="closeOpeningHoursEntry">Cancel</v-btn>
+                          <v-btn text color="success" @click="confirmOpeningHoursEntry">Ok</v-btn>
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-toolbar>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                  <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+                  <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+                </template>
+                <template v-slot:no-data> </template>
+              </v-data-table>
+              <v-btn outlined large color="primary" @click="goToPublish">
+                Publish the data
+                <v-icon right dark> mdi-chevron-right </v-icon>
+              </v-btn>
+            </v-container>
           </v-stepper-content>
           <v-stepper-content step="3">
             <v-btn text color="success" @click="download">Save file</v-btn>
@@ -422,6 +441,7 @@ export default {
   data() {
     return {
       active_step: 1,
+      loadingServiceData: false,
       selected_service: null,
       mdText: MarkDownData,
       library_services: config.library_services,
@@ -452,12 +472,18 @@ export default {
           value: "Library name"
         },
         {
+          text: "Type",
+          align: "start",
+          value: "Type of library"
+        },
+        {
           text: "Address 1",
           align: "start",
           value: "Address 1"
         },
         { text: "Postcode", value: "Postcode" },
         { text: "Statutory", value: "Statutory" },
+        { text: "Closed", value: "Closed year" },
         { text: "Actions", value: "actions", sortable: false }
       ],
       libraries: [],
@@ -558,15 +584,14 @@ export default {
       this.close();
     },
     loadLibraries: async function () {
+      this.loadingServiceData = true;
       let self = this;
-
-      // Work out the file URL
       let service = this.selected_service;
-
       const url = `${config.libraries_data_url}${service}`;
       const data = await csvHelper.parseUrl(url);
       self.libraries = data;
       self.active_step = 2;
+      this.loadingServiceData = false;
     },
     download() {
       this.downloadFile(`${this.selected_service}_libraries.csv`, this.libraries);
@@ -587,9 +612,7 @@ export default {
         document.body.removeChild(link);
       }
     },
-    publishChanges: async function () {
-      
-    },
+    publishChanges: async function () {}
   },
   components: {
     "custom-header": Header,

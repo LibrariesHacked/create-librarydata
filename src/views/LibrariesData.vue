@@ -36,14 +36,15 @@
               <v-alert
                 color="info"
                 dark
-                icon="mdi-school"
+                icon="mdi-school-outline"
                 prominent
                 border="left"
                 outlined
               >
-                Get started by choosing a library service from the list. All UK library services are displayed in alphabetical order.
+                Get started by choosing a library service from the list. All UK library
+                services are displayed in alphabetical order.
               </v-alert>
-              <service-select @change="selected_service = $event" />
+              <service-select v-on:change="selected_service = $event" />
               <v-btn
                 color="primary"
                 outlined
@@ -53,7 +54,7 @@
                 v-on:click="loadLibraries"
               >
                 Edit library data
-                <v-icon right dark>mdi-chevron-right</v-icon>
+                <v-icon right>mdi-chevron-right-circle-outline</v-icon>
               </v-btn>
             </v-container>
           </v-stepper-content>
@@ -63,14 +64,21 @@
               <v-alert
                 color="info"
                 dark
-                icon="mdi-school"
+                icon="mdi-school-outline"
                 prominent
                 border="left"
                 outlined
               >
-                Use this page to view and edit the data for the libraries. For the fields shown in the table, select on the field to change the value. For extended editing use the edit icon in the actions column. 
+                The table displays the current library service point data. For the fields
+                shown in the table, select the field to change the value. For extended
+                editing use the edit icon in the actions column.
               </v-alert>
-              <v-data-table :headers="headers" :items="libraries" sort-by="name" disable-sort>
+              <v-data-table
+                :headers="headers"
+                :items="libraries"
+                sort-by="name"
+                disable-sort
+              >
                 <template v-slot:top>
                   <v-toolbar flat>
                     <v-spacer></v-spacer>
@@ -83,7 +91,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn text color="success" v-bind="attrs" v-on="on">
-                          <v-icon left dark>mdi-plus</v-icon>
+                          <v-icon left dark>mdi-plus-circle-outline</v-icon>
                           Add library
                         </v-btn>
                       </template>
@@ -92,7 +100,7 @@
                           <v-container>
                             <template>
                               <v-tabs>
-                                <v-tab>Main details</v-tab>
+                                <v-tab>Library</v-tab>
                                 <v-tab>Location</v-tab>
                                 <v-tab>Opening hours</v-tab>
                                 <v-tab-item>
@@ -100,7 +108,9 @@
                                   <v-row>
                                     <v-col cols="12" sm="6" md="6">
                                       <service-select
-                                        @change="editedItem['Local authority'] = $event"
+                                        v-on:change="
+                                          editedItem['Local authority'] = $event
+                                        "
                                       />
                                     </v-col>
                                     <v-col cols="12" sm="6" md="6">
@@ -256,13 +266,13 @@
                                           <v-btn
                                             icon
                                             color="primary"
-                                            @click="
+                                            v-on:click="
                                               addOpeningHoursEntry(
                                                 day + ' ' + hourType + ' hours'
                                               )
                                             "
                                           >
-                                            <v-icon>mdi-plus-circle</v-icon>
+                                            <v-icon>mdi-plus-circle-outline</v-icon>
                                           </v-btn>
                                           {{ day }} {{ hourType }}
                                         </div>
@@ -282,7 +292,7 @@
                                           close
                                           close-icon="mdi-delete"
                                           color="primary"
-                                          @click:close="
+                                          v-on:click:close="
                                             removeOpeningHoursEntry(
                                               day + ' ' + hourType + ' hours',
                                               session
@@ -300,8 +310,14 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text color="secondary" @click="close">Cancel</v-btn>
-                          <v-btn text color="success" @click="save">Ok</v-btn>
+                          <v-btn text color="accent" v-on:click="close">
+                            <v-icon left>mdi-close-circle-outline</v-icon>
+                            Cancel
+                          </v-btn>
+                          <v-btn text color="success" v-on:click="save">
+                            <v-icon left>mdi-check-circle-outline</v-icon>
+                            Ok
+                          </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -313,13 +329,25 @@
                       max-width="500px"
                     >
                       <v-card>
-                        <v-card-title class="text-h5">Remove this library?</v-card-title>
+                        <v-card-title>Remove this library?</v-card-title>
+                        <v-card-text>
+                          <p>
+                            This will completely remove this library from the dataset.
+                          </p>
+                          <p>
+                            If the library has closed it does not need to be removed. The closed year should be entered in the library details. 
+                          </p>
+                        </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text color="secondary" @click="closeDelete"
-                            >Cancel</v-btn
-                          >
-                          <v-btn text color="error" @click="deleteItemConfirm">Ok</v-btn>
+                          <v-btn text color="accent" v-on:click="closeDelete">
+                            <v-icon left>mdi-close-circle-outline</v-icon>
+                            Cancel
+                          </v-btn>
+                          <v-btn text color="success" v-on:click="deleteItemConfirm">
+                            <v-icon left>mdi-check-circle-outline</v-icon>
+                            Ok
+                          </v-btn>
                           <v-spacer></v-spacer>
                         </v-card-actions>
                       </v-card>
@@ -332,9 +360,7 @@
                       max-width="500px"
                     >
                       <v-card>
-                        <v-card-title class="text-h5"
-                          >Add opening hours session</v-card-title
-                        >
+                        <v-card-title>Add opening hours session</v-card-title>
                         <v-card-text>
                           <v-row>
                             <v-col cols="12" sm="6" md="6">
@@ -363,7 +389,7 @@
                                 <v-time-picker
                                   v-model="openingHoursOpen"
                                   full-width
-                                  @click:minute="
+                                  v-on:click:minute="
                                     $refs.openingHoursOpenMenu.save(openingHoursOpen)
                                   "
                                 ></v-time-picker>
@@ -395,7 +421,7 @@
                                 <v-time-picker
                                   v-model="openingHoursClose"
                                   full-width
-                                  @click:minute="
+                                  v-on:click:minute="
                                     $refs.openingHoursCloseMenu.save(openingHoursClose)
                                   "
                                 ></v-time-picker>
@@ -405,8 +431,15 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text color="secondary" @click="closeOpeningHoursEntry">Cancel</v-btn>
-                          <v-btn text color="success" @click="confirmOpeningHoursEntry">Ok</v-btn>
+                          <v-btn text color="accent" v-on:click="closeOpeningHoursEntry"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="success"
+                            v-on:click="confirmOpeningHoursEntry"
+                            >Ok</v-btn
+                          >
                           <v-spacer></v-spacer>
                         </v-card-actions>
                       </v-card>
@@ -414,14 +447,20 @@
                   </v-toolbar>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                  <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-                  <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+                  <div class="d-flex">
+                    <v-icon color="primary" class="mr-2" v-on:click="editItem(item)">
+                      mdi-square-edit-outline
+                    </v-icon>
+                    <v-icon color="error" v-on:click="deleteItem(item)"
+                      >mdi-delete-outline</v-icon
+                    >
+                  </div>
                 </template>
                 <template v-slot:no-data> </template>
               </v-data-table>
-              <v-btn outlined large color="primary" @click="goToPublish">
+              <v-btn outlined large color="primary" v-on:click="goToPublish">
                 Publish the data
-                <v-icon right dark> mdi-chevron-right </v-icon>
+                <v-icon right dark>mdi-chevron-right-circle-outline</v-icon>
               </v-btn>
             </v-container>
           </v-stepper-content>
@@ -430,21 +469,25 @@
               <v-alert
                 color="info"
                 dark
-                icon="mdi-school"
+                icon="mdi-school-outline"
                 prominent
                 border="left"
                 outlined
               >
-                You can save a copy of the edited data to your computer in CSV format. If you are logged in on behalf of the library, you can overwrite the currently stored version of the data.
+                You can save a copy of the edited data to your computer in CSV format. If
+                you are logged in on behalf of the library, you can overwrite the
+                currently stored version of the data.<br /><br />
+                If publishing a new version of the data, this will take a day to process.
+                Please do not submit multiple changes per day.
               </v-alert>
             </v-container>
-            <v-btn outlined large color="primary" @click="download" class="ma-2">
+            <v-btn outlined large color="primary" v-on:click="download" class="ma-2">
               Save file
-              <v-icon right dark>mdi-save</v-icon>
+              <v-icon right dark>mdi-content-save-outline</v-icon>
             </v-btn>
-            <v-btn outlined large color="primary" @click="publishChanges">
+            <v-btn outlined large color="primary" v-on:click="publishChanges">
               Publish changes
-              <v-icon right dark>mdi-cloud-upload</v-icon>
+              <v-icon right dark>mdi-cloud-upload-outline</v-icon>
             </v-btn>
           </v-stepper-content>
         </v-stepper>

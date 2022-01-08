@@ -2,7 +2,7 @@
   <div>
     <custom-header
       title="Libraries"
-      subtitle="Location opening hours, types, and contact details"
+      subtitle="Public library opening hours, types, and contact details"
     />
     <section>
       <v-container>
@@ -19,9 +19,9 @@
             <v-divider></v-divider>
             <v-stepper-step
               :complete="active_step > 2"
+              :editable="active_step > 2"
               step="2"
               color="primary"
-              :editable="active_step > 1"
             >
               Edit
             </v-stepper-step>
@@ -60,6 +60,16 @@
 
           <v-stepper-content step="2">
             <v-container>
+              <v-alert
+                color="info"
+                dark
+                icon="mdi-school"
+                prominent
+                border="left"
+                outlined
+              >
+                Use this page to view and edit the data for the libraries. For the fields shown in the table, select on the field to change the value. For extended editing use the edit icon in the actions column. 
+              </v-alert>
               <v-data-table :headers="headers" :items="libraries" sort-by="name" disable-sort>
                 <template v-slot:top>
                   <v-toolbar flat>
@@ -416,8 +426,26 @@
             </v-container>
           </v-stepper-content>
           <v-stepper-content step="3">
-            <v-btn text color="success" @click="download">Save file</v-btn>
-            <v-btn text color="success" @click="publishChanges">Publish changes</v-btn>
+            <v-container>
+              <v-alert
+                color="info"
+                dark
+                icon="mdi-school"
+                prominent
+                border="left"
+                outlined
+              >
+                You can save a copy of the edited data to your computer in CSV format. If you are logged in on behalf of the library, you can overwrite the currently stored version of the data.
+              </v-alert>
+            </v-container>
+            <v-btn outlined large color="primary" @click="download" class="ma-2">
+              Save file
+              <v-icon right dark>mdi-save</v-icon>
+            </v-btn>
+            <v-btn outlined large color="primary" @click="publishChanges">
+              Publish changes
+              <v-icon right dark>mdi-cloud-upload</v-icon>
+            </v-btn>
           </v-stepper-content>
         </v-stepper>
       </v-container>

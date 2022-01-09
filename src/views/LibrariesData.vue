@@ -14,7 +14,7 @@
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
             <v-stepper-step :complete="active_step > 1" step="1" color="primary" editable>
-              Select library service
+              {{ this.selected_service ? this.selected_service.name : 'Select library service' }}
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step
@@ -106,14 +106,7 @@
                                 <v-tab-item>
                                   <v-container></v-container>
                                   <v-row>
-                                    <v-col cols="12" sm="6" md="6">
-                                      <service-select
-                                        v-on:change="
-                                          editedItem['Local authority'] = $event
-                                        "
-                                      />
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="6">
+                                    <v-col cols="12">
                                       <v-text-field
                                         outlined
                                         v-model="editedItem['Library name']"
@@ -335,7 +328,8 @@
                             This will completely remove this library from the dataset.
                           </p>
                           <p>
-                            If the library has closed it does not need to be removed. The closed year should be entered in the library details. 
+                            If the library has closed it does not need to be removed. The
+                            closed year should be entered in the library details.
                           </p>
                         </v-card-text>
                         <v-card-actions>
@@ -344,9 +338,9 @@
                             <v-icon left>mdi-close-circle-outline</v-icon>
                             Cancel
                           </v-btn>
-                          <v-btn text color="success" v-on:click="deleteItemConfirm">
-                            <v-icon left>mdi-check-circle-outline</v-icon>
-                            Ok
+                          <v-btn text color="error" v-on:click="deleteItemConfirm">
+                            <v-icon left>mdi-delete-outline</v-icon>
+                            Delete
                           </v-btn>
                           <v-spacer></v-spacer>
                         </v-card-actions>
@@ -448,12 +442,10 @@
                 </template>
                 <template v-slot:item.actions="{ item }">
                   <div class="d-flex">
-                    <v-icon color="primary" class="mr-2" v-on:click="editItem(item)">
-                      mdi-square-edit-outline
+                    <v-icon class="mr-2" v-on:click="editItem(item)">
+                      mdi-pencil-outline
                     </v-icon>
-                    <v-icon color="error" v-on:click="deleteItem(item)"
-                      >mdi-delete-outline</v-icon
-                    >
+                    <v-icon v-on:click="deleteItem(item)">mdi-delete-outline</v-icon>
                   </div>
                 </template>
                 <template v-slot:no-data> </template>
@@ -500,10 +492,8 @@
 import Header from "../components/Header";
 import ServiceSelect from "../components/ServiceSelect";
 
-import * as csvHelper from "../helpers/csv";
 import * as Papa from "papaparse";
-
-const config = require("../helpers/config.json");
+import * as schemaHelper from "../helpers/schemas";
 
 import MarkDownData from "../markdown/librariesdata.md";
 import VueMarkdownPlus from "vue-markdown-plus";
@@ -515,7 +505,6 @@ export default {
       loadingServiceData: false,
       selected_service: null,
       mdText: MarkDownData,
-      library_services: config.library_services,
       library_form_active: false,
       days: [
         "Monday",
@@ -542,6 +531,7 @@ export default {
           align: "start",
           value: "Library name"
         },
+        { text: "Closed", value: "Year closed" },
         {
           text: "Type",
           align: "start",
@@ -554,7 +544,6 @@ export default {
         },
         { text: "Postcode", value: "Postcode" },
         { text: "Statutory", value: "Statutory" },
-        { text: "Closed", value: "Closed year" },
         { text: "Actions", value: "actions", sortable: false }
       ],
       libraries: [],
@@ -614,6 +603,7 @@ export default {
       this.dialogMainLibrary = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedItem['Local authority'] = this.selected_service.name;
         this.editedIndex = -1;
       });
     },
@@ -658,14 +648,13 @@ export default {
       this.loadingServiceData = true;
       let self = this;
       let service = this.selected_service;
-      const url = `${config.libraries_data_url}${service}`;
-      const data = await csvHelper.parseUrl(url);
-      self.libraries = data;
+      const libraries = await schemaHelper.getLibrarySchemaData(service.code);
+      self.libraries = libraries;
       self.active_step = 2;
       this.loadingServiceData = false;
     },
     download() {
-      this.downloadFile(`${this.selected_service}_libraries.csv`, this.libraries);
+      this.downloadFile(`${service.code}_libraries.csv`, this.libraries);
     },
     downloadFile: function (filename, data) {
       var csv = new Blob([Papa.unparse(data)], {
@@ -683,7 +672,9 @@ export default {
         document.body.removeChild(link);
       }
     },
-    publishChanges: async function () {}
+    publishChanges: async function () {
+      
+    }
   },
   components: {
     "custom-header": Header,

@@ -8,6 +8,7 @@
       outlined
       :value="value"
       @change="update"
+      return-object
     ></v-select>
   </section>
 </template>

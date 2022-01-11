@@ -648,12 +648,13 @@ export default {
       this.loadingServiceData = true;
       let self = this;
       let service = this.selected_service;
-      const libraries = await schemaHelper.getLibrarySchemaData(service.code);
+      const libraries = await schemaHelper.getSchemaData('libraries', service.code);
       self.libraries = libraries;
       self.active_step = 2;
       this.loadingServiceData = false;
     },
     download() {
+      let service = this.selected_service;
       this.downloadFile(`${service.code}_libraries.csv`, this.libraries);
     },
     downloadFile: function (filename, data) {
@@ -673,7 +674,11 @@ export default {
       }
     },
     publishChanges: async function () {
-      
+      let service = this.selected_service;
+      const csvData = new Blob([Papa.unparse(this.libraries)], {
+        type: "text/csv;charset=utf-8;"
+      });
+      const save = await schemaHelper.saveSchemaFile('libraries', service.code, csvData, this.$store.state.loginKey);
     }
   },
   components: {

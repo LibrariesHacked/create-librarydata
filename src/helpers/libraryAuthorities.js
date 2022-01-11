@@ -1,4 +1,3 @@
-// Axios for making requests
 import axios from "axios";
 
 const config = require("./config.json");
@@ -19,4 +18,8 @@ export async function getLibraryAuthorityByName(name) {
   } else {
     return {};
   }
+}
+
+export function getLibraryAuthoritySystemName(name) {
+  return name.replace(/[. ,:-]+/g, '-').toLowerCase()
 }

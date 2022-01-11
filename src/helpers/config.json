@@ -6,7 +6,7 @@
   "authorities_path": "https://api-geography.librarydata.uk/rest/libraryAuthorities",
   "authenticate_path": "https://api.librarydata.uk/authenticate",
   "authenticate_website": "create.librarydata.uk",
-  "libraries_data_url": "https://api.librarydata.uk/schemas/libraries/",
+  "schema_url": "http://localhost:3000/schemas/",
   "schemas": {
     "membership": {
       "name": "Membership",

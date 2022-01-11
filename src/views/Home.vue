@@ -14,7 +14,7 @@
         <h2>Library locations</h2>
         <ol>
           <li>
-            <router-link to="/library-locations" exact
+            <router-link to="/libraries" exact
               >Editor for library locations dataset</router-link
             >
           </li>

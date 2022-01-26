@@ -22,6 +22,7 @@
 <script>
 import Header from "../components/Header";
 import MarkDownData from "../markdown/eventsdata.md";
+import VueMarkdownPlus from "vue-markdown-plus";
 
 export default {
   data() {
@@ -31,7 +32,8 @@ export default {
   },
   methods: {},
   components: {
-    "custom-header": Header
+    "custom-header": Header,
+    VueMarkdownPlus
   }
 };
 </script>

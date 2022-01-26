@@ -78,7 +78,7 @@
                   <v-container>
                     <v-subheader>My columns include a count</v-subheader>
                     <v-select
-                      :value="option"
+                      :value="counts_column"
                       :items="columns.filter(c => c !== postcode_column)"
                       :disabled="
                         postcode_column === '' ||
@@ -200,7 +200,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                        v-model="date"
+                        v-model="extract_date"
                         label="Count date"
                         prepend-icon="mdi-calendar"
                         readonly
@@ -208,7 +208,7 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="date" scrollable>
+                    <v-date-picker v-model="extract_date" scrollable>
                       <v-spacer></v-spacer>
                       <v-btn text color="primary" @click="modal = false">
                         Cancel
@@ -303,7 +303,8 @@ export default {
       ],
       authority: "",
       extract_date: null,
-      library_services: config.library_services
+      library_services: config.library_services,
+      modal: false
     };
   },
   methods: {

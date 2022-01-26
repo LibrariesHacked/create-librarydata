@@ -69,13 +69,13 @@
           ref="mglMap"
         >
           <MglVectorLayer
-            sourceId="lsoa_boundaries"
+            :sourceId="lsoasSource.id"
             :source="lsoasSource"
             layerId="lsoa_boundaries_fill"
             :layer="lsoasLayerFill"
           />
           <MglVectorLayer
-            sourceId="lsoa_boundaries"
+            :sourceId="lsoasSource.id"
             :source="lsoasSource"
             layerId="lsoa_boundaries_label"
             :layer="lsoasLayerLabel"
@@ -181,6 +181,7 @@ export default {
       lsoaFiles: [],
       lsoasSource: {
         type: "vector",
+        id: "lsoa_boundaries",
         tiles: [config.lsoa_tiles],
         promoteId: { lsoa_boundaries: "code" }
       },

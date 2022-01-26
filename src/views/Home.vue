@@ -40,6 +40,7 @@
 import Header from "../components/Header";
 
 import MarkDownData from "../markdown/home.md";
+import VueMarkdownPlus from "vue-markdown-plus";
 
 export default {
   data() {
@@ -48,6 +49,6 @@ export default {
     };
   },
   methods: {},
-  components: { "custom-header": Header }
+  components: { "custom-header": Header, VueMarkdownPlus }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-select
-      :items="library_services.sort((a, b) => a.name.localeCompare(b.name))"
+      :items="library_services"
       item-text="nice_name"
       item-value="code"
       label="Choose a library service"
@@ -31,9 +31,10 @@ export default {
   props: ["value"],
   methods: {
     async getServices() {
-      let res = await authoritiesHelper.getLibraryAuthorities();
-      this.$store.commit("setServices", res);
-      this.library_services = this.$store.state.library_services;
+      let services = await authoritiesHelper.getLibraryAuthorities();
+      services = services.sort((a, b) => a.name.localeCompare(b.name))
+      this.$store.commit("setServices", services);
+      this.library_services = services;
     },
     update(newValue) {
       this.$emit("change", newValue);

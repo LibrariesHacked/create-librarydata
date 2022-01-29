@@ -81,7 +81,7 @@
                 :items="libraries"
                 sort-by="name"
                 disable-sort
-                :loading="loadingLibraries"
+                :loading="loadingServiceData"
                 loading-text="Loading... Please wait"
               >
                 <template v-slot:top>
@@ -114,7 +114,7 @@
                                     <v-col cols="12">
                                       <v-text-field
                                         outlined
-                                        v-model="editedItem['Library name']"
+                                        v-model="editedItem.Library_name"
                                         label="Name"
                                       ></v-text-field>
                                     </v-col>
@@ -122,7 +122,7 @@
                                   <v-row>
                                     <v-col cols="12" sm="8" md="8">
                                       <v-select
-                                        v-model="editedItem['Type of library']"
+                                        v-model="editedItem.Type_of_library"
                                         label="Type"
                                         :items="[
                                           { text: 'Local authority', value: 'LAL' },
@@ -140,7 +140,7 @@
                                     </v-col>
                                     <v-col cols="12" sm="4" md="4">
                                       <v-select
-                                        v-model="editedItem['Statutory']"
+                                        v-model="editedItem.Statutory"
                                         :items="['Yes', 'No']"
                                         label="Statutory"
                                         dense
@@ -153,7 +153,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Year opened']"
+                                        v-model="editedItem.Year_opened"
                                         label="Year opened"
                                         type="number"
                                       ></v-text-field>
@@ -162,7 +162,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Year closed']"
+                                        v-model="editedItem.Year_closed"
                                         label="Year closed"
                                         type="number"
                                       ></v-text-field>
@@ -173,7 +173,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Email address']"
+                                        v-model="editedItem.Email_address"
                                         label="Email address"
                                       ></v-text-field>
                                     </v-col>
@@ -181,7 +181,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['URL']"
+                                        v-model="editedItem.URL"
                                         label="Website"
                                       ></v-text-field>
                                     </v-col>
@@ -191,7 +191,7 @@
                                       <v-textarea
                                         dense
                                         outlined
-                                        v-model="editedItem['Notes']"
+                                        v-model="editedItem.Notes"
                                         label="Notes"
                                         full-width
                                       ></v-textarea>
@@ -205,7 +205,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Address 1']"
+                                        v-model="editedItem.Address_1"
                                         label="Address 1"
                                       ></v-text-field>
                                     </v-col>
@@ -213,7 +213,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Address 2']"
+                                        v-model="editedItem.Address_2"
                                         label="Address 2"
                                       ></v-text-field>
                                     </v-col>
@@ -223,7 +223,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Address 3']"
+                                        v-model="editedItem.Address_3"
                                         label="Address 3"
                                       ></v-text-field>
                                     </v-col>
@@ -231,7 +231,7 @@
                                       <v-text-field
                                         dense
                                         outlined
-                                        v-model="editedItem['Postcode']"
+                                        v-model="editedItem.Postcode"
                                         label="Postcode"
                                       ></v-text-field>
                                     </v-col>
@@ -242,7 +242,7 @@
                                         dense
                                         outlined
                                         v-model="
-                                          editedItem['Unique property reference number']
+                                          editedItem.Unique_property_reference_number
                                         "
                                         label="Unique property reference number"
                                       ></v-text-field>
@@ -266,7 +266,7 @@
                                             color="primary"
                                             v-on:click="
                                               addOpeningHoursEntry(
-                                                day + ' ' + hourType + ' hours'
+                                                day + '_' + hourType + '_hours'
                                               )
                                             "
                                           >
@@ -278,10 +278,10 @@
                                         <v-chip
                                           class="ma-1"
                                           v-for="session in editedItem[
-                                            day + ' ' + hourType + ' hours'
+                                            day + ' ' + hourType + '_hours'
                                           ]
                                             ? editedItem[
-                                                day + ' ' + hourType + ' hours'
+                                                day + '_' + hourType + '_hours'
                                               ].split(',')
                                             : ''"
                                           :key="session"
@@ -292,7 +292,7 @@
                                           color="primary"
                                           v-on:click:close="
                                             removeOpeningHoursEntry(
-                                              day + ' ' + hourType + ' hours',
+                                              day + '_' + hourType + '_hours',
                                               session
                                             )
                                           "
@@ -445,23 +445,109 @@
                     </v-dialog>
                   </v-toolbar>
                 </template>
-                <template v-slot:item.Yearclosed="{ item }">
-                  <v-edit-dialog
-                    :return-value.sync="props.item['Year closed']"
-                    @save="save"
-                    @cancel="cancel"
-                    @open="open"
-                    @close="close"
-                  >
-                    {{ item[`Year closed`] }} Hello
+                <template v-slot:item.Library_name="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Library_name">
+                    {{ item.Library_name }}
                     <template v-slot:input>
-                      <v-text-field
-                        v-model="props.item['Year closed']"
-                        :rules="[max25chars]"
-                        label="Edit"
-                        single-line
-                        counter
-                      ></v-text-field>
+                      <p>
+                        <br />
+                        <v-text-field
+                          outlined
+                          v-model="item.Library_name"
+                          label="Name"
+                        ></v-text-field>
+                      </p>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.Year_closed="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Year_closed">
+                    {{ item.Year_closed }}
+                    <template v-slot:input>
+                      <p>
+                        <br />
+                        <v-text-field
+                          outlined
+                          v-model="item.Year_closed"
+                          label="Year closed"
+                          type="number"
+                        ></v-text-field>
+                      </p>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.Type_of_library="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Type_of_library">
+                    {{ item.Type_of_library }}
+                    <template v-slot:input>
+                      <p>
+                        <br />
+                        <v-select
+                          v-model="item.Type_of_library"
+                          label="Type"
+                          :items="[
+                            { text: 'Local authority', value: 'LAL' },
+                            {
+                              text: 'Local authority (unstaffed)',
+                              value: 'LAL-'
+                            },
+                            { text: 'Commisioned', value: 'CL' },
+                            { text: 'Community-run', value: 'CRL' },
+                            { text: 'Independent', value: 'IL' }
+                          ]"
+                          dense
+                          outlined
+                        ></v-select>
+                      </p>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.Address_1="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Address_1">
+                    {{ item.Address_1 }}
+                    <template v-slot:input>
+                      <p>
+                        <br />
+                        <v-text-field
+                          dense
+                          outlined
+                          v-model="item.Address_1"
+                          label="Address 1"
+                        ></v-text-field>
+                      </p>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.Postcode="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Postcode">
+                    {{ item.Postcode }}
+                    <template v-slot:input>
+                      <p>
+                        <br />
+                        <v-text-field
+                          dense
+                          outlined
+                          v-model="item.Postcode"
+                          label="Postcode"
+                        ></v-text-field>
+                      </p>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.Statutory="{ item }">
+                  <v-edit-dialog large :return-value.sync="item.Statutory">
+                    {{ item.Statutory }}
+                    <template v-slot:input>
+                      <p>
+                        <br />
+                        <v-select
+                          v-model="item.Statutory"
+                          :items="['Yes', 'No']"
+                          label="Statutory"
+                          dense
+                          outlined
+                        ></v-select>
+                      </p>
                     </template>
                   </v-edit-dialog>
                 </template>
@@ -554,18 +640,18 @@ export default {
         {
           text: "Name",
           align: "start",
-          value: "Library name"
+          value: "Library_name"
         },
-        { text: "Closed", value: "Year closed" },
+        { text: "Closed", value: "Year_closed" },
         {
           text: "Type",
           align: "start",
-          value: "Type of library"
+          value: "Type_of_library"
         },
         {
           text: "Address 1",
           align: "start",
-          value: "Address 1"
+          value: "Address_1"
         },
         { text: "Postcode", value: "Postcode" },
         { text: "Statutory", value: "Statutory" },
@@ -575,37 +661,37 @@ export default {
       editedIndex: -1,
       editedItem: {},
       defaultItem: {
-        "Local authority": "",
-        "Library name": "",
-        "Address 1": "",
-        "Address 2": "",
-        "Address 3": "",
+        Local_authority: "",
+        Library_name: "",
+        Address_1: "",
+        Address_2: "",
+        Address_3: "",
         Postcode: "",
-        "Unique property reference number": "",
+        Unique_property_reference_number: "",
         Statutory: "",
-        "Type of library": "LAL",
-        "Year opened": "",
-        "Year closed": "",
-        "Monday staffed hours": "",
-        "Tuesday staffed hours": "",
-        "Wednesday staffed hours": "",
-        "Thursday staffed hours": "",
-        "Friday staffed hours": "",
-        "Saturday staffed hours": "",
-        "Sunday staffed hours": "",
-        "Monday unstaffed hours": "",
-        "Tuesday unstaffed hours": "",
-        "Wednesday unstaffed hours": "",
-        "Thursday unstaffed hours": "",
-        "Friday unstaffed hours": "",
-        "Saturday unstaffed hours": "",
-        "Sunday unstaffed hours": "",
-        "Special hours": "",
+        Type_of_library: "LAL",
+        Year_opened: "",
+        Year_closed: "",
+        Monday_staffed_hours: "",
+        Tuesday_staffed_hours: "",
+        Wednesday_staffed_hours: "",
+        Thursday_staffed_hours: "",
+        Friday_staffed_hours: "",
+        Saturday_staffed_hours: "",
+        Sunday_staffed_hours: "",
+        Monday_unstaffed_hours: "",
+        Tuesday_unstaffed_hours: "",
+        Wednesday_unstaffed_hours: "",
+        Thursday_unstaffed_hours: "",
+        Friday_unstaffed_hours: "",
+        Saturday_unstaffed_hours: "",
+        Sunday_unstaffed_hours: "",
+        Special_hours: "",
         Colocated: "",
-        "Colocated with": "",
+        Colocated_with: "",
         Notes: "",
         URL: "",
-        "Email address": ""
+        Email_address: ""
       }
     };
   },
@@ -674,6 +760,14 @@ export default {
       let self = this;
       let service = this.selected_service;
       const libraries = await schemaHelper.getSchemaData("libraries", service.code);
+      libraries.forEach((e, i) => {
+        Object.keys(e).forEach((key) => {
+          let val = e[key];
+          let newKey = key.replace(/\s+/g, "_");
+          delete libraries[i][key];
+          libraries[i][newKey] = val;
+        });
+      });
       self.libraries = libraries;
       self.active_step = 2;
       this.loadingServiceData = false;

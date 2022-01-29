@@ -13,8 +13,7 @@ export const saveSchemaFile = async (schemaName, localAuthorityCode, content, lo
   const result = await axios.put(url, content, {
     headers: {
       'Authorization': `Bearer ${loginKey}`, 'Content-Type': 'text/csv'
-    }, 
-    
+    }
   });
   return result.status === 200;
 };

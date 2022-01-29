@@ -9,6 +9,7 @@
       :value="value"
       @change="update"
       return-object
+      :loading="library_services.length === 0"
     ></v-select>
   </section>
 </template>

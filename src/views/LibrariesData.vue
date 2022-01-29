@@ -14,7 +14,11 @@
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
             <v-stepper-step :complete="active_step > 1" step="1" color="primary" editable>
-              {{ this.selected_service ? this.selected_service.name : 'Select library service' }}
+              {{
+                this.selected_service
+                  ? this.selected_service.name
+                  : "Select library service"
+              }}
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step
@@ -69,9 +73,8 @@
                 border="left"
                 outlined
               >
-                The table displays the current library service point data. For the fields
-                shown in the table, select the field to change the value. For extended
-                editing use the edit icon in the actions column.
+                For the fields visible in the table, select the field to change the value.
+                For extended editing use the edit icon in the actions column.
               </v-alert>
               <v-data-table
                 :headers="headers"
@@ -603,7 +606,7 @@ export default {
       this.dialogMainLibrary = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedItem['Local authority'] = this.selected_service.name;
+        this.editedItem["Local authority"] = this.selected_service.name;
         this.editedIndex = -1;
       });
     },
@@ -648,7 +651,7 @@ export default {
       this.loadingServiceData = true;
       let self = this;
       let service = this.selected_service;
-      const libraries = await schemaHelper.getSchemaData('libraries', service.code);
+      const libraries = await schemaHelper.getSchemaData("libraries", service.code);
       self.libraries = libraries;
       self.active_step = 2;
       this.loadingServiceData = false;
@@ -678,7 +681,12 @@ export default {
       const csvData = new Blob([Papa.unparse(this.libraries)], {
         type: "text/csv;charset=utf-8;"
       });
-      const save = await schemaHelper.saveSchemaFile('libraries', service.code, csvData, this.$store.state.loginKey);
+      const save = await schemaHelper.saveSchemaFile(
+        "libraries",
+        service.code,
+        csvData,
+        this.$store.state.loginKey
+      );
     }
   },
   components: {

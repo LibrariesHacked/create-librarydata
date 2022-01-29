@@ -81,6 +81,8 @@
                 :items="libraries"
                 sort-by="name"
                 disable-sort
+                :loading="loadingLibraries"
+                loading-text="Loading... Please wait"
               >
                 <template v-slot:top>
                   <v-toolbar flat>
@@ -443,6 +445,26 @@
                     </v-dialog>
                   </v-toolbar>
                 </template>
+                <template v-slot:item.Yearclosed="{ item }">
+                  <v-edit-dialog
+                    :return-value.sync="props.item['Year closed']"
+                    @save="save"
+                    @cancel="cancel"
+                    @open="open"
+                    @close="close"
+                  >
+                    {{ item[`Year closed`] }} Hello
+                    <template v-slot:input>
+                      <v-text-field
+                        v-model="props.item['Year closed']"
+                        :rules="[max25chars]"
+                        label="Edit"
+                        single-line
+                        counter
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
                 <template v-slot:item.actions="{ item }">
                   <div class="d-flex">
                     <v-icon class="mr-2" v-on:click="editItem(item)">
@@ -451,7 +473,7 @@
                     <v-icon v-on:click="deleteItem(item)">mdi-delete-outline</v-icon>
                   </div>
                 </template>
-                <template v-slot:no-data> </template>
+                <template v-slot:no-data></template>
               </v-data-table>
               <v-btn outlined large color="primary" v-on:click="goToPublish">
                 Publish the data

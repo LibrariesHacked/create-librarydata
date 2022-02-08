@@ -15,7 +15,7 @@
     "@turf/bbox": "^6.5.0",
     "axios": "^0.23.0",
     "colorbrewer": "^1.5.1",
-    "core-js": "^3.20.3",
+    "core-js": "^3.21.0",
     "file-saver": "^2.0.5",
     "mapbox-gl": "^1.13.2",
     "moment": "^2.29.1",
@@ -28,8 +28,8 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
-    "@babel/eslint-parser": "^7.16.5",
+    "@babel/core": "^7.17.2",
+    "@babel/eslint-parser": "^7.17.0",
     "@vue/cli-plugin-babel": "^5.0.0-rc.2",
     "@vue/cli-plugin-eslint": "^5.0.0-rc.2",
     "@vue/cli-service": "^5.0.0-rc.2",

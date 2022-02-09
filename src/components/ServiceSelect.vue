@@ -33,7 +33,7 @@ export default {
   methods: {
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();
-      services = services.sort((a, b) => a.name.localeCompare(b.name))
+      services = services.sort((a, b) => a.name.localeCompare(b.name));
       this.$store.commit("setServices", services);
       this.library_services = services;
     },

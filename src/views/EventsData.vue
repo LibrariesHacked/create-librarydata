@@ -1,19 +1,9 @@
 <template>
   <div>
-    <custom-header title="Events" subtitle="Event attendance and outcomes" />
+    <custom-header title="Events" subtitle="Library event attendance and outcomes" />
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-      </v-container>
-    </section>
-    <section>
-      <v-container>
-        <v-alert color="primary" text type="info">
-          For full guidance see the
-          <a href="https://schema.librarydata.uk/events" target="_blank"
-            >Events dataset schema</a
-          >
-        </v-alert>
       </v-container>
     </section>
   </div>

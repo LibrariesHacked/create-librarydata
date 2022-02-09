@@ -3,7 +3,7 @@
     <v-app-bar app flat outlined clipped-left>
       <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
       <v-container>
-        <v-toolbar-title>Create</v-toolbar-title>
+        <img class="mr-3" :src="require('./assets/logo.png')" height="40"/>
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
@@ -142,7 +142,7 @@
           :class="'/login' === $route.path ? 'highlighted' : ''"
         >
           <v-list-item-icon>
-            <v-icon>mdi-login</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Log in</v-list-item-title>

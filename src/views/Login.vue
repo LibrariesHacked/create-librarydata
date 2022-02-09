@@ -15,7 +15,7 @@
           <template slot="progress">
             <v-progress-linear height="5" indeterminate></v-progress-linear>
           </template>
-          <v-card-title>Receive access email</v-card-title>
+          <v-card-title>Access</v-card-title>
           <v-card-text v-if="!success">
             <v-form ref="form" v-model="valid">
               <v-text-field
@@ -40,6 +40,7 @@
             <v-spacer></v-spacer>
             <v-btn large color="primary" text @click="login" :disabled="!valid">
               Log in
+              <v-icon right>mdi-login</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>

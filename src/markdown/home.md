@@ -1,1 +1,3 @@
-These are tools designed to aid library services in creating and using library open data. Inspired by the public library [open data schemas](https://schema.librarydata.uk), the tools are tailored for the different datasets documented in that project.
+Tools designed to aid library services in creating and using library open data.
+
+Inspired by the public library [open data schemas](https://schema.librarydata.uk), each tool is tailored for a different dataset documented in that project.

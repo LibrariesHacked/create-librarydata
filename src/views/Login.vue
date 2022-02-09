@@ -11,46 +11,38 @@
     </section>
     <section>
       <v-container>
-        <v-layout row wrap>
-          <v-flex xs10 offset-xs1 sm6 offset-sm3>
-            <v-card outlined elevation="0" :loading="loading">
-              <v-card-title>
-                <span class="headline">Request access</span>
-              </v-card-title>
-              <template slot="progress">
-                <v-progress-linear
-                  height="5"
-                  indeterminate
-                ></v-progress-linear>
-              </template>
-              <v-card-text v-if="!success">
-                <v-form ref="form" v-model="valid">
-                  <v-text-field
-                    dense
-                    outlined
-                    v-model="email"
-                    :rules="emailRules"
-                    label="Email"
-                    type="email"
-                    prepend-icon="mdi-email"
-                    color="primary"
-                    required
-                  ></v-text-field>
-                  <p>{{message}}</p>
-                </v-form>
-              </v-card-text>
-              <v-card-text v-if="success">
-                  Thank you - you should receive an email shortly.
-              </v-card-text>
-              <v-card-actions v-if="!success">
-                <v-spacer></v-spacer>
-                <v-btn large color="primary" text @click="login" :disabled="!valid">
-                  Log in
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <v-card outlined :loading="loading" max-width="350" class="mx-auto">
+          <template slot="progress">
+            <v-progress-linear height="5" indeterminate></v-progress-linear>
+          </template>
+          <v-card-title>Receive access email</v-card-title>
+          <v-card-text v-if="!success">
+            <v-form ref="form" v-model="valid">
+              <v-text-field
+                clearable
+                dense
+                outlined
+                v-model="email"
+                :rules="emailRules"
+                label="Enter email address"
+                type="email"
+                prepend-inner-icon="mdi-email"
+                color="primary"
+                required
+              ></v-text-field>
+              <p>{{ message }}</p>
+            </v-form>
+          </v-card-text>
+          <v-card-text v-if="success">
+            Thank you - you should receive an email shortly.
+          </v-card-text>
+          <v-card-actions v-if="!success">
+            <v-spacer></v-spacer>
+            <v-btn large color="primary" text @click="login" :disabled="!valid">
+              Log in
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-container>
     </section>
   </div>
@@ -77,8 +69,8 @@ export default {
       message: ""
     };
   },
-  created: function(){      
-     this.stripLoginKey();   
+  created: function () {
+    this.stripLoginKey();
   },
   methods: {
     async login() {
@@ -95,13 +87,13 @@ export default {
       }
       this.loading = false;
     },
-    stripLoginKey: function(){
+    stripLoginKey: function () {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      const key = urlParams.get('key');
+      const key = urlParams.get("key");
       if (key) {
-        this.$store.commit('setLoginKey', key);
-        this.$router.push('/profile');
+        this.$store.commit("setLoginKey", key);
+        this.$router.push("/profile");
       }
     }
   },

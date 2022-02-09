@@ -8,13 +8,7 @@
       </v-container>
     </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      clipped
-      hide-overlay
-      class="elevation-0"
-    >
+    <v-navigation-drawer v-model="drawer" app clipped hide-overlay class="elevation-0">
       <v-list nav dense>
         <v-list-item-group>
           <v-list-item

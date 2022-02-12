@@ -1,16 +1,31 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import * as jose from 'jose';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    // Logged in user data
     loginKey: null,
+    loginSubject: null,
+    loginIssuer: null,
+    loginExpires: null,
+    loginAdmin: false,
+    // Library service lookups
     library_services: []
   },
   mutations: {
     initialiseStore(state) {
-      if (localStorage.getItem('loginKey')) state.loginKey = localStorage.getItem('loginKey');
+      if (localStorage.getItem('loginKey')) {
+        state.loginKey = localStorage.getItem('loginKey');
+        const claims = jose.decodeJwt(state.loginKey);
+        state.loginSubject = claims.sub;
+        state.loginIssuer = claims.iss;
+        state.loginExpires = claims.exp;
+        state.loginAdmin = claims.admin;
+      }
     },
     setLoginKey(state, key) {
       localStorage.setItem('loginKey', key);

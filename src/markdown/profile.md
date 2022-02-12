@@ -1,1 +1,1 @@
-You are currently logged into this site. See below for details of your account
+If logged in this page will display details of your account.

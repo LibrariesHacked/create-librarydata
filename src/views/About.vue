@@ -1,9 +1,6 @@
 <template>
   <div>
-    <custom-header
-      title="About"
-      subtitle="What this site is for and how it works"
-    />
+    <custom-header title="About" subtitle="What this site is for and how it works" />
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>

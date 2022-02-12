@@ -37,16 +37,9 @@
 
           <v-stepper-content step="1">
             <v-container>
-              <v-alert
-                color="info"
-                dark
-                icon="mdi-school-outline"
-                prominent
-                border="left"
-                outlined
-              >
-                Get started by choosing a library service from the list. All UK library
-                services are displayed in alphabetical order.
+              <v-alert border="left" icon="mdi-school-outline" text type="success">
+                Get started by choosing a library service from the list. UK library
+                services are listed in alphabetical order.
               </v-alert>
               <service-select v-on:change="selected_service = $event" />
               <v-btn
@@ -65,16 +58,9 @@
 
           <v-stepper-content step="2">
             <v-container>
-              <v-alert
-                color="info"
-                dark
-                icon="mdi-school-outline"
-                prominent
-                border="left"
-                outlined
-              >
-                For the fields visible in the table, select the field to change the value.
-                For extended editing use the edit icon in the actions column.
+              <v-alert border="left" icon="mdi-school-outline" text type="success">
+                Select fields to change their values. For extended editing of library
+                details, use the edit icon in the actions column.
               </v-alert>
               <v-data-table
                 :headers="headers"
@@ -569,19 +555,10 @@
           </v-stepper-content>
           <v-stepper-content step="3">
             <v-container>
-              <v-alert
-                color="info"
-                dark
-                icon="mdi-school-outline"
-                prominent
-                border="left"
-                outlined
-              >
+              <v-alert border="left" icon="mdi-school-outline" text type="success">
                 You can save a copy of the edited data to your computer in CSV format. If
                 you are logged in on behalf of the library, you can overwrite the
-                currently stored version of the data.<br /><br />
-                If publishing a new version of the data, this will take a day to process.
-                Please do not submit multiple changes per day.
+                currently stored version of the data.
               </v-alert>
             </v-container>
             <v-btn outlined large color="primary" v-on:click="download" class="ma-2">

@@ -14,6 +14,6 @@ We've also made the website text as simple as possible to understand.
 
 This website is in development and being used by pilot library services. During this time it is being tested for accessibility issues. This is being done using Government Digital Service guidelines [doing a basic accessibility check](https://www.gov.uk/government/publications/doing-a-basic-accessibility-check-if-you-cant-do-a-detailed-one/doing-a-basic-accessibility-check-if-you-cant-do-a-detailed-one).
 
-There are some aspects of the website that use maps to explore data. Although maps are difficult to make accessible we are looking at ensuring the information presented by the map is also available in other formats.
+There are some aspects of the website that use maps to explore data. Although maps are difficult to make accessible, we are looking at making sure the information presented by the map is also available in other formats.
 
-If you do experience any problems using this website, please do raise these and [send us an email](mailto:info@librarieshacked.org).
+If you do experience any problems using this website, please raise these and [send us an email](mailto:info@librarieshacked.org).

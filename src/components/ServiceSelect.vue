@@ -10,6 +10,7 @@
       @change="update"
       return-object
       :loading="library_services.length === 0"
+      prepend-inner-icon="mdi-map-legend"
     ></v-select>
   </section>
 </template>

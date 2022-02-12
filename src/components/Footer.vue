@@ -2,13 +2,13 @@
   <v-container>
     <v-row no-gutters>
       <v-col cols="12" sm="6">
-        <ul class="footerLinks text-body-1">
+        <ul class="footerLinks text-body-1 font-weight-medium">
           <li><router-link to="/accessibility" exact>Accessibility</router-link></li>
           <li><router-link to="/privacy" exact>Privacy</router-link></li>
         </ul>
       </v-col>
       <v-col cols="12" sm="6">
-        <p class="text-body-1">
+        <p class="text-body-1 font-weight-medium">
           <v-btn
             color="success"
             depressed

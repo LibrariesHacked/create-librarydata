@@ -3,7 +3,7 @@
     <v-app-bar app flat outlined clipped-left>
       <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
       <v-container>
-        <img class="mr-3" :src="require('./assets/logo.png')" height="40"/>
+        <img class="mr-3" :src="require('./assets/logo.png')" height="40" />
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>

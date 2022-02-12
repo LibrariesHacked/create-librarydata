@@ -1,5 +1,5 @@
-A library is a static service point which provides access to library services for the public. This does not include mobile libraries, which are covered separately.
+A library is a static service point which provides access to library services for the public.
 
-The libraries dataset is a **register**. This means that to maintain it, the original data needs to be edited and kept up to date.
+The libraries dataset is a **register**. This means that the original data needs to be permanently maintained and kept up to date.
 
-This tool allows you to view and edit the library service point data for libraries in the UK, grouped by library authority. At the end of the process you can save a new copy of the data. If you are a member of the library service, you can update the existing dataset, but ensure you [Log in](/login) before you begin.
+This tool allows you to view and edit the library service point data for libraries in the UK, grouped by service. At the end of the process you can save a new copy of the data. If you have access rights you can update the existing datasets, but ensure you [Log in](/login) before you begin.

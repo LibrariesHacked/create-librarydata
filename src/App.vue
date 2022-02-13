@@ -15,7 +15,11 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="text-h6">Create</v-list-item-title>
-          <v-list-item-subtitle class="font-weight-medium">A <a href="https://www.librarylab.uk" target="_blank">library lab</a> project</v-list-item-subtitle>
+          <v-list-item-subtitle class="font-weight-medium"
+            >A
+            <a href="https://www.librarylab.uk" target="_blank">library lab</a>
+            project</v-list-item-subtitle
+          >
         </v-list-item-content>
       </v-list-item>
       <v-divider />
@@ -169,14 +173,6 @@
             <v-list-item-title>Log in</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="this.$store.state.loginKey" @click="logout">
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Log out</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
         <v-list-item
           v-if="this.$store.state.loginKey"
           :to="'/profile'"
@@ -188,6 +184,14 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-if="this.$store.state.loginKey" @click="logout">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Log out</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

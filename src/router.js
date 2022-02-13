@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Accessibility from "./views/Accessibility.vue";
+import About from "./views/About.vue";
 import Home from "./views/Home.vue";
 import EventsData from "./views/EventsData.vue";
 import LibrariesData from "./views/LibrariesData.vue";
@@ -26,6 +27,11 @@ export default new Router({
       path: "/",
       name: "Home",
       component: Home
+    },
+    {
+      path: "/about",
+      name: "About",
+      component: About
     },
     {
       path: "/events",

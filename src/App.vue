@@ -9,19 +9,39 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app clipped hide-overlay class="elevation-0">
-      <v-list nav dense>
-        <v-list-item-group>
-          <v-list-item
-            :to="'/'"
-            active-class="highlighted"
-            :class="'/' === $route.path ? 'highlighted' : ''"
-          >
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-icon>mdi-paw</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">Create</v-list-item-title>
+          <v-list-item-subtitle class="font-weight-medium">A <a href="https://www.librarylab.uk" target="_blank">library lab</a> project</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
+      <v-list nav dense subheader>
+        <v-list-item
+          :to="'/'"
+          active-class="highlighted"
+          :class="'/' === $route.path ? 'highlighted' : ''"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Home</v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          :to="'/about'"
+          active-class="highlighted"
+          :class="'/about' === $route.path ? 'highlighted' : ''"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-information-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>About</v-list-item-title>
+        </v-list-item>
+        <v-divider />
+        <v-subheader inset>Data tools</v-subheader>
         <v-list-group :value="false" no-action prepend-icon="mdi-calendar-star">
           <template v-slot:activator>
             <v-list-item-content>
@@ -135,6 +155,7 @@
           </v-list-item>
         </v-list-group>
         <v-divider></v-divider>
+        <v-subheader inset>Account</v-subheader>
         <v-list-item
           v-if="!this.$store.state.loginKey"
           :to="'/login'"

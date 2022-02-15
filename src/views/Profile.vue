@@ -9,26 +9,42 @@
     <section>
       <v-container>
         <v-card outlined max-width="350" class="mx-auto">
+          <v-subheader v-if="this.$store.state.loginKey"
+            >Logged in. Session expires
+            {{ this.$store.state.loginExpires.toLocaleString() }}</v-subheader
+          >
+          <v-divider />
           <v-card-text>
-            <p class="text-h4 text--primary">
+            <v-subheader v-if="!this.$store.state.loginKey">Not logged in</v-subheader>
+            <p class="text-h5">
               {{ this.$store.state.loginSubject }}
             </p>
+            <v-chip v-if="this.$store.state.loginAdmin">Admin</v-chip>
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
-            <v-btn v-if="this.$store.state.loginSubject" large color="primary" text @click="logout">
+            <v-btn
+              v-if="this.$store.state.loginKey"
+              large
+              color="primary"
+              text
+              @click="logout"
+            >
               Log out
               <v-icon right>mdi-logout</v-icon>
             </v-btn>
-            <v-btn v-if="!this.$store.state.loginSubject" large color="primary" text :to="'/'">
+            <v-btn
+              v-if="!this.$store.state.loginKey"
+              large
+              color="primary"
+              text
+              :to="'/login'"
+            >
               Log in
               <v-icon right>mdi-login</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
-        {{ this.$store.state.loginExpires }}
-        {{ this.$store.state.loginSubject }}
-        {{ this.$store.state.loginAdmin }}
       </v-container>
     </section>
   </div>
@@ -47,7 +63,11 @@ export default {
       admin: false
     };
   },
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  },
   components: { "custom-header": Header, VueMarkdownPlus }
 };
 </script>

@@ -264,7 +264,7 @@
                                         <v-chip
                                           class="ma-1"
                                           v-for="session in editedItem[
-                                            day + ' ' + hourType + '_hours'
+                                            day + '_' + hourType + '_hours'
                                           ]
                                             ? editedItem[
                                                 day + '_' + hourType + '_hours'
@@ -691,7 +691,7 @@ export default {
       this.dialogMainLibrary = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedItem["Local authority"] = this.selected_service.name;
+        this.editedItem.Local_authority = this.selected_service.name;
         this.editedIndex = -1;
       });
     },
@@ -707,7 +707,7 @@ export default {
       this.dialogOpeningHoursEntry = true;
     },
     removeOpeningHoursEntry(key, session) {
-      var sessions = this.editedItem[key].split(",");
+      var sessions = this.editedItem[key].split(",").filter(x => x.length > 0);
       sessions.splice(sessions.indexOf(session), 1);
       this.editedItem[key] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
@@ -716,7 +716,7 @@ export default {
       this.dialogOpeningHoursEntry = false;
     },
     confirmOpeningHoursEntry() {
-      var sessions = this.editedItem[this.openingHoursEditKey].split(",");
+      var sessions = this.editedItem[this.openingHoursEditKey].split(",").filter(x => x.length > 0);
       sessions.push(`${this.openingHoursOpen}-${this.openingHoursClose}`);
       this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;

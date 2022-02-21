@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     loginIssuer: null,
     loginExpires: null,
     loginAdmin: false,
+    loginCodes: [],
     // Library service lookups
     library_services: []
   },
@@ -25,6 +26,7 @@ const store = new Vuex.Store({
         state.loginIssuer = claims.iss;
         state.loginExpires = new Date(claims.exp * 1000);
         state.loginAdmin = claims.admin;
+        state.loginCodes = claims.codes;
       }
     },
     setLoginKey(state, key) {
@@ -35,6 +37,7 @@ const store = new Vuex.Store({
       state.loginIssuer = claims.iss;
       state.loginExpires = new Date(claims.exp * 1000);
       state.loginAdmin = claims.admin;
+      state.loginCodes = claims.codes;
     },
     logout(state) {
       localStorage.removeItem('loginKey');
@@ -43,6 +46,7 @@ const store = new Vuex.Store({
       state.loginIssuer = null;
       state.loginExpires = null;
       state.loginAdmin = null;
+      state.loginCodes = [];
     },
     setServices(state, library_services) {
       state.library_services = library_services;

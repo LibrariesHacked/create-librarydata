@@ -19,7 +19,20 @@
             <p class="text-h5">
               {{ this.$store.state.loginSubject }}
             </p>
-            <v-chip v-if="this.$store.state.loginAdmin">Admin</v-chip>
+            <p v-if="this.$store.state.loginAdmin">
+              <v-chip color="primary">
+                <v-icon left> mdi-shield-crown-outline </v-icon>
+                Admin
+              </v-chip>
+            </p>
+            <v-chip class="mr-1" v-for="code in this.$store.state.loginCodes" :key="'chip_' + code">
+              <v-icon left>mdi-map-legend</v-icon>
+              {{
+                library_services.length > 0
+                  ? library_services.filter((s) => s.code === code)[0].nice_name
+                  : code
+              }}</v-chip
+            >
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
@@ -54,19 +67,31 @@ import Header from "../components/Header";
 import MarkDownData from "../markdown/profile.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
+const authoritiesHelper = require("../helpers/libraryAuthorities.js");
+
 export default {
   data() {
     return {
       mdText: MarkDownData,
       subject: "",
       expires: "",
-      admin: false
+      admin: false,
+      library_services: []
     };
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    async getServices() {
+      let services = await authoritiesHelper.getLibraryAuthorities();
+      services = services.sort((a, b) => a.name.localeCompare(b.name));
+      this.$store.commit("setServices", services);
+      this.library_services = services;
     }
+  },
+  beforeMount() {
+    this.getServices();
   },
   components: { "custom-header": Header, VueMarkdownPlus }
 };

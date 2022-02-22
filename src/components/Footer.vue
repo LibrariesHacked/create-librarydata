@@ -19,8 +19,6 @@
             <v-icon left>mdi-github</v-icon>
             Code on GitHub
           </v-btn>
-          Developed by
-          <a href="https://www.librarieshacked.org" target="_blank">Libraries Hacked</a>
         </p>
       </v-col>
     </v-row>

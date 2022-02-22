@@ -10,11 +10,11 @@
         </div>
       </v-container>
       <v-container class="text-center">
-        <v-btn x-large color="success" depressed class="mx-1" :to="'/login'">
+        <v-btn x-large color="success" depressed class="mx-1 my-1" :to="'/login'">
           <v-icon left>mdi-account</v-icon>
           Log in
         </v-btn>
-        <v-btn x-large color="info" depressed class="mx-1" :to="'/about'">
+        <v-btn x-large color="info" depressed class="mx-1 my-1" :to="'/about'">
           <v-icon left>mdi-information-outline</v-icon>
           About Create
         </v-btn>
@@ -22,7 +22,7 @@
           x-large
           color="primary"
           outlined
-          class="mx-1"
+          class="mx-1 my-1"
           href="https://schema.librarydata.uk"
           target="_blank"
         >

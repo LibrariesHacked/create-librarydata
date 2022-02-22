@@ -33,6 +33,7 @@
             <v-stepper-step :complete="active_step > 3" step="3" color="primary">
               Publish
             </v-stepper-step>
+            <v-stepper-step step="4" color="primary"> Done </v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-content step="1">
@@ -569,6 +570,33 @@
               Publish changes
               <v-icon right dark>mdi-cloud-upload-outline</v-icon>
             </v-btn>
+            <v-dialog v-model="successDialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="text-h5"> Success </v-card-title>
+                <v-card-text>Your changes have been published. Thank you</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="secondary" text @click="successDialog = false">
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="errorDialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="text-h5"> Sorry </v-card-title>
+                <v-card-text
+                  >Your changes failed to publish - please contact
+                  info@librarieshacked.org</v-card-text
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="secondary" text @click="errorDialog = false">
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-stepper-content>
         </v-stepper>
       </v-container>
@@ -669,7 +697,9 @@ export default {
         Notes: "",
         URL: "",
         Email_address: ""
-      }
+      },
+      successDialog: false,
+      errorDialog: false
     };
   },
   methods: {
@@ -707,7 +737,7 @@ export default {
       this.dialogOpeningHoursEntry = true;
     },
     removeOpeningHoursEntry(key, session) {
-      var sessions = this.editedItem[key].split(",").filter(x => x.length > 0);
+      var sessions = this.editedItem[key].split(",").filter((x) => x.length > 0);
       sessions.splice(sessions.indexOf(session), 1);
       this.editedItem[key] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
@@ -716,7 +746,9 @@ export default {
       this.dialogOpeningHoursEntry = false;
     },
     confirmOpeningHoursEntry() {
-      var sessions = this.editedItem[this.openingHoursEditKey].split(",").filter(x => x.length > 0);
+      var sessions = this.editedItem[this.openingHoursEditKey]
+        .split(",")
+        .filter((x) => x.length > 0);
       sessions.push(`${this.openingHoursOpen}-${this.openingHoursClose}`);
       this.editedItem[this.openingHoursEditKey] = sessions.join(",");
       this.dialogOpeningHoursEntry = false;
@@ -770,16 +802,29 @@ export default {
       }
     },
     publishChanges: async function () {
-      let service = this.selected_service;
-      const csvData = new Blob([Papa.unparse(this.libraries)], {
+      let librariesToPublish = JSON.parse(JSON.stringify(this.libraries));
+      librariesToPublish.forEach((e, i) => {
+        Object.keys(e).forEach((key) => {
+          let val = e[key];
+          let newKey = key.replace(/_/g, " ");
+          delete librariesToPublish[i][key];
+          librariesToPublish[i][newKey] = val;
+        });
+      });
+      const csvData = new Blob([Papa.unparse(librariesToPublish)], {
         type: "text/csv;charset=utf-8;"
       });
-      const save = await schemaHelper.saveSchemaFile(
+      const saveResult = await schemaHelper.saveSchemaFile(
         "libraries",
-        service.code,
+        this.selected_service.code,
         csvData,
         this.$store.state.loginKey
       );
+      if (saveResult) {
+        this.successDialog = true;
+      } else {
+        this.errorDialog = true;
+      }
     }
   },
   components: {

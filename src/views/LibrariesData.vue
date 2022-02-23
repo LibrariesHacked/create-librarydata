@@ -786,7 +786,7 @@ export default {
       this.downloadFile(`${service.code}_libraries.csv`, this.libraries);
     },
     downloadFile: function (filename, data) {
-      var csv = new Blob([Papa.unparse(data)], {
+      var csv = new Blob([Papa.unparse(data) + '\n'], {
         type: "text/csv;charset=utf-8;"
       });
       if (navigator.msSaveBlob) {
@@ -811,7 +811,7 @@ export default {
           librariesToPublish[i][newKey] = val;
         });
       });
-      const csvData = new Blob([Papa.unparse(librariesToPublish)], {
+      const csvData = new Blob([Papa.unparse(librariesToPublish) + '\n'], {
         type: "text/csv;charset=utf-8;"
       });
       const saveResult = await schemaHelper.saveSchemaFile(

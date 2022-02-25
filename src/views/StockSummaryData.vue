@@ -4,16 +4,16 @@
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-      </v-container>
-    </section>
-    <section>
-      <v-container>
-        <v-alert color="primary" text type="info">
-          For full guidance see the
-          <a href="https://schema.librarydata.uk/stock-summary" target="_blank"
-            >Stock summary dataset schema</a
+        <p class="text-center">
+          <v-btn
+            depressed
+            color="primary"
+            href="https://schema.librarydata.uk/stock-summary"
+            target="_blank"
           >
-        </v-alert>
+            Stock summary data schema
+          </v-btn>
+        </p>
       </v-container>
     </section>
   </div>

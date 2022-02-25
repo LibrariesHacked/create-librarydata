@@ -1,11 +1,13 @@
-In 2019 a group of library services and data practioners convened to create a set of [public library data schema](https://schema.librarydata.uk/) that were designed for open data releases.
+In 2019 a group of library service data practioners created a set of [public library data schema](https://schema.librarydata.uk/) that were designed for open data releases.
 
-A more detailed [writeup of that project](https://frictionlessdata.io/blog/2022/02/07/libraries-hacked/#schemas-and-frictionless-data) is available as a case study on the Frictionless Data website.
+Some background about that project:
 
-This website was created to aid in following those data schemas, and in using the data produced from the compliant datasets. It includes:
+* DCMS Blog. 
+* Frictionless Data blog. [Case study of using Table Schema to create a public library data schema](https://frictionlessdata.io/blog/2022/02/07/libraries-hacked/#schemas-and-frictionless-data).
 
-* Tools that would help library services in creating those datasets.
-* A means for collecting and updating those datasets and bringing them to the public.
-* Visualisations of the data.
-* A sharing of data analysis techniques using the data.
-* Data tools that use the data to make decisions.
+This website was created to aid in using those schemas, and the data produced from the datasets. It will include:
+
+* Tools to help library services create and maintain open data
+* Visualisations of the data
+* Sharing data analysis techniques using the data.
+* Data tools that use the data to aid in decision-making

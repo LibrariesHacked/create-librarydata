@@ -4,6 +4,16 @@
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <p class="text-center">
+          <v-btn
+            depressed
+            color="primary"
+            href="https://schema.librarydata.uk/events"
+            target="_blank"
+          >
+            Events data schema
+          </v-btn>
+        </p>
       </v-container>
     </section>
   </div>

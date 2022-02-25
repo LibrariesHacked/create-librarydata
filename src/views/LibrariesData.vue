@@ -7,6 +7,16 @@
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <p class="text-center">
+          <v-btn
+            depressed
+            color="primary"
+            href="https://schema.librarydata.uk/libraries"
+            target="_blank"
+          >
+            Libraries data schema
+          </v-btn>
+        </p>
       </v-container>
     </section>
     <section>

@@ -43,7 +43,6 @@
             <v-stepper-step :complete="active_step > 3" step="3" color="primary">
               Publish
             </v-stepper-step>
-            <v-stepper-step step="4" color="primary"> Done </v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-content step="1">

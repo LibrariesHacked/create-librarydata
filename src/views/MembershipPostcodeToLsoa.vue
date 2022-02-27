@@ -6,21 +6,31 @@
     />
     <section>
       <v-container>
-        <p>
-          England and Wales release statistics at the census-based Lower super output area
-          geographic level. In Scotland, Data Zones are most useful, and in Northern
-          Ireland, Small Areas. This tool converts UK postcodes into the most appropriate
-          matching area.
-        </p>
-        <p>
-          Postcodes are kept secure. A selection of postcode/area pairings are downloaded
-          based on the postcode <b>sectors</b> in your data. The correct areas are then
-          chosen on your local PC.
-        </p>
-        <v-stepper v-model="active_step" vertical flat>
-          <v-stepper-step :complete="active_step > 1" step="1" color="secondary" editable>
-            Load postcodes
-          </v-stepper-step>
+        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+      </v-container>
+    </section>
+    <section>
+      <v-container>
+        <v-stepper v-model="active_step" flat outlined elevation="0">
+          <v-stepper-header class="elevation-0">
+            <v-stepper-step
+              :complete="active_step > 1"
+              step="1"
+              color="secondary"
+              editable
+            >
+              Load postcodes
+            </v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step color="secondary" :complete="active_step > 2" step="2">
+              Choose conversion options
+            </v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step color="secondary" :complete="active_step > 3" step="3">
+              Results
+            </v-stepper-step>
+          </v-stepper-header>
+
           <v-stepper-content step="1">
             <v-row no-gutters>
               <v-col cols="12" sm="6">
@@ -55,9 +65,6 @@
               </v-col>
             </v-row>
           </v-stepper-content>
-          <v-stepper-step color="secondary" :complete="active_step > 2" step="2">
-            Choose conversion options
-          </v-stepper-step>
           <v-stepper-content step="2">
             <v-row no-gutters>
               <v-col cols="12" sm="6">
@@ -79,10 +86,10 @@
                     <v-subheader>My columns include a count</v-subheader>
                     <v-select
                       :value="counts_column"
-                      :items="columns.filter(c => c !== postcode_column)"
+                      :items="columns.filter((c) => c !== postcode_column)"
                       :disabled="
                         postcode_column === '' ||
-                          columns.filter(c => c !== postcode_column).length === 0
+                        columns.filter((c) => c !== postcode_column).length === 0
                       "
                       label="Count column (optional)"
                       outlined
@@ -106,9 +113,7 @@
                       </li>
                     </ol>
                     <br />
-                    <p>
-                      It may take a few minutes depending on number of postcodes.
-                    </p>
+                    <p>It may take a few minutes depending on number of postcodes.</p>
                   </v-alert>
                   <v-alert border="right" color="orange" text type="warning">
                     <p>
@@ -128,9 +133,6 @@
               </v-col>
             </v-row>
           </v-stepper-content>
-          <v-stepper-step color="secondary" :complete="active_step > 3" step="3">
-            Results
-          </v-stepper-step>
           <v-stepper-content step="3">
             <v-row no-gutters>
               <v-col cols="12" sm="6">
@@ -210,9 +212,7 @@
                     </template>
                     <v-date-picker v-model="extract_date" scrollable>
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="modal = false">
-                        Cancel
-                      </v-btn>
+                      <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
                       <v-btn text color="primary" @click="$refs.dialog.save(date)">
                         OK
                       </v-btn>
@@ -270,6 +270,8 @@
 <script>
 import FileUpload from "../components/FileUpload";
 import Header from "../components/Header";
+import MarkDownData from "../markdown/membershippostcodetolsoa.md";
+import VueMarkdownPlus from "vue-markdown-plus";
 
 import moment from "moment";
 
@@ -283,6 +285,7 @@ import * as postcodeHelper from "../helpers/postcode";
 export default {
   data() {
     return {
+      mdText: MarkDownData,
       start_time: null,
       end_time: null,
       loading: false,
@@ -308,7 +311,7 @@ export default {
     };
   },
   methods: {
-    getTimeCompleted: function() {
+    getTimeCompleted: function () {
       if (this.start_time && this.end_time) {
         return Math.round(
           moment.duration(this.end_time.diff(this.start_time)).asSeconds()
@@ -316,7 +319,7 @@ export default {
       }
       return "";
     },
-    confirmFile: async function() {
+    confirmFile: async function () {
       let self = this;
       self.loading = true;
       if (self.files.length > 0) {
@@ -327,7 +330,7 @@ export default {
         self.loading = false;
       }
     },
-    confirmOptions: function() {
+    confirmOptions: function () {
       let self = this;
       self.start_time = moment();
       self.loading = true;
@@ -340,9 +343,9 @@ export default {
       const postcode_column_index = self.columns.indexOf(self.postcode_column);
       const counts_column_index = self.columns.indexOf(this.counts_column);
       const postcodes = self.csv_data
-        .map(row => row[postcode_column_index])
-        .filter(p => p != null && p != self.postcode_column);
-      postcodeHelper.extractLsoaLookupFromPostcodes(postcodes, postcode_lookup => {
+        .map((row) => row[postcode_column_index])
+        .filter((p) => p != null && p != self.postcode_column);
+      postcodeHelper.extractLsoaLookupFromPostcodes(postcodes, (postcode_lookup) => {
         self.csv_data.forEach((row, idx) => {
           const postcode = row[postcode_column_index];
           const stripped = postcode.replace(/\s/g, "");
@@ -389,15 +392,15 @@ export default {
         this.end_time = moment();
       });
     },
-    downloadConvertedFile: function() {
+    downloadConvertedFile: function () {
       this.downloadFile("converted.csv", this.csv_data);
     },
-    downloadSchemaFile: async function() {
+    downloadSchemaFile: async function () {
       let membership_data = [["Local authority", "Count date", "Area code", "Members"]];
       const date_string = moment(this.extract_date).format("YYYY-MM-DD");
       Object.keys(this.lsoas_counted)
-        .filter(k => k !== "Unknown" && k !== "Terminated")
-        .forEach(lsoa => {
+        .filter((k) => k !== "Unknown" && k !== "Terminated")
+        .forEach((lsoa) => {
           let count = this.lsoas_counted[lsoa];
           membership_data.push([
             this.authority,
@@ -418,14 +421,15 @@ export default {
       }
       this.downloadFile("membership.csv", membership_data);
     },
-    downloadFile: function(filename, data) {
+    downloadFile: function (filename, data) {
       var blob = new Blob([Papa.unparse(data)], { type: "text/plain;charset=utf-8" });
       saveAs(blob, filename);
     }
   },
   components: {
     "file-upload": FileUpload,
-    "custom-header": Header
+    "custom-header": Header,
+    VueMarkdownPlus
   }
 };
 </script>

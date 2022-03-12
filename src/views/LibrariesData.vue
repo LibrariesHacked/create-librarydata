@@ -10,10 +10,11 @@
         <p class="text-center">
           <v-btn
             depressed
-            color="primary"
+            color="info"
             href="https://schema.librarydata.uk/libraries"
             target="_blank"
           >
+            <v-icon left dark>mdi-information-outline</v-icon>
             Libraries data schema
           </v-btn>
         </p>
@@ -23,7 +24,7 @@
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
-            <v-stepper-step :complete="active_step > 1" step="1" color="primary" editable>
+            <v-stepper-step :complete="active_step > 1" step="1" color="success" editable>
               {{
                 this.selected_service
                   ? this.selected_service.name
@@ -35,12 +36,12 @@
               :complete="active_step > 2"
               :editable="active_step > 2"
               step="2"
-              color="primary"
+              color="success"
             >
               Edit
             </v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step :complete="active_step > 3" step="3" color="primary">
+            <v-stepper-step :complete="active_step > 3" step="3" color="success">
               Publish
             </v-stepper-step>
           </v-stepper-header>
@@ -53,7 +54,7 @@
               </v-alert>
               <service-select v-on:change="selected_service = $event" />
               <v-btn
-                color="primary"
+                color="success"
                 outlined
                 large
                 :loading="loadingServiceData"
@@ -70,9 +71,12 @@
             <v-container>
               <v-alert border="left" icon="mdi-information" text dense type="info">
                 Select fields to change values. For extended editing use the edit icon for
-                each library.<br />
-                <strong>Warning:</strong> changes are not permanently saved until the next
-                step where <strong>publish changes</strong> can be selected.
+                each library.
+                <br/>
+                <strong>
+                  Changes are not permanently saved until publish changes is selected in
+                  the next step.
+                </strong>
               </v-alert>
               <v-data-table
                 :headers="headers"
@@ -261,7 +265,7 @@
                                         <div class="text-subtitle-2">
                                           <v-btn
                                             icon
-                                            color="primary"
+                                            color="success"
                                             v-on:click="
                                               addOpeningHoursEntry(
                                                 day + '_' + hourType + '_hours'
@@ -287,7 +291,7 @@
                                           label
                                           close
                                           close-icon="mdi-delete"
-                                          color="primary"
+                                          color="success"
                                           v-on:click:close="
                                             removeOpeningHoursEntry(
                                               day + '_' + hourType + '_hours',
@@ -559,7 +563,7 @@
                 </template>
                 <template v-slot:no-data></template>
               </v-data-table>
-              <v-btn outlined large color="primary" v-on:click="goToPublish">
+              <v-btn outlined large color="success" v-on:click="goToPublish">
                 Publish the data
                 <v-icon right dark>mdi-chevron-right-circle-outline</v-icon>
               </v-btn>
@@ -573,11 +577,11 @@
                 of the data by selecting to <strong>Publish changes</strong>.
               </v-alert>
             </v-container>
-            <v-btn outlined large color="primary" v-on:click="download" class="ma-2">
+            <v-btn outlined large color="secondary" v-on:click="download" class="ma-2">
               Save file
               <v-icon right dark>mdi-content-save-outline</v-icon>
             </v-btn>
-            <v-btn outlined large color="primary" v-on:click="publishChanges">
+            <v-btn outlined large color="success" v-on:click="publishChanges">
               Publish changes
               <v-icon right dark>mdi-cloud-upload-outline</v-icon>
             </v-btn>

@@ -1,17 +1,17 @@
 <template>
   <section>
-    <v-select
+    <v-autocomplete
       :items="library_services"
       item-text="nice_name"
       item-value="code"
-      label="Choose a library service"
+      label="Choose a library authority"
       outlined
       :value="value"
       @change="update"
       return-object
       :loading="library_services.length === 0"
       prepend-inner-icon="mdi-map-legend"
-    ></v-select>
+    ></v-autocomplete>
   </section>
 </template>
 
@@ -34,7 +34,7 @@ export default {
   methods: {
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();
-      services = services.sort((a, b) => a.name.localeCompare(b.name));
+      services = services.sort((a, b) => a.nice_name.localeCompare(b.nice_name));
       this.$store.commit("setServices", services);
       this.library_services = services;
     },

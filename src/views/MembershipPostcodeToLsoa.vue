@@ -16,7 +16,7 @@
             <v-stepper-step
               :complete="active_step > 1"
               step="1"
-              color="secondary"
+              color="error"
               editable
             >
               Load postcodes
@@ -151,8 +151,8 @@
                     item-key="total"
                   ></v-data-table>
                   <br />
-                  <v-btn color="primary" depressed v-on:click="downloadConvertedFile"
-                    >Save converted file
+                  <v-btn color="primary" depressed v-on:click="downloadConvertedFile">
+                    Save converted file
                   </v-btn>
                 </v-container>
               </v-col>

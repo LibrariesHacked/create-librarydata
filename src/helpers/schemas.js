@@ -17,7 +17,3 @@ export const saveSchemaFile = async (schemaName, localAuthorityCode, content, lo
   });
   return result.status === 200;
 };
-
-export const validate = async (schemaName, data) => {
-  return true;
-};

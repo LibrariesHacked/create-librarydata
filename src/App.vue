@@ -16,9 +16,7 @@
         <v-list-item-content>
           <v-list-item-title class="text-h6">Create</v-list-item-title>
           <v-list-item-subtitle class="font-weight-medium"
-            >A
-            <a href="https://www.librarylab.uk" target="_blank">library lab</a>
-            project</v-list-item-subtitle
+            >A library lab project</v-list-item-subtitle
           >
         </v-list-item-content>
       </v-list-item>

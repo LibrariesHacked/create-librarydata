@@ -28,7 +28,7 @@
               {{
                 this.selected_service
                   ? this.selected_service.name
-                  : "Select library service"
+                  : "Select library authority"
               }}
             </v-stepper-step>
             <v-divider></v-divider>
@@ -49,7 +49,7 @@
           <v-stepper-content step="1">
             <v-container>
               <v-alert border="left" icon="mdi-information" text dense type="info">
-                Choose a library service from the list. Services are listed in
+                Choose a library authority from the list. Local authorities are listed in
                 alphabetical order.
               </v-alert>
               <service-select v-on:change="selected_service = $event" />
@@ -70,11 +70,10 @@
           <v-stepper-content step="2">
             <v-container>
               <v-alert border="left" icon="mdi-information" text dense type="info">
-                Select fields to change values. For extended editing use the edit icon for
-                each library.
-                <br/>
+                Select fields to change values. For additional field editing use the edit
+                icon for each library.
                 <strong>
-                  Changes are not permanently saved until publish changes is selected in
+                  Changes are not permanently saved until you select publish changes in
                   the next step.
                 </strong>
               </v-alert>
@@ -573,8 +572,8 @@
             <v-container>
               <v-alert border="left" icon="mdi-information" text dense type="info">
                 You can save a copy of the data to your computer in CSV format. If you are
-                logged in on behalf of the library, you can overwrite the stored version
-                of the data by selecting to <strong>Publish changes</strong>.
+                logged in with access to edit the library authority data, you can
+                overwrite the existing data by selecting <strong>Publish changes</strong>.
               </v-alert>
             </v-container>
             <v-btn outlined large color="secondary" v-on:click="download" class="ma-2">

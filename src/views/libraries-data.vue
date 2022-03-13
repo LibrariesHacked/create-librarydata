@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header
+    <layout-header
       title="Libraries"
       subtitle="Public library opening hours, types, and contact details"
     />
@@ -447,7 +447,7 @@
                     </v-dialog>
                   </v-toolbar>
                 </template>
-                <template v-slot:item.Library_name="{ item }">
+                <template v-slot:[`item.Library_name`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Library_name">
                     {{ item.Library_name }}
                     <template v-slot:input>
@@ -462,7 +462,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.Year_closed="{ item }">
+                <template v-slot:[`item.Year_closed`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Year_closed">
                     {{ item.Year_closed }}
                     <template v-slot:input>
@@ -478,7 +478,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.Type_of_library="{ item }">
+                <template v-slot:[`item.Type_of_library`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Type_of_library">
                     {{ item.Type_of_library }}
                     <template v-slot:input>
@@ -504,7 +504,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.Address_1="{ item }">
+                <template v-slot:[`item.Address_1`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Address_1">
                     {{ item.Address_1 }}
                     <template v-slot:input>
@@ -520,7 +520,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.Postcode="{ item }">
+                <template v-slot:[`item.Postcode`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Postcode">
                     {{ item.Postcode }}
                     <template v-slot:input>
@@ -536,7 +536,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.Statutory="{ item }">
+                <template v-slot:[`item.Statutory`]="{ item }">
                   <v-edit-dialog large :return-value.sync="item.Statutory">
                     {{ item.Statutory }}
                     <template v-slot:input>
@@ -553,7 +553,7 @@
                     </template>
                   </v-edit-dialog>
                 </template>
-                <template v-slot:item.actions="{ item }">
+                <template v-slot:[`item.actions`]="{ item }">
                   <div class="d-flex">
                     <v-icon class="mr-2" v-on:click="editItem(item)">
                       mdi-pencil-outline
@@ -619,8 +619,8 @@
 </template>
 
 <script>
-import Header from "../components/Header";
-import ServiceSelect from "../components/ServiceSelect";
+import Header from "../components/layout-header";
+import ServiceSelect from "../components/service-select";
 
 import * as Papa from "papaparse";
 import * as schemaHelper from "../helpers/schemas";
@@ -842,7 +842,7 @@ export default {
     }
   },
   components: {
-    "custom-header": Header,
+    "layout-header": Header,
     "service-select": ServiceSelect,
     VueMarkdownPlus
   }

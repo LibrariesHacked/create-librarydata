@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header title="Profile" subtitle="See access and profile information" />
+    <layout-header title="Profile" subtitle="See access and profile information" />
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/profile.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -93,7 +93,7 @@ export default {
   beforeMount() {
     this.getServices();
   },
-  components: { "custom-header": Header, VueMarkdownPlus }
+  components: { "layout-header": Header, VueMarkdownPlus }
 };
 </script>
 

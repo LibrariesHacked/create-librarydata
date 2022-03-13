@@ -1,8 +1,8 @@
-These pages were created by Dave at [Libraries Hacked](https://www.librarieshacked.org). You can [contact me via email](mailto:info@librarieshacked.org) should you have any questions.
+These pages were created by Dave at [Libraries Hacked](https://www.librarieshacked.org). You can [contact me via email](mailto:info@librarieshacked.org) with any queries.
 
 ## GitHub pages
 
-This site is hosted using [GitHub pages](https://pages.github.com/). Although this site does not directly record any user data, it is important to be aware that website hosting providers can store web traffic data that could include information such as your IP address.
+This site is hosted using [GitHub pages](https://pages.github.com/). Although this site does not directly record any user data, it is important to be aware that website hosting providers can store web traffic data that could include data such as your IP address.
 
 GitHub has its own [privacy statement](https://help.github.com/en/github/site-policy/github-privacy-statement). The majority of this is in reference to logged-in services within GitHub, but there is a reference to GitHub pages sites in this policy. In addition to advising that GitHub pages sites should have their own privacy policy (this one), it informs us that logs of visitor IP addresses can be used for security purposes. This does not include user tracking or marketing. A quote of this is displayed below, but a maintained version will be on the GitHub site.
 

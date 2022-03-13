@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header
+    <layout-header
       title="Log in"
       subtitle="Gain access to edit and submit data for your service"
     />
@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/login.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -98,7 +98,7 @@ export default {
       }
     }
   },
-  components: { "custom-header": Header, VueMarkdownPlus }
+  components: { "layout-header": Header, VueMarkdownPlus }
 };
 </script>
 

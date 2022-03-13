@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header title="Loans" subtitle="Lending of library items" />
+    <layout-header title="Loans" subtitle="Lending of library items" />
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/membershipdata.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -32,7 +32,7 @@ export default {
   },
   methods: {},
   components: {
-    "custom-header": Header,
+    "layout-header": Header,
     VueMarkdownPlus
   }
 };

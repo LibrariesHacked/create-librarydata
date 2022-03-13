@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header title="Membership map" subtitle="Explore library membership data" />
+    <layout-header title="Membership map" subtitle="Explore library membership data" />
     <section>
       <v-container>
         <p>
@@ -111,9 +111,9 @@
 <script>
 import "../extensions/strings";
 
-import FileUpload from "../components/FileUpload";
+import FileUpload from "../components/file-upload";
 
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 
 const config = require("../helpers/config.json");
 
@@ -381,7 +381,7 @@ export default {
     }
   },
   components: {
-    "custom-header": Header,
+    "layout-header": Header,
     "file-upload": FileUpload,
     MglGeojsonLayer,
     MglMap,

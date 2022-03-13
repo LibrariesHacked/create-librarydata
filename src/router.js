@@ -1,21 +1,21 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Accessibility from "./views/Accessibility.vue";
-import About from "./views/About.vue";
-import Home from "./views/Home.vue";
-import EventsData from "./views/EventsData.vue";
-import LibrariesData from "./views/LibrariesData.vue";
-import LoansData from "./views/LoansData.vue";
-import MembershipData from "./views/MembershipData.vue";
-import MembershipMap from "./views/MembershipMap.vue";
-import MembershipPostcodeToLsoa from "./views/MembershipPostcodeToLsoa.vue";
-import MobileLibraryStopsData from "./views/MobileLibraryStopsData.vue";
-import PhysicalVisitsData from "./views/PhysicalVisitsData.vue";
-import StockSummaryData from "./views/StockSummaryData.vue";
-import Privacy from "./views/Privacy.vue";
-import Login from "./views/Login.vue";
-import Profile from "./views/Profile.vue";
+import Accessibility from "./views/accessibility-page.vue";
+import About from "./views/about-page.vue";
+import Home from "./views/home-page.vue";
+import EventsData from "./views/events-data.vue";
+import LibrariesData from "./views/libraries-data.vue";
+import LoansData from "./views/loans-data.vue";
+import MembershipData from "./views/membership-data.vue";
+import MembershipMap from "./views/membership-map.vue";
+import MembershipPostcodeToLsoa from "./views/membership-postcode-to-lsoa.vue";
+import MobileLibraryStopsData from "./views/mobile-library-stops-data.vue";
+import PhysicalVisitsData from "./views/physical-visits-data.vue";
+import StockSummaryData from "./views/stock-summary-data.vue";
+import Privacy from "./views/privacy-page.vue";
+import Login from "./views/site-login.vue";
+import Profile from "./views/site-profile.vue";
 
 Vue.use(Router);
 

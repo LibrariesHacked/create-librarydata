@@ -1,7 +1,7 @@
 {
   "name": "create-librarydata",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -37,7 +37,6 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "gh-pages": "^3.1.0",
-    "npm-force-resolutions": "^0.0.10",
     "raw-loader": "^4.0.2",
     "sass": "~1.32.0",
     "sass-loader": "^10.2.1",
@@ -69,6 +68,6 @@
     "last 2 versions"
   ],
   "resolutions": {
-    "mapbox-gl": "1.13.1"
+    "mapbox-gl": "1.13.2"
   }
 }

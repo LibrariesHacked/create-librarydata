@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header
+    <layout-header
       title="Convert library member postcodes"
       subtitle="Obtain census-based areas for the locations of library members"
     />
@@ -268,8 +268,8 @@
 </template>
 
 <script>
-import FileUpload from "../components/FileUpload";
-import Header from "../components/Header";
+import FileUpload from "../components/file-upload";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/membershippostcodetolsoa.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -428,7 +428,7 @@ export default {
   },
   components: {
     "file-upload": FileUpload,
-    "custom-header": Header,
+    "layout-header": Header,
     VueMarkdownPlus
   }
 };

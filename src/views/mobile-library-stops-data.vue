@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header
+    <layout-header
       title="Mobile library stops"
       subtitle="Locations of mobile library stops, and their frequency"
     />
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/membershipdata.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -35,7 +35,7 @@ export default {
   },
   methods: {},
   components: {
-    "custom-header": Header,
+    "layout-header": Header,
     VueMarkdownPlus
   }
 };

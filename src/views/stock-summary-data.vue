@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header title="Events" subtitle="Library event attendance and outcomes" />
+    <layout-header title="Stock summary" subtitle="Snapshot counts of library stock by item type" />
     <section>
       <v-container>
         <vue-markdown-plus :source="mdText"></vue-markdown-plus>
@@ -8,10 +8,10 @@
           <v-btn
             depressed
             color="primary"
-            href="https://schema.librarydata.uk/events"
+            href="https://schema.librarydata.uk/stock-summary"
             target="_blank"
           >
-            Events data schema
+            Stock summary data schema
           </v-btn>
         </p>
       </v-container>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import Header from "../components/Header";
-import MarkDownData from "../markdown/eventsdata.md";
+import Header from "../components/layout-header";
+import MarkDownData from "../markdown/stocksummarydata.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
 export default {
@@ -32,7 +32,7 @@ export default {
   },
   methods: {},
   components: {
-    "custom-header": Header,
+    "layout-header": Header,
     VueMarkdownPlus
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <custom-header
+    <layout-header
       title="Accessibility"
       subtitle="How this site meets accessibility requirements"
     />
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header";
+import Header from "../components/layout-header";
 import MarkDownData from "../markdown/accessibility.md";
 import VueMarkdownPlus from "vue-markdown-plus";
 
@@ -23,6 +23,6 @@ export default {
     };
   },
   methods: {},
-  components: { "custom-header": Header, VueMarkdownPlus }
+  components: { "layout-header": Header, VueMarkdownPlus }
 };
 </script>

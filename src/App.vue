@@ -202,7 +202,7 @@
     </v-main>
 
     <v-footer app>
-      <custom-footer />
+      <layout-footer />
     </v-footer>
   </v-app>
 </template>
@@ -217,12 +217,12 @@
 </style>
 
 <script>
-import Footer from "./components/Footer";
+import Footer from "./components/layout-footer";
 
 export default {
   name: "App",
   components: {
-    "custom-footer": Footer
+    "layout-footer": Footer
   },
   methods: {
     logout() {

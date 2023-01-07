@@ -8,17 +8,8 @@
         </ul>
       </v-col>
       <v-col cols="12" sm="6">
-        <p class="text-body-1 font-weight-medium">
-          <v-btn
-            color="success"
-            depressed
-            class="mx-2"
-            href="https://www.github.com/librarieshacked/create-librarydata"
-            target="_blank"
-          >
-            <v-icon left>mdi-github</v-icon>
-            Code on GitHub
-          </v-btn>
+        <p>
+          <CarbonBadge></CarbonBadge>
         </p>
       </v-col>
     </v-row>

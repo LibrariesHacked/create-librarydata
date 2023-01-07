@@ -1,4 +1,5 @@
 # Create
+
 A website providing tools for public libraries to create open data for their service.
 
 ## Getting Started
@@ -7,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* Node.JS
+- Node.JS
 
 ### Installing
 
@@ -24,19 +25,15 @@ npm deploy
 
 ## Built With
 
-* [Vue.js](https://vuejs.org/) - The web framework used
+- [Vue.js](https://vuejs.org/) - The web framework used
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
 
-* **Dave Rowe** - *Initial work* - [DaveBathnes](https://github.com/DaveBathnes)
+- **Dave Rowe** - _Initial work_ - [DaveBathnes](https://github.com/DaveBathnes)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 

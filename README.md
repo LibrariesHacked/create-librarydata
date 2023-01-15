@@ -12,30 +12,27 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-```
+```console
 npm install
 ```
 
 ## Deployment
 
-```
+```console
 npm build
 npm deploy
 ```
 
 ## Built With
 
-- [Vue.js](https://vuejs.org/) - The web framework used
+- [Vue.js](https://vuejs.org/) - The web framework
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
-- **Dave Rowe** - _Initial work_ - [DaveBathnes](https://github.com/DaveBathnes)
+- **Dave Rowe** - Initial work - [DaveBathnes](https://github.com/DaveBathnes)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/librarieshacked/create-librarydata/contributors) who participated in this project.
 
 ## License
 

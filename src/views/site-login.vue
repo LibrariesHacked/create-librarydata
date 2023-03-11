@@ -6,13 +6,13 @@
     />
     <section>
       <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <vue-markdown :source="mdText"></vue-markdown>
       </v-container>
     </section>
     <section>
       <v-container>
         <v-card outlined :loading="loading" max-width="350" class="mx-auto">
-          <template slot="progress">
+          <template #progress>
             <v-progress-linear height="5" indeterminate></v-progress-linear>
           </template>
           <v-card-title>Access</v-card-title>
@@ -51,7 +51,7 @@
 <script>
 import Header from "../components/layout-header";
 import MarkDownData from "../markdown/login.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import VueMarkdown from "vue-markdown-render";
 
 import * as login from "../helpers/login";
 
@@ -98,7 +98,7 @@ export default {
       }
     }
   },
-  components: { "layout-header": Header, VueMarkdownPlus }
+  components: { "layout-header": Header, VueMarkdown }
 };
 </script>
 

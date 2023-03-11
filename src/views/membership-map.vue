@@ -59,50 +59,50 @@
           ></v-radio>
           <v-radio label="Display areas of deprivation" value="imd"></v-radio>
         </v-radio-group>
-        <MglMap
+        <VMap
           container="map-container"
           :minZoom="minZoom"
           :maxZoom="maxZoom"
-          :center.sync="center"
+          :v-model:center="center"
           :mapStyle="mapStyle"
-          :zoom.sync="zoom"
+          :v-model:zoom="zoom"
           ref="mglMap"
         >
-          <MglVectorLayer
+          <VLayerMapboxVector
             :sourceId="lsoasSource.id"
             :source="lsoasSource"
             layerId="lsoa_boundaries_fill"
             :layer="lsoasLayerFill"
           />
-          <MglVectorLayer
+          <VLayerMapboxVector
             :sourceId="lsoasSource.id"
             :source="lsoasSource"
             layerId="lsoa_boundaries_label"
             :layer="lsoasLayerLabel"
           />
-          <MglVectorLayer
+          <VLayerMapboxVector
             sourceId="libraries"
             :source="librariesSource"
             layerId="libraries_circles"
             :layer="librariesLayerCircles"
           />
-          <MglNavigationControl position="bottom-right" />
-          <MglFullscreenControl position="top-right" />
-          <MglGeojsonLayer
+          <VControlNavigation position="bottom-right" />
+          <VControlFullscreen position="top-right" />
+          <VLayerMapboxGeojson
             v-if="authoritySource !== null"
             sourceId="authority_boundary_source"
             :source="authoritySource"
             layerId="authority_boundary_line"
             :layer="authorityLayerLine"
           />
-          <MglGeojsonLayer
+          <VLayerMapboxGeojson
             v-if="authoritySource !== null"
             sourceId="authority_boundary_source"
             :source="authoritySource"
             layerId="authority_boundary_label"
             :layer="authorityLayerLabel"
           />
-        </MglMap>
+        </VMap>
       </v-container>
     </section>
   </div>
@@ -124,13 +124,15 @@ import bbox from "@turf/bbox";
 import * as csvHelper from "../helpers/csv";
 import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 
+import "mapbox-gl/dist/mapbox-gl.css";
+import "v-mapbox/dist/v-mapbox.css";
 import {
-  MglMap,
-  MglFullscreenControl,
-  MglNavigationControl,
-  MglGeojsonLayer,
-  MglVectorLayer
-} from "vue-mapbox";
+  VMap,
+  VControlFullscreen,
+  VControlNavigation,
+  VLayerMapboxGeojson,
+  VLayerMapboxVector
+} from "v-mapbox";
 
 export default {
   created() {
@@ -244,7 +246,7 @@ export default {
     };
   },
   methods: {
-    setDisplayOptions: function() {
+    setDisplayOptions: function () {
       if (this.mapDisplay === "populationPercentage") {
         this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaPopulation;
         this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaPopulation;
@@ -257,12 +259,12 @@ export default {
       this.lsoasLayerFill.filter = this.matchFilter;
       this.lsoasLayerLabel.filter = this.matchFilter;
     },
-    setLsoaFields: function(lsoas) {
+    setLsoaFields: function (lsoas) {
       let filters = [];
       let matchFieldLsoaPopulation = ["match", ["get", "code"]];
       let matchFieldLsoaDeprivation = ["match", ["get", "code"]];
 
-      lsoas.forEach(lsoa => {
+      lsoas.forEach((lsoa) => {
         const members = parseInt(lsoa[3].replace("x", "2"));
         this.$refs.mglMap.map.setFeatureState(
           {
@@ -364,7 +366,7 @@ export default {
 
       this.setDisplayOptions();
     },
-    addMembershipData: async function() {
+    addMembershipData: async function () {
       let self = this;
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
@@ -376,18 +378,18 @@ export default {
         this.authoritySource = { type: "geojson", data: geojson };
         this.authorityLayerLabel.layout["text-field"] = authority.utla19nm;
         var bounds = bbox(geojson);
-        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 });
+        this.$refs.VMap.map.fitBounds(bounds, { padding: 10 });
       }
     }
   },
   components: {
     "layout-header": Header,
     "file-upload": FileUpload,
-    MglGeojsonLayer,
-    MglMap,
-    MglFullscreenControl,
-    MglNavigationControl,
-    MglVectorLayer
+    VLayerMapboxGeojson,
+    VMap,
+    VControlFullscreen,
+    VControlNavigation,
+    VLayerMapboxVector
   }
 };
 </script>
@@ -409,6 +411,4 @@ export default {
 #map-container canvas {
   outline: none;
 }
-
-@import "~mapbox-gl/dist/mapbox-gl.css";
 </style>

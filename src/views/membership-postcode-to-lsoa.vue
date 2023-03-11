@@ -6,7 +6,7 @@
     />
     <section>
       <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <vue-markdown :source="mdText"></vue-markdown>
       </v-container>
     </section>
     <section>
@@ -196,17 +196,17 @@
                   <v-dialog
                     ref="dialog"
                     v-model="modal"
-                    :return-value.sync="extract_date"
+                    :v-model:return-value="extract_date"
                     persistent
                     width="290px"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
+                        v-bind="attrs"
                         v-model="extract_date"
                         label="Count date"
                         prepend-inner-icon="mdi-calendar"
                         readonly
-                        v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
                     </template>
@@ -271,7 +271,7 @@
 import FileUpload from "../components/file-upload";
 import Header from "../components/layout-header";
 import MarkDownData from "../markdown/membershippostcodetolsoa.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import VueMarkdown from "vue-markdown-render";
 
 import moment from "moment";
 
@@ -429,7 +429,7 @@ export default {
   components: {
     "file-upload": FileUpload,
     "layout-header": Header,
-    VueMarkdownPlus
+    VueMarkdown
   }
 };
 </script>

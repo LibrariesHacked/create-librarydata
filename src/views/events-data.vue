@@ -3,7 +3,7 @@
     <layout-header title="Events" subtitle="Library event attendance and outcomes" />
     <section>
       <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <vue-markdown :source="mdText"></vue-markdown>
         <p class="text-center">
           <v-btn
             depressed
@@ -22,7 +22,7 @@
 <script>
 import Header from "../components/layout-header";
 import MarkDownData from "../markdown/eventsdata.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -33,7 +33,7 @@ export default {
   methods: {},
   components: {
     "layout-header": Header,
-    VueMarkdownPlus
+    VueMarkdown
   }
 };
 </script>

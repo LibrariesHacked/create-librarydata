@@ -1,11 +1,8 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex'
 
 import * as jose from 'jose';
 
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+export default createStore({
   state: {
     // Logged in user data
     loginKey: null,
@@ -58,5 +55,3 @@ const store = new Vuex.Store({
     }
   }
 });
-
-export default store;

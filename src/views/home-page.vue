@@ -6,7 +6,7 @@
     <section>
       <v-container>
         <div class="text-body-1 text-center">
-          <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+          <vue-markdown :source="mdText"></vue-markdown>
         </div>
       </v-container>
       <v-container class="text-center">
@@ -35,7 +35,7 @@
 </template>
 <script>
 import MarkDownData from "../markdown/home.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -44,6 +44,6 @@ export default {
     };
   },
   methods: {},
-  components: { VueMarkdownPlus }
+  components: { VueMarkdown }
 };
 </script>

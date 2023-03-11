@@ -6,7 +6,7 @@
     />
     <section>
       <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
+        <vue-markdown :source="mdText"></vue-markdown>
       </v-container>
     </section>
   </div>
@@ -14,7 +14,7 @@
 <script>
 import Header from "../components/layout-header";
 import MarkDownData from "../markdown/privacy.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
     };
   },
   methods: {},
-  components: { "layout-header": Header, VueMarkdownPlus }
+  components: { "layout-header": Header, VueMarkdown }
 };
 </script>
 

@@ -1,24 +1,17 @@
 <template>
   <div>
-    <layout-header
-      title="Convert library member postcodes"
-      subtitle="Obtain census-based areas for the locations of library members"
-    />
+    <layout-header title="Convert library member postcodes"
+      subtitle="Obtain census-based areas for the locations of library members" />
     <section>
       <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
+        <markdown-section :markdownText="mdText" />
       </v-container>
     </section>
     <section>
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">
           <v-stepper-header class="elevation-0">
-            <v-stepper-step
-              :complete="active_step > 1"
-              step="1"
-              color="error"
-              editable
-            >
+            <v-stepper-step :complete="active_step > 1" step="1" color="error" editable>
               Load postcodes
             </v-stepper-step>
             <v-divider></v-divider>
@@ -36,12 +29,7 @@
               <v-col cols="12" sm="6">
                 <v-container>
                   <file-upload v-bind:file="files" v-on:change-files="files = $event" />
-                  <v-btn
-                    color="primary"
-                    depressed
-                    :disabled="files.length === 0"
-                    v-on:click="confirmFile"
-                  >
+                  <v-btn color="primary" depressed :disabled="files.length === 0" v-on:click="confirmFile">
                     Next
                   </v-btn>
                 </v-container>
@@ -69,31 +57,15 @@
             <v-row no-gutters>
               <v-col cols="12" sm="6">
                 <v-container>
-                  <v-select
-                    v-model="postcode_column"
-                    :items="columns"
-                    label="Select column"
-                    outlined
-                  ></v-select>
-                  <v-btn
-                    color="primary"
-                    depressed
-                    v-on:click="confirmOptions"
-                    :disabled="postcode_column === ''"
-                    >Convert
+                  <v-select v-model="postcode_column" :items="columns" label="Select column" outlined></v-select>
+                  <v-btn color="primary" depressed v-on:click="confirmOptions" :disabled="postcode_column === ''">Convert
                   </v-btn>
                   <v-container>
                     <v-subheader>My columns include a count</v-subheader>
-                    <v-select
-                      :value="counts_column"
-                      :items="columns.filter((c) => c !== postcode_column)"
-                      :disabled="
-                        postcode_column === '' ||
-                        columns.filter((c) => c !== postcode_column).length === 0
-                      "
-                      label="Count column (optional)"
-                      outlined
-                    ></v-select>
+                    <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="
+                      postcode_column === '' ||
+                      columns.filter((c) => c !== postcode_column).length === 0
+                    " label="Count column (optional)" outlined></v-select>
                   </v-container>
                 </v-container>
               </v-col>
@@ -140,16 +112,8 @@
                   <v-subheader>
                     {{ "Completed in " + getTimeCompleted() + " seconds" }}
                   </v-subheader>
-                  <v-data-table
-                    dense
-                    disable-filtering
-                    disable-pagination
-                    disable-sort
-                    hide-default-footer
-                    :headers="summary_columns"
-                    :items="summary_data"
-                    item-key="total"
-                  ></v-data-table>
+                  <v-data-table dense disable-filtering disable-pagination disable-sort hide-default-footer
+                    :headers="summary_columns" :items="summary_data" item-key="total"></v-data-table>
                   <br />
                   <v-btn color="primary" depressed v-on:click="downloadConvertedFile">
                     Save converted file
@@ -187,28 +151,12 @@
                 <v-container>
                   <h4>Library membership data</h4>
                   <br />
-                  <v-select
-                    v-model="authority"
-                    :items="library_services"
-                    label="Library service name"
-                    outlined
-                  ></v-select>
-                  <v-dialog
-                    ref="dialog"
-                    v-model="modal"
-                    :v-model:return-value="extract_date"
-                    persistent
-                    width="290px"
-                  >
+                  <v-select v-model="authority" :items="library_services" label="Library service name"
+                    outlined></v-select>
+                  <v-dialog ref="dialog" v-model="modal" :v-model:return-value="extract_date" persistent width="290px">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-bind="attrs"
-                        v-model="extract_date"
-                        label="Count date"
-                        prepend-inner-icon="mdi-calendar"
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
+                      <v-text-field v-bind="attrs" v-model="extract_date" label="Count date"
+                        prepend-inner-icon="mdi-calendar" readonly v-on="on"></v-text-field>
                     </template>
                     <v-date-picker v-model="extract_date" scrollable>
                       <v-spacer></v-spacer>
@@ -218,13 +166,8 @@
                       </v-btn>
                     </v-date-picker>
                   </v-dialog>
-                  <v-btn
-                    text
-                    color="primary"
-                    v-on:click="downloadSchemaFile"
-                    :disabled="authority === '' || extract_date === null"
-                    >Save membership file</v-btn
-                  >
+                  <v-btn text color="primary" v-on:click="downloadSchemaFile"
+                    :disabled="authority === '' || extract_date === null">Save membership file</v-btn>
                 </v-container>
               </v-col>
               <v-col cols="12" sm="6">
@@ -234,9 +177,7 @@
                   </p>
                   <p>
                     Census geographies are required for
-                    <a href="https://schema.librarydata.uk/membership" target="_blank"
-                      >library membership data</a
-                    >.
+                    <a href="https://schema.librarydata.uk/membership" target="_blank">library membership data</a>.
                   </p>
                   <p>This tool has calculated a count of members per statistical area.</p>
                   <ol>
@@ -270,8 +211,8 @@
 <script>
 import FileUpload from "../components/file-upload";
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/membershippostcodetolsoa.md";
-import VueMarkdown from "vue-markdown-render";
 
 import moment from "moment";
 
@@ -429,7 +370,7 @@ export default {
   components: {
     "file-upload": FileUpload,
     "layout-header": Header,
-    VueMarkdown
+    "markdown-section": Markdown
   }
 };
 </script>

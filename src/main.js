@@ -5,15 +5,15 @@ import 'vuetify/styles'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import router from "./router";
+import router from './router'
 
-import store from "./plugins/store";
+import store from './plugins/store'
 
 import App from './App.vue'
 
 const vuetify = createVuetify({
   components,
-  directives,
+  directives
 })
 
 createApp(App).use(vuetify).use(router).use(store).mount('#app')

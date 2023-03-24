@@ -1,16 +1,11 @@
 <template>
   <div>
-    <v-container>
-      <h1 class="text-center">Create</h1>
-    </v-container>
+    <layout-header title="Create" subtitle="Helping libraries to create and use library open data" />
     <section>
-      <v-container>
-        <div class="text-body-1 text-center">
-          <vue-markdown :source="mdText"></vue-markdown>
-        </div>
-      </v-container>
+      <markdown-section :markdownText="mdText" />
       <v-container class="text-center">
-        <v-btn prepend-icon="mdi-login-variant" variant="tonal" size="x-large" color="success" class="mx-1 my-1" :to="'/login'">
+        <v-btn prepend-icon="mdi-login-variant" variant="tonal" size="x-large" color="success" class="mx-1 my-1"
+          :to="'/login'">
           Log in
         </v-btn>
       </v-container>
@@ -18,8 +13,9 @@
   </div>
 </template>
 <script>
+import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/home.md";
-import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -28,6 +24,6 @@ export default {
     };
   },
   methods: {},
-  components: { VueMarkdown }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>

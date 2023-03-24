@@ -1,20 +1,17 @@
 <template>
   <div>
-    <layout-header
-      title="Privacy policy"
-      subtitle="How your data and privacy is protected"
-    />
+    <layout-header title="Privacy policy" subtitle="How your data and privacy is protected" />
     <section>
       <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
+        <markdown-section :markdownText="mdText" />
       </v-container>
     </section>
   </div>
 </template>
 <script>
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/privacy.md";
-import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -23,12 +20,8 @@ export default {
     };
   },
   methods: {},
-  components: { "layout-header": Header, VueMarkdown }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>
 
-<style scoped>
-.main {
-  margin: 20px;
-}
-</style>
+<style scoped></style>

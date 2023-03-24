@@ -3,16 +3,14 @@
     <layout-header title="Profile" subtitle="See access and profile information" />
     <section>
       <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
+        <markdown-section :markdownText="mdText" />
       </v-container>
     </section>
     <section>
       <v-container>
         <v-card outlined max-width="350" class="mx-auto">
-          <v-subheader v-if="this.$store.state.loginKey"
-            >Logged in. Session expires
-            {{ this.$store.state.loginExpires.toLocaleString() }}</v-subheader
-          >
+          <v-subheader v-if="this.$store.state.loginKey">Logged in. Session expires
+            {{ this.$store.state.loginExpires.toLocaleString() }}</v-subheader>
           <v-divider />
           <v-card-text>
             <v-subheader v-if="!this.$store.state.loginKey">Not logged in</v-subheader>
@@ -29,30 +27,17 @@
               <v-icon left>mdi-map-legend</v-icon>
               {{
                 library_services.length > 0
-                  ? library_services.filter((s) => s.code === code)[0].nice_name
-                  : code
-              }}</v-chip
-            >
+                ? library_services.filter((s) => s.code === code)[0].nice_name
+                : code
+              }}</v-chip>
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
-            <v-btn
-              v-if="this.$store.state.loginKey"
-              large
-              color="primary"
-              text
-              @click="logout"
-            >
+            <v-btn v-if="this.$store.state.loginKey" large color="primary" text @click="logout">
               Log out
               <v-icon right>mdi-logout</v-icon>
             </v-btn>
-            <v-btn
-              v-if="!this.$store.state.loginKey"
-              large
-              color="primary"
-              text
-              :to="'/login'"
-            >
+            <v-btn v-if="!this.$store.state.loginKey" large color="primary" text :to="'/login'">
               Log in
               <v-icon right>mdi-login</v-icon>
             </v-btn>
@@ -64,8 +49,8 @@
 </template>
 <script>
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/profile.md";
-import VueMarkdown from "vue-markdown-render";
 
 const authoritiesHelper = require("../helpers/libraryAuthorities.js");
 
@@ -93,7 +78,7 @@ export default {
   beforeMount() {
     this.getServices();
   },
-  components: { "layout-header": Header, VueMarkdown }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>
 

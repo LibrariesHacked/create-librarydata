@@ -1,12 +1,9 @@
 <template>
   <div>
-    <layout-header
-      title="Log in"
-      subtitle="Gain access to edit and submit data for your service"
-    />
+    <layout-header title="Log in" subtitle="Gain access to edit and submit data for your service" />
     <section>
       <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
+        <markdown-section :markdownText="mdText" />
       </v-container>
     </section>
     <section>
@@ -18,18 +15,8 @@
           <v-card-title>Access</v-card-title>
           <v-card-text v-if="!success">
             <v-form ref="form" v-model="valid">
-              <v-text-field
-                clearable
-                dense
-                outlined
-                v-model="email"
-                :rules="emailRules"
-                label="Enter email address"
-                type="email"
-                prepend-inner-icon="mdi-email"
-                color="primary"
-                required
-              ></v-text-field>
+              <v-text-field clearable dense outlined v-model="email" :rules="emailRules" label="Enter email address"
+                type="email" prepend-inner-icon="mdi-email" color="primary" required></v-text-field>
               <p>{{ message }}</p>
             </v-form>
           </v-card-text>
@@ -50,8 +37,8 @@
 </template>
 <script>
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/login.md";
-import VueMarkdown from "vue-markdown-render";
 
 import * as login from "../helpers/login";
 
@@ -98,7 +85,7 @@ export default {
       }
     }
   },
-  components: { "layout-header": Header, VueMarkdown }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>
 

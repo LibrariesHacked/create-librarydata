@@ -1,25 +1,22 @@
 <template>
   <div>
-    <layout-header title="About" subtitle="What this site is for and how it works" />
-    <section>
-      <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
-      </v-container>
-    </section>
+    <layout-header title="About" subtitle="What this site is and how it works" />
+    <markdown-section :markdownText="mdText" />
   </div>
 </template>
 <script>
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/about.md";
-import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
     return {
-      mdText: MarkDownData
+      mdText: MarkDownData,
+      options: { html: true, breaks: true }
     };
   },
   methods: {},
-  components: { "layout-header": Header, VueMarkdown }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>

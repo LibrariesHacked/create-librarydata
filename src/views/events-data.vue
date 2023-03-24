@@ -3,17 +3,13 @@
     <layout-header title="Events" subtitle="Library event attendance and outcomes" />
     <section>
       <v-container>
-        <vue-markdown :source="mdText"></vue-markdown>
         <p class="text-center">
-          <v-btn
-            depressed
-            color="primary"
-            href="https://schema.librarydata.uk/events"
-            target="_blank"
-          >
+          <v-btn variant="tonal" size="x-large" color="info" href="https://schema.librarydata.uk/events"
+            target="_blank">
             Events data schema
           </v-btn>
         </p>
+        <markdown-section :markdownText="mdText" />
       </v-container>
     </section>
   </div>
@@ -21,8 +17,8 @@
 
 <script>
 import Header from "../components/layout-header";
+import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/eventsdata.md";
-import VueMarkdown from "vue-markdown-render";
 
 export default {
   data() {
@@ -32,10 +28,8 @@ export default {
   },
   methods: {},
   components: {
-    "layout-header": Header,
-    VueMarkdown
+    "layout-header": Header, "markdown-section": Markdown
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

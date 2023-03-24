@@ -20,13 +20,13 @@
     "jose": "^4.13.1",
     "mapbox-gl": "^1.13.2",
     "moment": "^2.29.4",
-    "papaparse": "^5.4.0",
+    "papaparse": "^5.4.1",
     "v-mapbox": "^3.3.1",
     "vue": "^3.2.47",
     "vue-carbonbadge": "^1.2.1",
     "vue-markdown-render": "^2.0.1",
     "vue-router": "^4.1.6",
-    "vuetify": "^3.1.10",
+    "vuetify": "^3.1.11",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

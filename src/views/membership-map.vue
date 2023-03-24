@@ -5,28 +5,18 @@
       <v-container>
         <p>
           You need library membership data in the
-          <a href="https://schema.librarydata.uk/membership" target="_blank"
-            >membership data schema format</a
-          >. This can be created using the
-          <a href="/postcode-to-lsoa" target="_blank"
-            >postcode to statistical area converter</a
-          >.
+          <a href="https://schema.librarydata.uk/membership" target="_blank">membership data schema format</a>. This can
+          be created using the
+          <a href="/postcode-to-lsoa" target="_blank">postcode to statistical area converter</a>.
         </p>
         <v-row no-gutters>
           <v-col cols="12" sm="6">
             <v-container>
-              <file-upload
-                v-bind:file="lsoaFiles"
-                v-on:change-files="lsoaFiles = $event"
-                v-on:delete-file="lsoaFiles = null"
-              />
+              <file-upload v-bind:file="lsoaFiles" v-on:change-files="lsoaFiles = $event"
+                v-on:delete-file="lsoaFiles = null" />
               <br />
-              <v-btn
-                depressed
-                color="primary"
-                :disabled="lsoaFiles.length === 0"
-                v-on:click="addMembershipData"
-                >Add members to map
+              <v-btn depressed color="primary" :disabled="lsoaFiles.length === 0" v-on:click="addMembershipData">Add
+                members to map
               </v-btn>
             </v-container>
           </v-col>
@@ -53,55 +43,23 @@
           </v-col>
         </v-row>
         <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" row>
-          <v-radio
-            label="Display population percentage"
-            value="populationPercentage"
-          ></v-radio>
+          <v-radio label="Display population percentage" value="populationPercentage"></v-radio>
           <v-radio label="Display areas of deprivation" value="imd"></v-radio>
         </v-radio-group>
-        <VMap
-          container="map-container"
-          :minZoom="minZoom"
-          :maxZoom="maxZoom"
-          :v-model:center="center"
-          :mapStyle="mapStyle"
-          :v-model:zoom="zoom"
-          ref="mglMap"
-        >
-          <VLayerMapboxVector
-            :sourceId="lsoasSource.id"
-            :source="lsoasSource"
-            layerId="lsoa_boundaries_fill"
-            :layer="lsoasLayerFill"
-          />
-          <VLayerMapboxVector
-            :sourceId="lsoasSource.id"
-            :source="lsoasSource"
-            layerId="lsoa_boundaries_label"
-            :layer="lsoasLayerLabel"
-          />
-          <VLayerMapboxVector
-            sourceId="libraries"
-            :source="librariesSource"
-            layerId="libraries_circles"
-            :layer="librariesLayerCircles"
-          />
+        <VMap container="map-container" :minZoom="minZoom" :maxZoom="maxZoom" :v-model:center="center"
+          :mapStyle="mapStyle" :v-model:zoom="zoom" ref="mglMap">
+          <VLayerMapboxVector :sourceId="lsoasSource.id" :source="lsoasSource" layerId="lsoa_boundaries_fill"
+            :layer="lsoasLayerFill" />
+          <VLayerMapboxVector :sourceId="lsoasSource.id" :source="lsoasSource" layerId="lsoa_boundaries_label"
+            :layer="lsoasLayerLabel" />
+          <VLayerMapboxVector sourceId="libraries" :source="librariesSource" layerId="libraries_circles"
+            :layer="librariesLayerCircles" />
           <VControlNavigation position="bottom-right" />
           <VControlFullscreen position="top-right" />
-          <VLayerMapboxGeojson
-            v-if="authoritySource !== null"
-            sourceId="authority_boundary_source"
-            :source="authoritySource"
-            layerId="authority_boundary_line"
-            :layer="authorityLayerLine"
-          />
-          <VLayerMapboxGeojson
-            v-if="authoritySource !== null"
-            sourceId="authority_boundary_source"
-            :source="authoritySource"
-            layerId="authority_boundary_label"
-            :layer="authorityLayerLabel"
-          />
+          <VLayerMapboxGeojson v-if="authoritySource !== null" sourceId="authority_boundary_source"
+            :source="authoritySource" layerId="authority_boundary_line" :layer="authorityLayerLine" />
+          <VLayerMapboxGeojson v-if="authoritySource !== null" sourceId="authority_boundary_source"
+            :source="authoritySource" layerId="authority_boundary_label" :layer="authorityLayerLabel" />
         </VMap>
       </v-container>
     </section>
@@ -398,9 +356,11 @@ export default {
 .main {
   padding: 20px;
 }
+
 .mapboxgl-canvas {
   left: 0;
 }
+
 #map-container {
   position: relative;
   margin-top: 10px;
@@ -408,6 +368,7 @@ export default {
   width: 100%;
   border: 1px solid #e5e5e5;
 }
+
 #map-container canvas {
   outline: none;
 }

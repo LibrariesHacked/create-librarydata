@@ -1,18 +1,7 @@
 <template>
-  <section>
-    <v-autocomplete
-      :items="library_services"
-      item-text="nice_name"
-      item-value="code"
-      label="Choose a library authority"
-      outlined
-      :value="value"
-      @change="update"
-      return-object
-      :loading="library_services.length === 0"
-      prepend-inner-icon="mdi-map-legend"
-    ></v-autocomplete>
-  </section>
+  <v-autocomplete clearable :items="library_services" item-title="nice_name" item-value="code"
+    label="Choose a library authority" outlined :value="value" @change="update" return-object
+    :loading="library_services.length === 0" prepend-inner-icon="mdi-domain"></v-autocomplete>
 </template>
 
 <script>

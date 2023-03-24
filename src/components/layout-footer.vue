@@ -1,16 +1,16 @@
 <template>
-  <v-footer>
+  <v-footer app color="grey-lighten-5">
     <v-row justify="center" class="text-xs-center w-100" no-gutters>
-      <v-btn variant="tonal" to="/accessibility">
+      <v-btn size="large" variant="text" color="info" to="/accessibility">
         Accessibility
       </v-btn>
-      <v-btn variant="tonal" to="/privacy">
+      <v-btn size="large" variant="text" color="info" to="/privacy">
         Privacy
       </v-btn>
     </v-row>
     <v-row justify="center" no-gutters>
       <p>
-        <CarbonBadge></CarbonBadge>
+        <CarbonBadge />
       </p>
     </v-row>
   </v-footer>

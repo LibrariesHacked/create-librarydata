@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar border elevation="0" flat>
+    <v-app-bar elevation="0" flat color="grey-lighten-5">
       <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer" />
       <v-container>
         <img class="mr-3" :src="require('./assets/logo.png')" height="40" />
@@ -107,9 +107,7 @@
       <router-view></router-view>
     </v-main>
 
-    <v-footer app>
-      <layout-footer />
-    </v-footer>
+    <layout-footer />
   </v-app>
 </template>
 <style lang="scss">

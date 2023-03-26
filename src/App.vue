@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" elevation="0" color="info">
+    <v-navigation-drawer floating v-model="drawer" elevation="0" color="info">
       <v-list nav>
         <v-list-item :to="'/'" active-class="highlighted" :class="'/' === $route.path ? 'highlighted' : ''"
           prepend-icon="mdi-home-variant-outline">
@@ -70,7 +70,7 @@
           </v-list-item>
         </v-list-group>
         <v-list-group value="Visits" prepend-icon="mdi-shoe-print">
-          <template v-slot:activator>
+          <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Visits"></v-list-item>
           </template>
           <v-list-item :to="'/physical-visits'" active-class="highlighted"
@@ -79,7 +79,7 @@
           </v-list-item>
         </v-list-group>
         <v-list-group value="Catalogue" prepend-icon="mdi-bookshelf">
-          <template v-slot:activator>
+          <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Catalogue"></v-list-item>
           </template>
           <v-list-item :to="'/stock-summary'" active-class="highlighted"
@@ -114,10 +114,6 @@
 .v-btn,
 .v-tab {
   text-transform: none !important;
-}
-
-.v-text-field--outlined>>>fieldset {
-  border-color: #e5e5e5;
 }
 </style>
 

@@ -1,7 +1,7 @@
 <template>
-    <v-container class="markdown">
+    <section class="markdown">
         <vue-markdown :source="markdownText" :options=options></vue-markdown>
-    </v-container>
+    </section>
 </template>
 <script>
 import VueMarkdown from "vue-markdown-render";
@@ -23,11 +23,6 @@ export default {
 };
 </script>
 <style>
-.markdown {
-    padding: 1rem;
-    margin: 1rem;
-}
-
 .markdown p {
     margin: 1rem 0;
 }

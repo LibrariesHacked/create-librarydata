@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
-    <v-navigation-drawer floating v-model="drawer" elevation="0" color="info">
+    <v-navigation-drawer floating v-model="drawer" elevation="0" color="green">
       <v-list nav>
         <v-list-item :to="'/'" active-class="highlighted" :class="'/' === $route.path ? 'highlighted' : ''"
           prepend-icon="mdi-home-variant-outline">
@@ -88,19 +88,6 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <template #append>
-        <v-container>
-          <v-card variant="tonal">
-            <v-card-item>
-              <v-card-title>This is a title</v-card-title>
-
-              <v-card-subtitle>This is a subtitle</v-card-subtitle>
-            </v-card-item>
-
-            <v-card-text> This is content </v-card-text>
-          </v-card>
-        </v-container>
-      </template>
     </v-navigation-drawer>
 
     <v-main>

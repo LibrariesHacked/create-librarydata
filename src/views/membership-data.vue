@@ -1,19 +1,13 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Membership" subtitle="Snapshot counts of library membership by geographic area" />
-    <section>
-      <v-container>
-        <p class="text-center">
-          <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/membership"
-            target="_blank">
-            Membership data schema
-          </v-btn>
-        </p>
-        <markdown-section :markdownText="mdText" />
-
-      </v-container>
-    </section>
-  </div>
+    <p class="text-center">
+      <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/membership" target="_blank">
+        Membership data schema
+      </v-btn>
+    </p>
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="About" subtitle="What this site is and how it works" />
     <markdown-section :markdownText="mdText" />
-  </div>
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

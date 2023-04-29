@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Accessibility" subtitle="How this site meets accessibility requirements" />
     <markdown-section :markdownText="mdText" />
-  </div>
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

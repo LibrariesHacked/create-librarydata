@@ -1,19 +1,14 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Mobile library stops" subtitle="Locations of mobile library stops, and their frequency" />
-    <section>
-      <v-container>
-        <p class="text-center">
-          <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/mobile-library-stops"
-            target="_blank">
-            Mobile libraries data schema
-          </v-btn>
-        </p>
-        <markdown-section :markdownText="mdText" />
-
-      </v-container>
-    </section>
-  </div>
+    <p class="text-center">
+      <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/mobile-library-stops"
+        target="_blank">
+        Mobile libraries data schema
+      </v-btn>
+    </p>
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 
 <script>

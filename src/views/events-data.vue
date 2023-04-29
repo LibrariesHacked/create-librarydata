@@ -1,18 +1,13 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Events" subtitle="Library event attendance and outcomes" />
-    <section>
-      <v-container>
-        <p class="text-center">
-          <v-btn variant="tonal" size="x-large" color="info" href="https://schema.librarydata.uk/events"
-            target="_blank">
-            Events data schema
-          </v-btn>
-        </p>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
-  </div>
+    <p class="text-center">
+      <v-btn variant="tonal" size="x-large" color="info" href="https://schema.librarydata.uk/events" target="_blank">
+        Events data schema
+      </v-btn>
+    </p>
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 
 <script>

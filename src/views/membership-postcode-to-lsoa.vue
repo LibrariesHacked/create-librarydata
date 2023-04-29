@@ -1,12 +1,8 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Convert library member postcodes"
       subtitle="Obtain census-based areas for the locations of library members" />
-    <section>
-      <v-container>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
+    <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">
@@ -62,10 +58,9 @@
                   </v-btn>
                   <v-container>
                     <v-subheader>My columns include a count</v-subheader>
-                    <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="
-                      postcode_column === '' ||
+                    <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="postcode_column === '' ||
                       columns.filter((c) => c !== postcode_column).length === 0
-                    " label="Count column (optional)" outlined></v-select>
+                      " label="Count column (optional)" outlined></v-select>
                   </v-container>
                 </v-container>
               </v-col>
@@ -205,7 +200,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>

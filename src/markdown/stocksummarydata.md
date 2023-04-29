@@ -1,3 +1,3 @@
-An item of stock is any item held by the library that is available to the public, and catalogued in the library management system. This dataset is a summary of the different types of items held by libraries.
+An item of stock is any item held by the library that is available to the public, and catalogued in the library management system. This dataset provides counts of the different types of items held by libraries.
 
-The stock summary dataset is a **snapshot**. This means that each export is a point in time representation of the data.
+The stock summary dataset is a **snapshot**. This means that each update to the data is a fresh export, representing the stock held (or on loan) at that point in time.

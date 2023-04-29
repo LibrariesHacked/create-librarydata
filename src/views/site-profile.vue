@@ -1,11 +1,7 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Profile" subtitle="See access and profile information" />
-    <section>
-      <v-container>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
+    <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
         <v-card outlined max-width="350" class="mx-auto">
@@ -45,7 +41,7 @@
         </v-card>
       </v-container>
     </section>
-  </div>
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

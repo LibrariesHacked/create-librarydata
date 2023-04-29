@@ -1,11 +1,7 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Log in" subtitle="Gain access to edit and submit data for your service" />
-    <section>
-      <v-container>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
+    <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
         <v-card outlined :loading="loading" max-width="350" class="mx-auto">
@@ -33,7 +29,7 @@
         </v-card>
       </v-container>
     </section>
-  </div>
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

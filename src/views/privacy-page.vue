@@ -1,12 +1,8 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Privacy policy" subtitle="How your data and privacy is protected" />
-    <section>
-      <v-container>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
-  </div>
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

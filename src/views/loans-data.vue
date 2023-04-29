@@ -1,17 +1,13 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Loans" subtitle="Lending of library items" />
-    <section>
-      <v-container>
-        <p class="text-center">
-          <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/loans" target="_blank">
-            Loans data schema
-          </v-btn>
-        </p>
-        <markdown-section :markdownText="mdText" />
-      </v-container>
-    </section>
-  </div>
+    <p class="text-center">
+      <v-btn size="x-large" variant="tonal" color="info" href="https://schema.librarydata.uk/loans" target="_blank">
+        Loans data schema
+      </v-btn>
+    </p>
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 
 <script>

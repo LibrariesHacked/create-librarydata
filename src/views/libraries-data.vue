@@ -1,15 +1,13 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Libraries" subtitle="Public library locations, hours, and contact details" />
-    <v-container>
-      <p class="text-center">
-        <v-btn size="x-large" prepend-icon="mdi-information-outline" variant="tonal" color="info"
-          href="https://schema.librarydata.uk/libraries" target="_blank">
-          Libraries data schema
-        </v-btn>
-      </p>
-      <markdown-section :markdownText="mdText" />
-    </v-container>
+    <p class="text-center">
+      <v-btn size="x-large" prepend-icon="mdi-information-outline" variant="tonal" color="info"
+        href="https://schema.librarydata.uk/libraries" target="_blank">
+        Libraries data schema
+      </v-btn>
+    </p>
+    <markdown-section :markdownText="mdText" />
     <v-container>
       <v-sheet color="grey-lighten-5" class="py-4 px-4" rounded>
         <h2 class="text-h6 text-info">1 Select a library authority area</h2>
@@ -59,15 +57,15 @@
                           <v-row>
                             <v-col cols="12" sm="8" md="8">
                               <v-select v-model="editedItem.Type_of_library" label="Type" :items="[
-                                { text: 'Local authority', value: 'LAL' },
-                                {
-                                  text: 'Local authority (unstaffed)',
-                                  value: 'LAL-'
-                                },
-                                { text: 'Commisioned', value: 'CL' },
-                                { text: 'Community-run', value: 'CRL' },
-                                { text: 'Independent', value: 'ICL' }
-                              ]" dense outlined></v-select>
+                                  { text: 'Local authority', value: 'LAL' },
+                                  {
+                                    text: 'Local authority (unstaffed)',
+                                    value: 'LAL-'
+                                  },
+                                  { text: 'Commisioned', value: 'CL' },
+                                  { text: 'Community-run', value: 'CRL' },
+                                  { text: 'Independent', value: 'ICL' }
+                                ]" dense outlined></v-select>
                             </v-col>
                             <v-col cols="12" sm="4" md="4">
                               <v-select v-model="editedItem.Statutory" :items="['Yes', 'No']" label="Statutory" dense
@@ -122,9 +120,8 @@
                           </v-row>
                           <v-row>
                             <v-col cols="12" sm="12" md="12">
-                              <v-text-field dense outlined v-model="
-                                editedItem.Unique_property_reference_number
-                              " label="Unique property reference number"></v-text-field>
+                              <v-text-field dense outlined v-model="editedItem.Unique_property_reference_number
+                                " label="Unique property reference number"></v-text-field>
                             </v-col>
                           </v-row>
                         </v-tab-item>
@@ -134,11 +131,10 @@
                             <v-col cols="12" sm="6" md="6" v-for="hourType in openingHourTypes" :key="hourType">
                               <div v-for="day in days" :key="day">
                                 <div class="text-subtitle-2">
-                                  <v-btn icon color="success" v-on:click="
-                                    addOpeningHoursEntry(
+                                  <v-btn icon color="success" v-on:click="addOpeningHoursEntry(
                                       day + '_' + hourType + '_hours'
                                     )
-                                  ">
+                                    ">
                                     <v-icon>mdi-plus-circle-outline</v-icon>
                                   </v-btn>
                                   {{ day }} {{ hourType }}
@@ -151,12 +147,11 @@
                                     day + '_' + hourType + '_hours'
                                   ].split(',')
                                   : ''" :key="session" small label close close-icon="mdi-delete" color="success"
-                                  v-on:click:close="
-                                    removeOpeningHoursEntry(
+                                  v-on:click:close="removeOpeningHoursEntry(
                                       day + '_' + hourType + '_hours',
                                       session
                                     )
-                                  ">{{ session }}</v-chip>
+                                    ">{{ session }}</v-chip>
                               </div>
                             </v-col>
                           </v-row>
@@ -218,9 +213,8 @@
                             <v-text-field v-bind="attrs" dense outlined v-model="openingHoursOpen" label="Open" readonly
                               v-on="on"></v-text-field>
                           </template>
-                          <v-time-picker v-model="openingHoursOpen" full-width v-on:click:minute="
-                            $refs.openingHoursOpenMenu.save(openingHoursOpen)
-                          "></v-time-picker>
+                          <v-time-picker v-model="openingHoursOpen" full-width v-on:click:minute="$refs.openingHoursOpenMenu.save(openingHoursOpen)
+                            "></v-time-picker>
                         </v-menu>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
@@ -231,9 +225,8 @@
                             <v-text-field v-bind="attrs" dense outlined v-model="openingHoursClose" label="Close" readonly
                               v-on="on"></v-text-field>
                           </template>
-                          <v-time-picker v-model="openingHoursClose" full-width v-on:click:minute="
-                            $refs.openingHoursCloseMenu.save(openingHoursClose)
-                          "></v-time-picker>
+                          <v-time-picker v-model="openingHoursClose" full-width v-on:click:minute="$refs.openingHoursCloseMenu.save(openingHoursClose)
+                            "></v-time-picker>
                         </v-menu>
                       </v-col>
                     </v-row>
@@ -277,15 +270,15 @@
                 <p>
                   <br />
                   <v-select v-model="item.Type_of_library" label="Type" :items="[
-                    { text: 'Local authority', value: 'LAL' },
-                    {
-                      text: 'Local authority (unstaffed)',
-                      value: 'LAL-'
-                    },
-                    { text: 'Commisioned', value: 'CL' },
-                    { text: 'Community-run', value: 'CRL' },
-                    { text: 'Independent', value: 'IL' }
-                  ]" dense outlined></v-select>
+                      { text: 'Local authority', value: 'LAL' },
+                      {
+                        text: 'Local authority (unstaffed)',
+                        value: 'LAL-'
+                      },
+                      { text: 'Commisioned', value: 'CL' },
+                      { text: 'Community-run', value: 'CRL' },
+                      { text: 'Independent', value: 'IL' }
+                    ]" dense outlined></v-select>
                 </p>
               </template>
             </v-edit-dialog>
@@ -381,7 +374,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -1,16 +1,14 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Create" subtitle="Helping libraries to create and use library open data" />
-    <section>
-      <markdown-section :markdownText="mdText" />
-      <v-container class="text-center">
-        <v-btn prepend-icon="mdi-login-variant" variant="tonal" size="x-large" color="success" class="mx-1 my-1"
-          :to="'/login'">
-          Log in
-        </v-btn>
-      </v-container>
-    </section>
-  </div>
+    <markdown-section :markdownText="mdText" />
+    <v-container class="text-center">
+      <v-btn prepend-icon="mdi-login-variant" variant="tonal" size="x-large" color="success" class="mx-1 my-1"
+        :to="'/login'">
+        Log in
+      </v-btn>
+    </v-container>
+  </v-container>
 </template>
 <script>
 import Header from "../components/layout-header";

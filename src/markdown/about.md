@@ -1,13 +1,14 @@
-In 2019 a group of library data practioners created a set of [public library data schemas](https://schema.librarydata.uk/), designed for open data releases.
+In 2019 a group of library data practioners worked on a set of [public library data schemas](https://schema.librarydata.uk/). These were designed to help libraries publish open data about themselves, in a standard format.
 
-Some background sources for that project:
+Here are some background sources for that project:
 
-- DCMS Blog. [Libraries and open data](https://dcmslibraries.blog.gov.uk/2019/09/06/libraries-and-open-data/) and [Open data - an update](https://dcmslibraries.blog.gov.uk/2020/08/03/library-open-data-an-update/)
-- Frictionless Data blog. [Case study of using Table Schema to create a public library data schema](https://frictionlessdata.io/blog/2022/02/07/libraries-hacked/#schemas-and-frictionless-data).
+- DCMS blog: [Libraries and open data](https://dcmslibraries.blog.gov.uk/2019/09/06/libraries-and-open-data/)
+- DCMS blog: [Open data - an update](https://dcmslibraries.blog.gov.uk/2020/08/03/library-open-data-an-update/)
+- Frictionless Data blog. A [Case study of using Table Schema to create a public library data schema](https://frictionlessdata.io/blog/2022/02/07/libraries-hacked/#schemas-and-frictionless-data).
 
-This website is to aid in using those schemas, and the associated data. It will include:
+This website is to aid in using those schemas. It will include:
 
-- Tools to help libraries create and maintain open data
+- Tools to help libraries create and publish open data
 - Visualisations of the data
-- Sharing data analysis techniques using the data.
+- Data analysis techniques using the data.
 - Data tools that use the data to aid in decision-making

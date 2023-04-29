@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Membership map" subtitle="Explore library membership data" />
     <section>
       <v-container>
@@ -63,7 +63,7 @@
         </VMap>
       </v-container>
     </section>
-  </div>
+  </v-container>
 </template>
 
 <script>

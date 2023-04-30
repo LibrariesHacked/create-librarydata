@@ -21,9 +21,9 @@
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
-            <v-btn append-icon="mdi-login" variant="tonal" size="large" color="success" text @click="login"
+            <v-btn append-icon="mdi-email" variant="tonal" size="large" color="success" text @click="login"
               :disabled="!valid">
-              Log in
+              Send magic link
             </v-btn>
           </v-card-actions>
         </v-card>

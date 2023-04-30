@@ -1,7 +1,20 @@
 <template>
-  <v-autocomplete class="elevation-0" clearable :v-model="value" :items="library_services" item-title="nice_name"
-    item-value="code" label="Choose a library authority" return-object :loading="library_services.length === 0"
-    prepend-inner-icon="mdi-domain" v-on:update:modelValue="update"></v-autocomplete>
+  <v-card elevation="0" color="grey-lighten-5">
+    <v-card-text>
+      <div class="text-caption pa-3">Select the local authority name</div>
+      <v-autocomplete persistent-hint bg-color="green" class="elevation-0" clearable :v-model="value"
+        :items="library_services" item-title="nice_name" item-value="code" label="Find a local library authority"
+        return-object :loading="library_services.length === 0" prepend-inner-icon="mdi-domain"
+        v-on:update:modelValue="updateSelection"
+        hint="You can type to search. After selecting a service, select the arrow icon to confirm">
+        <template v-slot:append>
+          <v-icon :color="selected_service !== null ? 'success' : 'grey'"
+            :icon="service_confirmed ? 'mdi-check' : 'mdi-chevron-right'" disabled="false"
+            @click="confirmSelection()"></v-icon>
+        </template>
+      </v-autocomplete>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -10,7 +23,9 @@ const authoritiesHelper = require("../helpers/libraryAuthorities.js");
 export default {
   data() {
     return {
-      library_services: []
+      library_services: [],
+      selected_service: null,
+      service_confirmed: false,
     };
   },
   created() {
@@ -27,8 +42,13 @@ export default {
       this.$store.commit("setServices", services);
       this.library_services = services;
     },
-    update(newValue) {
-      this.$emit("change", newValue);
+    updateSelection(newValue) {
+      this.service_confirmed = false;
+      this.selected_service = newValue;
+    },
+    confirmSelection() {
+      this.service_confirmed = true;
+      this.$emit("change", this.selected_service);
     }
   }
 };

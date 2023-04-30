@@ -4,15 +4,15 @@
     <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
-        <v-card outlined :loading="loading" max-width="350" class="mx-auto">
+        <v-card color="success" variant="outlined" elevation="0" :loading="loading" max-width="350" class="mx-auto">
           <template #progress>
             <v-progress-linear height="5" indeterminate></v-progress-linear>
           </template>
-          <v-card-title>Access</v-card-title>
+          <v-card-title>Access the site</v-card-title>
           <v-card-text v-if="!success">
             <v-form ref="form" v-model="valid">
               <v-text-field clearable dense outlined v-model="email" :rules="emailRules" label="Enter email address"
-                type="email" prepend-inner-icon="mdi-email" color="primary" required></v-text-field>
+                type="email" prepend-inner-icon="mdi-email" color="info" required></v-text-field>
               <p>{{ message }}</p>
             </v-form>
           </v-card-text>
@@ -21,9 +21,9 @@
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
-            <v-btn large color="primary" text @click="login" :disabled="!valid">
+            <v-btn append-icon="mdi-login" variant="tonal" size="large" color="success" text @click="login"
+              :disabled="!valid">
               Log in
-              <v-icon right>mdi-login</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>

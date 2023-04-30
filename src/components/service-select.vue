@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete class="elevation-0" bg-color="white" clearable :v-model="value" :items="library_services" item-title="nice_name"
+  <v-autocomplete class="elevation-0" clearable :v-model="value" :items="library_services" item-title="nice_name"
     item-value="code" label="Choose a library authority" return-object :loading="library_services.length === 0"
     prepend-inner-icon="mdi-domain" v-on:update:modelValue="update"></v-autocomplete>
 </template>

@@ -24,7 +24,7 @@
       <v-alert class="my-2" icon="mdi-numeric-2-circle" text="To edit library data, select the edit icon for each library.
         Changes are not saved until you select to publish changes."></v-alert>
 
-      <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mx-4 my-4">
+      <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mx-3 my-2">
 
         <v-data-table hover items-per-page="5"
           no-data-text="To load library data ensure you select a local authority in Step 1." :headers="headers"
@@ -234,9 +234,9 @@
           <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex">
               <v-icon class="mr-2" v-on:click="editItem(item.raw)">
-                mdi-pencil-outline
+                mdi-pencil
               </v-icon>
-              <v-icon v-on:click="deleteItem(item.raw)">mdi-delete-outline</v-icon>
+              <v-icon v-on:click="deleteItem(item.raw)">mdi-delete</v-icon>
             </div>
           </template>
         </v-data-table>

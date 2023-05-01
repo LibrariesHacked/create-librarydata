@@ -11,8 +11,8 @@
           <v-card-title>Access the site</v-card-title>
           <v-card-text v-if="!success">
             <v-form ref="form" v-model="valid">
-              <v-text-field clearable dense outlined v-model="email" :rules="emailRules" label="Enter email address"
-                type="email" prepend-inner-icon="mdi-email" color="info" required></v-text-field>
+              <v-text-field clearable variant="outlined" v-model="email" :rules="emailRules" label="Enter email address"
+                type="email" prepend-inner-icon="mdi-email" required></v-text-field>
               <p>{{ message }}</p>
             </v-form>
           </v-card-text>
@@ -23,7 +23,7 @@
             <v-spacer></v-spacer>
             <v-btn append-icon="mdi-email" variant="tonal" size="large" color="success" text @click="login"
               :disabled="!valid">
-              Send magic link
+              Email login link
             </v-btn>
           </v-card-actions>
         </v-card>

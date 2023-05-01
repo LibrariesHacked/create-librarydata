@@ -12,12 +12,12 @@
 
     <v-divider inset color="info" class="my-2"></v-divider>
 
-    <h2 class="text-h5 text-decoration-underline my-3">Edit libraries data</h2>
+    <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
 
       <v-alert class="my-2" icon="mdi-numeric-1-circle"
-        text="First, choose a local authority to see libraries within that area."></v-alert>
+        text="Choose a local authority to view the libraries within that area."></v-alert>
 
       <service-select v-on:change="loadLibraries($event)" />
 
@@ -41,93 +41,93 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-text>
-                    <v-container>
-                      <v-tabs>
-                        <v-tab>Library</v-tab>
-                        <v-tab>Location</v-tab>
-                        <v-tab>Opening hours</v-tab>
-                        <v-tab-item>
-                          <v-container></v-container>
-                          <v-row>
+                  <v-container>
+                    <v-tabs align-tabs="center" v-model="editTabs">
+                      <v-tab :value="1">Details</v-tab>
+                      <v-tab :value="2">Address</v-tab>
+                      <v-tab :value="3">Hours</v-tab>
+                    </v-tabs>
+                    <v-window v-model="editTabs">
+                      <v-window-item :key="1" :value="1">
+                        <v-container fluid>
+                          <v-row dense>
                             <v-col cols="12">
-                              <v-text-field outlined v-model="editedItem.Library_name" label="Name"></v-text-field>
+                              <v-text-field variant="outlined" density="compact" v-model="editedItem.Library_name"
+                                label="Name"></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="8" md="8">
-                              <v-select v-model="editedItem.Type_of_library" label="Type" :items="[
-                                  { text: 'Local authority', value: 'LAL' },
-                                  {
-                                    text: 'Local authority (unstaffed)',
-                                    value: 'LAL-'
-                                  },
-                                  { text: 'Commisioned', value: 'CL' },
-                                  { text: 'Community-run', value: 'CRL' },
-                                  { text: 'Independent', value: 'ICL' }
-                                ]" dense outlined></v-select>
+                              <v-select v-model="editedItem.Type_of_library" :items="libraryTypes" variant="outlined"
+                                density="compact" item-title="text" item-value="value" label="Type"></v-select>
                             </v-col>
                             <v-col cols="12" sm="4" md="4">
-                              <v-select v-model="editedItem.Statutory" :items="['Yes', 'No']" label="Statutory" dense
-                                outlined></v-select>
+                              <v-select variant="outlined" density="compact" v-model="editedItem.Statutory"
+                                :items="['Yes', 'No']" label="Statutory"></v-select>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Year_opened" label="Year opened"
-                                type="number"></v-text-field>
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Year_opened"
+                                label="Year opened" type="number"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Year_closed" label="Year closed"
-                                type="number"></v-text-field>
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Year_closed"
+                                label="Year closed" type="number"></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Email_address"
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Email_address"
                                 label="Email address"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.URL" label="Website"></v-text-field>
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.URL"
+                                label="Website"></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="12" md="12">
-                              <v-textarea dense outlined v-model="editedItem.Notes" label="Notes" full-width></v-textarea>
+                              <v-textarea rows="2" density="compact" variant="outlined"
+                                v-model="editedItem.Notes" label="Notes" clearable persistent-clear
+                                full-width></v-textarea>
                             </v-col>
                           </v-row>
-                        </v-tab-item>
-                        <v-tab-item>
-                          <v-container></v-container>
-                          <v-row>
+                        </v-container>
+                      </v-window-item>
+                      <v-window-item :key="2" :value="2">
+                        <v-container fluid>
+                          <v-row dense>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Address_1"
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Address_1"
                                 label="Address 1"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Address_2"
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Address_2"
                                 label="Address 2"></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Address_3"
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Address_3"
                                 label="Address 3"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-text-field dense outlined v-model="editedItem.Postcode" label="Postcode"></v-text-field>
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Postcode"
+                                label="Postcode"></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-row>
+                          <v-row dense>
                             <v-col cols="12" sm="12" md="12">
-                              <v-text-field dense outlined v-model="editedItem.Unique_property_reference_number
+                              <v-text-field density="compact" variant="outlined" v-model="editedItem.Unique_property_reference_number
                                 " label="Unique property reference number"></v-text-field>
                             </v-col>
                           </v-row>
-                        </v-tab-item>
-                        <v-tab-item>
-                          <v-container></v-container>
-                          <v-row>
+                        </v-container>
+                      </v-window-item>
+                      <v-window-item :key="3" :value="3">
+                        <v-container fluid>
+                          <v-row dense>
                             <v-col cols="12" sm="6" md="6" v-for="hourType in openingHourTypes" :key="hourType">
                               <div v-for="day in days" :key="day">
                                 <div class="text-subtitle-2">
@@ -155,47 +155,37 @@
                               </div>
                             </v-col>
                           </v-row>
-                        </v-tab-item>
-                      </v-tabs>
-                    </v-container>
-                  </v-card-text>
+                        </v-container>
+                      </v-window-item>
+                    </v-window>
+                  </v-container>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text color="accent" v-on:click="close">
-                      <v-icon left>mdi-close-circle-outline</v-icon>
+                    <v-btn variant="plain" v-on:click="close" append-icon="mdi-close-circle">
                       Cancel
                     </v-btn>
-                    <v-btn text color="success" v-on:click="save">
-                      <v-icon left>mdi-check-circle-outline</v-icon>
+                    <v-btn variant="tonal" color="success" v-on:click="save" append-icon="mdi-check-circle">
                       Ok
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-              <v-dialog persistent overlay-opacity="0.3" content-class="elevation-0" v-model="dialogDelete"
+              <v-dialog persistent overlay-opacity="0.1" content-class="elevation-0" v-model="dialogDelete"
                 max-width="500px">
                 <v-card>
-                  <v-card-title>Remove this library?</v-card-title>
+                  <v-card-title>Remove library?</v-card-title>
                   <v-card-text>
-                    <p>
-                      This will remove this library from the dataset.
-                    </p>
-                    <p>
-                      If the library has closed it should not be removed. The
-                      closed year can be entered in the library details to mark it as closed.
-                    </p>
+                    This action will remove the library. If the library has closed it should not be removed. The
+                    closed year can be entered in the library details to mark it as closed and retain the details.
                   </v-card-text>
                   <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn variant="tonal" color="accent" v-on:click="closeDelete">
-                      <v-icon left>mdi-close-circle-outline</v-icon>
+                    <v-spacer />
+                    <v-btn variant="plain" v-on:click="closeDelete" append-icon="mdi-close-circle">
                       Cancel
                     </v-btn>
-                    <v-btn text color="error" v-on:click="deleteItemConfirm">
-                      <v-icon left>mdi-delete-outline</v-icon>
-                      Delete
+                    <v-btn variant="tonal" color="warning" v-on:click="deleteItemConfirm" append-icon="mdi-delete">
+                      Remove
                     </v-btn>
-                    <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -204,7 +194,7 @@
                 <v-card>
                   <v-card-title>Add opening hours session</v-card-title>
                   <v-card-text>
-                    <v-row>
+                    <v-row dense>
                       <v-col cols="12" sm="6" md="6">
                         <v-menu ref="openingHoursOpenMenu" v-model="openingHoursOpenMenuOpen"
                           :close-on-content-click="false" :nudge-right="40" :v-model:return-value="openingHoursOpen"
@@ -233,103 +223,28 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text color="accent" v-on:click="closeOpeningHoursEntry">Cancel</v-btn>
-                    <v-btn text color="success" v-on:click="confirmOpeningHoursEntry">Ok</v-btn>
+                    <v-btn variant="plain" v-on:click="closeOpeningHoursEntry">Cancel</v-btn>
+                    <v-btn variant="tonal" color="success" v-on:click="confirmOpeningHoursEntry">Ok</v-btn>
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </v-toolbar>
           </template>
-          <template v-slot:[`item.Library_name`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Library_name">
-              {{ item.Library_name }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-text-field outlined v-model="item.Library_name" label="Name"></v-text-field>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
-          <template v-slot:[`item.Year_closed`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Year_closed">
-              {{ item.Year_closed }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-text-field outlined v-model="item.Year_closed" label="Year closed" type="number"></v-text-field>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
-          <template v-slot:[`item.Type_of_library`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Type_of_library">
-              {{ item.Type_of_library }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-select v-model="item.Type_of_library" label="Type" :items="[
-                      { text: 'Local authority', value: 'LAL' },
-                      {
-                        text: 'Local authority (unstaffed)',
-                        value: 'LAL-'
-                      },
-                      { text: 'Commisioned', value: 'CL' },
-                      { text: 'Community-run', value: 'CRL' },
-                      { text: 'Independent', value: 'IL' }
-                    ]" dense outlined></v-select>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
-          <template v-slot:[`item.Address_1`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Address_1">
-              {{ item.Address_1 }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-text-field dense outlined v-model="item.Address_1" label="Address 1"></v-text-field>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
-          <template v-slot:[`item.Postcode`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Postcode">
-              {{ item.Postcode }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-text-field dense outlined v-model="item.Postcode" label="Postcode"></v-text-field>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
-          <template v-slot:[`item.Statutory`]="{ item }">
-            <v-edit-dialog large :v-model:return-value="item.Statutory">
-              {{ item.Statutory }}
-              <template v-slot:input>
-                <p>
-                  <br />
-                  <v-select v-model="item.Statutory" :items="['Yes', 'No']" label="Statutory" dense outlined></v-select>
-                </p>
-              </template>
-            </v-edit-dialog>
-          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex">
-              <v-icon class="mr-2" v-on:click="editItem(item)">
+              <v-icon class="mr-2" v-on:click="editItem(item.raw)">
                 mdi-pencil-outline
               </v-icon>
-              <v-icon v-on:click="deleteItem(item)">mdi-delete-outline</v-icon>
+              <v-icon v-on:click="deleteItem(item.raw)">mdi-delete-outline</v-icon>
             </div>
           </template>
         </v-data-table>
       </v-card>
 
       <v-alert class="my-2" icon="mdi-numeric-3-circle">
-        To finish you can save a copy of the data to your computer in CSV format. If you are
-        logged in with access to edit the library authority data, you can also
+        To finish you can save a copy of the data to your computer. If you are
+        logged in with access to edit the library authority data, you can
         overwrite the existing data by selecting <strong>Publish changes</strong>.
       </v-alert>
 
@@ -384,6 +299,8 @@ import * as schemaHelper from "../helpers/schemas";
 import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/librariesdata.md";
 
+const config = require("../helpers/config.json");
+
 export default {
   beforeMount() {
     window.addEventListener("beforeunload", event => {
@@ -413,6 +330,7 @@ export default {
       dialogDelete: false,
       dialogOpeningHoursEntry: false,
       editedIndex: -1,
+      editTabs: 1,
       editedItem: {},
       defaultItem: {
         Local_authority: "",
@@ -456,22 +374,16 @@ export default {
         },
         { title: "Closed", value: "Year_closed" },
         {
-          title: "Type",
-          align: "start",
-          value: "Type_of_library"
-        },
-        {
           title: "Address 1",
           align: "start",
           value: "Address_1"
         },
         { title: "Postcode", value: "Postcode" },
-        { title: "Statutory", value: "Statutory" },
         { title: "Actions", key: "actions", sortable: false }
       ],
       isEditing: false,
       libraries: [],
-      library_form_active: false,
+      libraryTypes: config.library_types,
       loadingServiceData: false,
       mdText: MarkDownData,
       openingHoursOpenMenuOpen: false,

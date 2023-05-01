@@ -1,9 +1,9 @@
 <template>
   <v-card elevation="0" color="grey-lighten-5">
     <v-card-text>
-      <div class="text-caption pa-3">Select the local authority name</div>
+      <div class="text-caption pa-3">Select local authority</div>
       <v-autocomplete persistent-hint bg-color="green" class="elevation-0" clearable :v-model="value"
-        :items="library_services" item-title="nice_name" item-value="code" label="Find a local library authority"
+        :items="library_services" item-title="nice_name" item-value="code" label="Find a local authority"
         return-object :loading="library_services.length === 0" prepend-inner-icon="mdi-domain"
         v-on:update:modelValue="updateSelection"
         hint="You can type to search. After selecting a service, select the arrow icon to confirm">

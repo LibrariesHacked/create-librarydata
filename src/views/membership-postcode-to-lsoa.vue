@@ -150,7 +150,7 @@
                     outlined></v-select>
                   <v-dialog ref="dialog" v-model="modal" :v-model:return-value="extract_date" persistent width="290px">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-text-field v-bind="attrs" v-model="extract_date" label="Count date"
+                      <v-text-field variant="outlined" v-bind="attrs" v-model="extract_date" label="Count date"
                         prepend-inner-icon="mdi-calendar" readonly v-on="on"></v-text-field>
                     </template>
                     <v-date-picker v-model="extract_date" scrollable>

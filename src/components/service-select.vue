@@ -9,7 +9,7 @@
         hint="You can type to search. After selecting a service, select the arrow icon to confirm">
         <template v-slot:append>
           <v-icon :color="selected_service !== null ? 'success' : 'grey'"
-            :icon="service_confirmed ? 'mdi-check' : 'mdi-chevron-right'" disabled="false"
+            :icon="service_confirmed ? 'mdi-check' : 'mdi-chevron-right-circle'" disabled="false"
             @click="confirmSelection()"></v-icon>
         </template>
       </v-autocomplete>
@@ -47,6 +47,7 @@ export default {
       this.selected_service = newValue;
     },
     confirmSelection() {
+      if (this.selected_service === null) return;
       this.service_confirmed = true;
       this.$emit("change", this.selected_service);
     }

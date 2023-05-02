@@ -12,7 +12,7 @@ export default createStore({
     loginAdmin: false,
     loginCodes: [],
     // Library service lookups
-    library_services: []
+    libraryServices: []
   },
   mutations: {
     initialiseStore (state) {
@@ -45,8 +45,8 @@ export default createStore({
       state.loginAdmin = null
       state.loginCodes = []
     },
-    setServices (state, library_services) {
-      state.library_services = library_services
+    setServices (state, libraryServices) {
+      state.libraryServices = libraryServices
     }
   },
   actions: {

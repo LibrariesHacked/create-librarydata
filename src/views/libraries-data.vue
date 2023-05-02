@@ -21,8 +21,8 @@
 
       <service-select v-on:change="loadLibraries($event)" />
 
-      <v-alert class="my-2" icon="mdi-numeric-2-circle" text="To edit library data, select the edit icon for each library.
-        Changes are not saved until you select to publish changes."></v-alert>
+      <v-alert class="my-2" icon="mdi-numeric-2-circle" text="To make changes select the edit icon for each library.
+        Changes are not saved until you publish changes."></v-alert>
 
       <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mx-3 my-2">
 
@@ -88,9 +88,8 @@
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" sm="12" md="12">
-                              <v-textarea rows="2" density="compact" variant="outlined"
-                                v-model="editedItem.Notes" label="Notes" clearable persistent-clear
-                                full-width></v-textarea>
+                              <v-textarea rows="2" density="compact" variant="outlined" v-model="editedItem.Notes"
+                                label="Notes" clearable persistent-clear full-width></v-textarea>
                             </v-col>
                           </v-row>
                         </v-container>

@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
-    <v-navigation-drawer floating v-model="drawer" elevation="0" color="green">
+    <v-navigation-drawer v-model="drawer" elevation="0">
       <v-list nav>
         <v-list-item :to="'/'" active-class="highlighted" :class="'/' === $route.path ? 'highlighted' : ''"
           prepend-icon="mdi-home-variant-outline">

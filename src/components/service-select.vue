@@ -7,7 +7,7 @@
       hint="You can type to search. After selecting a service, select the arrow icon to confirm">
       <template v-slot:append>
         <v-icon :color="selectedService !== null ? 'success' : 'grey'"
-          :icon="serviceConfirmed ? 'mdi-check' : 'mdi-chevron-right-circle'" disabled="false"
+          :icon="serviceConfirmed ? 'mdi-check-circle' : 'mdi-chevron-right-circle'" disabled="false"
           @click="confirmSelection()"></v-icon>
       </template>
     </v-autocomplete>

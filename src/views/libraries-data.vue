@@ -15,16 +15,16 @@
     <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
-      <v-alert class="my-2" icon="mdi-numeric-1-circle"
-        text="Choose a local authority to view the libraries within that area."></v-alert>
+      <v-alert icon="mdi-numeric-1-circle" class="mb-1"
+        text="Choose a local authority to view the libraries within that area." title="Local authority"></v-alert>
 
       <service-select v-on:change="loadLibraries($event)" />
 
-      <v-alert class="my-2" icon="mdi-numeric-2-circle" text="To make changes select the edit icon for each library.
-        Changes are not saved until you publish changes."></v-alert>
+      <v-alert class="mt-8 mb-1" icon="mdi-numeric-2-circle" text="Select the edit icon for each library to see and edit full details.
+        Changes are not saved until the next step." title="Make changes"></v-alert>
 
       <v-card color="grey-lighten-2" variant="outlined" elevation="0">
-        <v-data-table hover items-per-page="5"
+        <v-data-table hover items-per-page="5" no-filter
           no-data-text="To load library data ensure you select a local authority in Step 1." :headers="headers"
           :items="libraries" :sort-by="[{ key: 'Library_name', order: 'asc' }]" class="elevation-0">
           <template #top>
@@ -47,7 +47,7 @@
                     </v-tabs>
                     <v-window v-model="editTabs">
                       <v-window-item :key="1" :value="1">
-                        <v-container fluid>
+                        <v-container>
                           <v-row dense>
                             <v-col cols="12">
                               <v-text-field variant="outlined" density="compact" v-model="editedItem.Library_name"
@@ -93,7 +93,7 @@
                         </v-container>
                       </v-window-item>
                       <v-window-item :key="2" :value="2">
-                        <v-container fluid>
+                        <v-container>
                           <v-row dense>
                             <v-col cols="12" sm="6" md="6">
                               <v-text-field density="compact" variant="outlined" v-model="editedItem.Address_1"
@@ -124,33 +124,31 @@
                         </v-container>
                       </v-window-item>
                       <v-window-item :key="3" :value="3">
-                        <v-container fluid>
+                        <v-container>
                           <v-row dense>
                             <v-col cols="12" sm="6" md="6" v-for="hourType in openingHourTypes" :key="hourType">
                               <h4 class="text-subtitle">{{ hourType }}</h4>
-                              <div v-for="day in days" :key="day" class="ma-2">
-                                <v-divider/>
+                              <div v-for="day in days" :key="day" class="my-1">
+                                <v-divider class="my-1" />
                                 <div class="text-subtitle-2">
-                                  {{ day }}
                                   <v-btn variant="tonal" icon="mdi-plus-circle" size="x-small" color="success" v-on:click="addOpeningHoursEntry(
-                                    day + '_' + hourType.toLowerCase() + '_hours'
-                                  )">
+                                      day + '_' + hourType.toLowerCase() + '_hours'
+                                    )">
                                   </v-btn>
+                                  {{ day }}
                                 </div>
-
-                                <v-chip class="ma-1" v-for="session in editedItem[
+                                <v-chip class="ma-1" size="small" v-for="session in editedItem[
                                   day + '_' + hourType.toLowerCase() + '_hours'
                                 ]
                                   ? editedItem[
                                     day + '_' + hourType.toLowerCase() + '_hours'
                                   ].split(',')
-                                  : ''" :key="session" small label close close-icon="mdi-delete" color="success"
+                                  : ''" :key="session" label closable close-icon="mdi-delete" color="success"
                                   v-on:click:close="removeOpeningHoursEntry(
                                       day + '_' + hourType.toLowerCase() + '_hours',
                                       session
                                     )
                                     ">{{ session }}</v-chip>
-
                               </div>
                             </v-col>
                           </v-row>
@@ -192,39 +190,25 @@
               <v-dialog persistent overlay-opacity="0.3" content-class="elevation-0" v-model="dialogOpeningHoursEntry"
                 max-width="500px">
                 <v-card>
-                  <v-card-title>Add opening hours session</v-card-title>
+                  <v-card-title>Add opening hours</v-card-title>
                   <v-card-text>
                     <v-row dense>
                       <v-col cols="12" sm="6" md="6">
-                        <v-menu ref="openingHoursOpenMenu" v-model="openingHoursOpenMenuOpen"
-                          :close-on-content-click="false" :nudge-right="40" :v-model:return-value="openingHoursOpen"
-                          transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field v-bind="attrs" dense outlined v-model="openingHoursOpen" label="Open" readonly
-                              v-on="on"></v-text-field>
-                          </template>
-                          <v-time-picker v-model="openingHoursOpen" full-width v-on:click:minute="$refs.openingHoursOpenMenu.save(openingHoursOpen)
-                            "></v-time-picker>
-                        </v-menu>
+                        <v-text-field variant="outlined" density="compact" v-model="openingHoursOpen" label="Opening time"
+                          type="time"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-menu ref="openingHoursCloseMenu" v-model="openingHoursCloseMenuOpen"
-                          :close-on-content-click="false" :nudge-right="40" :v-model:return-value="openingHoursClose"
-                          transition="scale-transition" offset-y max-width="290px" min-width="290px">
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field v-bind="attrs" dense outlined v-model="openingHoursClose" label="Close" readonly
-                              v-on="on"></v-text-field>
-                          </template>
-                          <v-time-picker v-model="openingHoursClose" full-width v-on:click:minute="$refs.openingHoursCloseMenu.save(openingHoursClose)
-                            "></v-time-picker>
-                        </v-menu>
+                        <v-text-field variant="outlined" density="compact" v-model="openingHoursClose"
+                          label="Closing time" type="time"></v-text-field>
                       </v-col>
                     </v-row>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn variant="plain" v-on:click="closeOpeningHoursEntry">Cancel</v-btn>
-                    <v-btn variant="tonal" color="success" v-on:click="confirmOpeningHoursEntry">Ok</v-btn>
+                    <v-btn variant="plain" v-on:click="closeOpeningHoursEntry"
+                      append-icon="mdi-close-circle">Cancel</v-btn>
+                    <v-btn variant="tonal" color="success" v-on:click="confirmOpeningHoursEntry"
+                      :disabled="!openingHoursOpen || !openingHoursClose" append-icon="mdi-check-circle">Ok</v-btn>
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
@@ -240,10 +224,9 @@
         </v-data-table>
       </v-card>
 
-      <v-alert class="my-2" icon="mdi-numeric-3-circle">
-        To finish you can save a copy of the data to your computer. If you are logged in
-        with access to edit the library authority data, you can overwrite the existing
-        data by selecting <strong>Publish changes</strong>.
+      <v-alert class="mt-8" icon="mdi-numeric-3-circle" title="Save changes">
+        If you are logged in with access to edit the library authority data, you can overwrite the existing
+        data by selecting <strong>Publish changes</strong>. You can also save a copy of the data to your computer.
       </v-alert>
 
       <v-btn :disabled="!isEditing" size="large" variant="tonal" color="info" append-icon="mdi-content-save"
@@ -389,20 +372,9 @@ export default {
     }
   },
   methods: {
-    editItem(item) {
-      this.editedIndex = this.libraries.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogMainLibrary = true
-    },
-    deleteItem(item) {
-      this.editedIndex = this.libraries.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-    deleteItemConfirm() {
-      this.isEditing = true
-      this.libraries.splice(this.editedIndex, 1)
-      this.closeDelete()
+    addOpeningHoursEntry(key) {
+      this.openingHoursEditKey = key
+      this.dialogOpeningHoursEntry = true
     },
     close() {
       this.dialogMainLibrary = false
@@ -419,16 +391,6 @@ export default {
         this.editedIndex = -1
       })
     },
-    addOpeningHoursEntry(key) {
-      this.openingHoursEditKey = key
-      this.dialogOpeningHoursEntry = true
-    },
-    removeOpeningHoursEntry(key, session) {
-      var sessions = this.editedItem[key].split(',').filter(x => x.length > 0)
-      sessions.splice(sessions.indexOf(session), 1)
-      this.editedItem[key] = sessions.join(',')
-      this.dialogOpeningHoursEntry = false
-    },
     closeOpeningHoursEntry() {
       this.dialogOpeningHoursEntry = false
     },
@@ -439,30 +401,18 @@ export default {
       sessions.push(`${this.openingHoursOpen}-${this.openingHoursClose}`)
       this.editedItem[this.openingHoursEditKey] = sessions.join(',')
       this.dialogOpeningHoursEntry = false
+      this.openingHoursOpen = null
+      this.openingHoursClose = null
     },
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.libraries[this.editedIndex], this.editedItem)
-      } else {
-        this.libraries.push(this.editedItem)
-      }
-      this.close()
+    deleteItem(item) {
+      this.editedIndex = this.libraries.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
     },
-    loadLibraries: async function (service) {
-      this.selectedService = service
-      this.loadingServiceData = true
-      let self = this
-      const libraries = await schemaHelper.getSchemaData('libraries', service.code)
-      libraries.forEach((e, i) => {
-        Object.keys(e).forEach(key => {
-          let val = e[key]
-          let newKey = key.replace(/\s+/g, '_')
-          delete libraries[i][key]
-          libraries[i][newKey] = val
-        })
-      })
-      self.libraries = libraries
-      this.loadingServiceData = false
+    deleteItemConfirm() {
+      this.isEditing = true
+      this.libraries.splice(this.editedIndex, 1)
+      this.closeDelete()
     },
     download() {
       let service = this.selectedService
@@ -483,6 +433,27 @@ export default {
         link.click()
         document.body.removeChild(link)
       }
+    },
+    editItem(item) {
+      this.editedIndex = this.libraries.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogMainLibrary = true
+    },
+    loadLibraries: async function (service) {
+      this.selectedService = service
+      this.loadingServiceData = true
+      let self = this
+      const libraries = await schemaHelper.getSchemaData('libraries', service.code)
+      libraries.forEach((e, i) => {
+        Object.keys(e).forEach(key => {
+          let val = e[key]
+          let newKey = key.replace(/\s+/g, '_')
+          delete libraries[i][key]
+          libraries[i][newKey] = val
+        })
+      })
+      self.libraries = libraries
+      this.loadingServiceData = false
     },
     publishChanges: async function () {
       let librariesToPublish = JSON.parse(JSON.stringify(this.libraries))
@@ -513,6 +484,20 @@ export default {
       if (!this.isEditing) return
       event.preventDefault()
       event.returnValue = ''
+    },
+    removeOpeningHoursEntry(key, session) {
+      var sessions = this.editedItem[key].split(',').filter(x => x.length > 0)
+      sessions.splice(sessions.indexOf(session), 1)
+      this.editedItem[key] = sessions.join(',')
+      this.dialogOpeningHoursEntry = false
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.libraries[this.editedIndex], this.editedItem)
+      } else {
+        this.libraries.push(this.editedItem)
+      }
+      this.close()
     }
   },
   components: {

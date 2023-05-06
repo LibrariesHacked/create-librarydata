@@ -1,19 +1,15 @@
 <template>
-  <v-card variant="tonal" color="info" max-width="350">
-    <v-subheader v-if="this.$store.state.loginKey">Logged in. Session expires
-      {{ this.$store.state.loginExpires.toLocaleString() }}</v-subheader>
-    <v-divider />
+  <v-card variant="tonal" color="info">
     <v-card-text>
+      <p v-if="this.$store.state.loginKey">
+        Logged in as <strong>{{ this.$store.state.loginSubject }}</strong></p>
       <p v-if="!this.$store.state.loginKey">Not logged in</p>
-      <p class="text-h5">
-        {{ this.$store.state.loginSubject }}
-      </p>
-      <p v-if="this.$store.state.loginAdmin">
-        <v-chip color="primary">
+      <span v-if="this.$store.state.loginAdmin">
+        <v-chip color="info">
           <v-icon left> mdi-shield-crown-outline </v-icon>
           Admin
         </v-chip>
-      </p>
+      </span>
       <v-chip class="mr-1" v-for="code in this.$store.state.loginCodes" :key="'chip_' + code">
         <v-icon left>mdi-map-legend</v-icon>
         {{
@@ -22,7 +18,7 @@
           : code
         }}</v-chip>
     </v-card-text>
-    <v-card-actions v-if="this.actions === true">
+    <v-card-actions v-if="this.actions">
       <v-spacer></v-spacer>
       <v-btn v-if="this.$store.state.loginKey" large color="primary" text @click="logout">
         Log out

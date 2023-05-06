@@ -12,9 +12,9 @@
     <markdown-section :markdownText="mdText" />
     <v-divider inset color="info" class="my-2"></v-divider>
 
-    <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
-
     <user-profile actions />
+
+    <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1"

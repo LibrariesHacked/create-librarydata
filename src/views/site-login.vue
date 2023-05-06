@@ -32,6 +32,8 @@
   </v-container>
 </template>
 <script>
+import { useRoute } from 'vue-router'
+
 import Header from "../components/layout-header";
 import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/login.md";
@@ -54,7 +56,7 @@ export default {
     };
   },
   created: function () {
-    this.stripLoginKey();
+    this.processLoginKey();
   },
   methods: {
     async login() {
@@ -71,10 +73,9 @@ export default {
       }
       this.loading = false;
     },
-    stripLoginKey: function () {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const key = urlParams.get("key");
+    processLoginKey: function () {
+      const route = useRoute()
+      const key = route.query.key;
       if (key) {
         this.$store.commit("setLoginKey", key);
         this.$router.push("/profile");

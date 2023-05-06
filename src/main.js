@@ -20,4 +20,13 @@ const vuetify = createVuetify({
   directives
 })
 
-createApp(App).use(vuetify).use(router).use(store).mount('#app')
+createApp({
+  extends: App,
+  beforeCreate () {
+    this.$store.commit('initialiseStore')
+  }
+})
+  .use(vuetify)
+  .use(router)
+  .use(store)
+  .mount('#app')

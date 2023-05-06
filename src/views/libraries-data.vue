@@ -2,17 +2,19 @@
   <v-container>
     <layout-header title="Libraries" subtitle="Public library locations, hours, and contact details" />
     <p class="text-center">
-      <v-btn size="x-large" prepend-icon="mdi-information-outline" variant="tonal" color="info"
+      <v-btn size="large" prepend-icon="mdi-information-outline" variant="tonal" color="info"
         href="https://schema.librarydata.uk/libraries" target="_blank">
-        Library locations data schema
+        Explore the locations data schema
       </v-btn>
     </p>
 
+    <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
-
     <v-divider inset color="info" class="my-2"></v-divider>
 
     <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
+
+    <user-profile actions />
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1"
@@ -132,8 +134,8 @@
                                 <v-divider class="my-1" />
                                 <div class="text-subtitle-2">
                                   <v-btn variant="tonal" icon="mdi-plus-circle" size="x-small" color="success" v-on:click="addOpeningHoursEntry(
-                                      day + '_' + hourType.toLowerCase() + '_hours'
-                                    )">
+                                    day + '_' + hourType.toLowerCase() + '_hours'
+                                  )">
                                   </v-btn>
                                   {{ day }}
                                 </div>
@@ -145,9 +147,9 @@
                                   ].split(',')
                                   : ''" :key="session" label closable close-icon="mdi-delete" color="success"
                                   v-on:click:close="removeOpeningHoursEntry(
-                                      day + '_' + hourType.toLowerCase() + '_hours',
-                                      session
-                                    )
+                                    day + '_' + hourType.toLowerCase() + '_hours',
+                                    session
+                                  )
                                     ">{{ session }}</v-chip>
                               </div>
                             </v-col>
@@ -268,6 +270,7 @@
 <script>
 import Header from '../components/layout-header'
 import ServiceSelect from '../components/service-select'
+import UserProfile from '../components/user-profile'
 
 import * as Papa from 'papaparse'
 import * as schemaHelper from '../helpers/schemas'
@@ -503,6 +506,7 @@ export default {
   components: {
     'layout-header': Header,
     'service-select': ServiceSelect,
+    'user-profile': UserProfile,
     'markdown-section': Markdown
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <layout-header title="Create" subtitle="Helping libraries to create and use library open data" />
+    <layout-header title="Create" subtitle="Helping libraries publish and use library open data" />
     <markdown-section :markdownText="mdText" />
     <v-container class="text-center">
       <v-btn prepend-icon="mdi-login-variant" variant="tonal" size="x-large" color="success" class="mx-1 my-1"

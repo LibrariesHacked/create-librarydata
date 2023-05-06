@@ -1,4 +1,4 @@
-In 2019 a group of library workers worked on a set of [public library data schemas](https://schema.librarydata.uk/). These were designed to help libraries publish open data about themselves.
+In 2019 a group of library workers collaborated on a set of [public library data schemas](https://schema.librarydata.uk/). These were designed to help libraries publish open data about themselves.
 
 Here is some background information on that project:
 

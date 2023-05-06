@@ -53,7 +53,7 @@
           </v-list-item>
           <v-list-item :to="'/postcode-to-lsoa'" active-class="highlighted"
             :class="'/postcode-to-lsoa' === $route.path ? 'highlighted' : ''">
-            <v-list-item-title>Postcode converter tool</v-list-item-title>
+            <v-list-item-title>Postcode converter</v-list-item-title>
           </v-list-item>
           <v-list-item :to="'/membership-map'" active-class="highlighted"
             :class="'/membership-map' === $route.path ? 'highlighted' : ''">

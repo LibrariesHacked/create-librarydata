@@ -2,21 +2,21 @@
   <v-card variant="tonal" color="info">
     <v-card-text>
       <p v-if="this.$store.state.loginKey">
-        Logged in as <strong>{{ this.$store.state.loginSubject }}</strong></p>
+        Logged in as <strong>{{ this.$store.state.loginSubject }}</strong>
+        <span v-if="this.$store.state.loginAdmin">
+          <v-chip color="info" class="mx-2" prepend-icon="mdi-shield-crown">
+            Admin
+          </v-chip>
+        </span>
+        <v-chip class="mr-1" v-for="code in this.$store.state.loginCodes" :key="'chip_' + code">
+          <v-icon left>mdi-map-legend</v-icon>
+          {{
+            library_services.length > 0
+            ? library_services.filter((s) => s.code === code)[0].nice_name
+            : code
+          }}</v-chip>
+      </p>
       <p v-if="!this.$store.state.loginKey">Not logged in</p>
-      <span v-if="this.$store.state.loginAdmin">
-        <v-chip color="info">
-          <v-icon left> mdi-shield-crown-outline </v-icon>
-          Admin
-        </v-chip>
-      </span>
-      <v-chip class="mr-1" v-for="code in this.$store.state.loginCodes" :key="'chip_' + code">
-        <v-icon left>mdi-map-legend</v-icon>
-        {{
-          library_services.length > 0
-          ? library_services.filter((s) => s.code === code)[0].nice_name
-          : code
-        }}</v-chip>
     </v-card-text>
     <v-card-actions v-if="this.actions">
       <v-spacer></v-spacer>

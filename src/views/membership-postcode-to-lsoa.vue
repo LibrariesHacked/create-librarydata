@@ -1,8 +1,26 @@
 <template>
   <v-container>
-    <layout-header title="Convert library member postcodes"
-      subtitle="Obtain census-based areas for the locations of library members" />
+    <layout-header title="Convert postcodes"
+      subtitle="Obtain census-based areas for the postcode locations of library members" />
+
+    <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
+    <v-divider inset color="info" class="my-2"></v-divider>
+
+    <h2 class="text-h5 text-decoration-underline my-3">Convert postcodes</h2>
+
+    <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
+      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a postcode file">
+        This tool loads CSV files. If your data isn't in CSV format you'll need to convert it. Try <strong>Save
+          as</strong> in spreadsheet software. The first row should be column headings, and one column should contain UK
+        postcodes
+      </v-alert>
+
+
+    </v-sheet>
+
+
+
     <section>
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">

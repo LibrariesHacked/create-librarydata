@@ -16,6 +16,32 @@
         postcodes
       </v-alert>
 
+      <file-upload v-bind:file="files" v-on:change-files="files = $event" />
+      <v-btn class="mt-2" color="info" size="large" variant="tonal" :disabled="files.length === 0"
+        v-on:click="confirmFile" append-icon="mdi-file-document">
+        Load file
+      </v-btn>
+
+      <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Choose fields in file">
+        The field headings in your data should be displayed. Choose the one which represents the postcodes.<br />
+        If your data is grouped into counts per postcode, also select the field the count is held
+      </v-alert>
+
+      <v-select v-model="postcode_column" :items="columns" label="Select postcode field" variant="outlined"
+        :disabled="postcode_column === ''"></v-select>
+
+      <p>Does your data include a postcode for each member, or a count per postcode? If there is already a count you can
+        also select
+        which field it appears in.</p>
+
+      <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="postcode_column === '' ||
+        columns.filter((c) => c !== postcode_column).length === 0
+        " label="Count field (optional)" variant="outlined"></v-select>
+
+      <v-btn color="info" variant="tonal" size="large" v-on:click="confirmOptions" :disabled="postcode_column === ''">
+        Convert
+      </v-btn>
+
 
     </v-sheet>
 
@@ -24,82 +50,16 @@
     <section>
       <v-container>
         <v-stepper v-model="active_step" flat outlined elevation="0">
-          <v-stepper-header class="elevation-0">
-            <v-stepper-step :complete="active_step > 1" step="1" color="error" editable>
-              Load postcodes
-            </v-stepper-step>
-            <v-divider></v-divider>
-            <v-stepper-step color="secondary" :complete="active_step > 2" step="2">
-              Choose conversion options
-            </v-stepper-step>
-            <v-divider></v-divider>
-            <v-stepper-step color="secondary" :complete="active_step > 3" step="3">
-              Results
-            </v-stepper-step>
-          </v-stepper-header>
 
-          <v-stepper-content step="1">
-            <v-row no-gutters>
-              <v-col cols="12" sm="6">
-                <v-container>
-                  <file-upload v-bind:file="files" v-on:change-files="files = $event" />
-                  <v-btn color="primary" depressed :disabled="files.length === 0" v-on:click="confirmFile">
-                    Next
-                  </v-btn>
-                </v-container>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-container>
-                  <v-alert border="right" color="blue" text type="info">
-                    <p>
-                      <b>File tips</b>
-                    </p>
-                    <ol>
-                      <li>
-                        This tool loads CSV files. If your data isn't in CSV format you'll
-                        need to convert it. Try <b>Save as</b> in your software.
-                      </li>
-                      <li>The first row should be column headings</li>
-                      <li>One column should contain UK postcodes</li>
-                    </ol>
-                  </v-alert>
-                </v-container>
-              </v-col>
-            </v-row>
-          </v-stepper-content>
+
           <v-stepper-content step="2">
             <v-row no-gutters>
               <v-col cols="12" sm="6">
-                <v-container>
-                  <v-select v-model="postcode_column" :items="columns" label="Select column" outlined></v-select>
-                  <v-btn color="primary" depressed v-on:click="confirmOptions" :disabled="postcode_column === ''">Convert
-                  </v-btn>
-                  <v-container>
-                    <v-subheader>My columns include a count</v-subheader>
-                    <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="postcode_column === '' ||
-                      columns.filter((c) => c !== postcode_column).length === 0
-                      " label="Count column (optional)" outlined></v-select>
-                  </v-container>
-                </v-container>
+
               </v-col>
               <v-col cols="12" sm="6">
                 <v-container>
-                  <v-alert border="right" color="blue" text type="info">
-                    <p>
-                      <b>Choose your columns</b>
-                    </p>
-                    <p>The column headings in your data should be displayed.</p>
-                    <ol>
-                      <li>Select the correct column for the postcodes</li>
-                      <li>Check guidance below on the optional step</li>
-                      <li>
-                        When ready, select the
-                        <strong>Convert</strong> option to continue
-                      </li>
-                    </ol>
-                    <br />
-                    <p>It may take a few minutes depending on number of postcodes.</p>
-                  </v-alert>
+
                   <v-alert border="right" color="orange" text type="warning">
                     <p>
                       <b>Optional: counts of people</b>

@@ -1,3 +1,3 @@
-England and Wales release statistics at the census-based 'Lower super output area' geographic level. In Scotland, 'Data Zones' are commonly used, and in Northern Ireland 'Small Areas'. This tool converts UK postcodes into the most appropriate area.
+England and Wales release statistics at the census-based 'Lower super output area' geographic level. In Scotland, 'Data Zones' are commonly used, and in Northern Ireland 'Small Areas'. This tool converts UK postcodes into the most appropriate area, to use in further analysis.
 
-Postcodes are kept secure, and never published online. A selection of postcode to statistical area pairings are downloaded, based on the postcode <b>sectors</b> in your data. The correct areas are then selected on your local PC.
+Postcodes are kept secure, and never published online. The conversion between postcode and statistical area is done on your local computer.

@@ -1,7 +1,6 @@
 <template>
   <v-container>
-    <layout-header title="Postcodes to statistical areas"
-      subtitle="Obtain census-based areas for the postcode locations of library members" />
+    <layout-header title="Postcodes to statistical areas" subtitle="Convert postcode locations to census-based areas" />
 
     <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
@@ -10,20 +9,16 @@
     <h2 class="text-h5 text-decoration-underline my-3">Convert postcodes</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
-      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a postcode file">
-        This tool loads CSV files. If your data isn't in CSV format try <strong>Save as</strong> in spreadsheet software.
-        The first row should be column headings, and one column should contain UK postcodes
+      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
+        This tool loads CSV files. If your data isn't in CSV format try <strong>Save as</strong> in your software.
+        The first row should be column headings, one column should contain UK postcodes
       </v-alert>
 
-      <file-upload v-bind:file="files" v-on:change-files="files = $event" />
-      <v-btn class="mt-2" color="info" size="large" variant="tonal" :disabled="files.length === 0"
-        v-on:click="confirmFile" append-icon="mdi-file-document">
-        Confirm and load file
-      </v-btn>
+      <file-upload v-bind:file="files" v-on:change-files="confirmFile($event)" />
 
-      <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Choose fields in file">
-        The field headings in your data should be displayed. Choose which one represents the postcodes. If your data
-        includes counts per postcode, also select whcih field holds the count</v-alert>
+      <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Select file options">
+        The field headings in your data should be displayed below. Choose which one represents the postcodes. If your data
+        includes counts per postcode, also select the field holding the count</v-alert>
 
       <v-select color="success" v-model="postcode_column" :items="columns" label="Select postcode field"
         variant="outlined" :disabled="columns.length === 0"></v-select>
@@ -42,7 +37,7 @@
       </v-alert>
 
       <span v-if="endTime !== null">
-              <p>
+        <p>
           {{ "Completed in " + getTimeCompleted() + " seconds" }}
         </p>
 
@@ -54,74 +49,23 @@
         </v-btn>
       </span>
 
-
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-4-circle" title="Library membership data">
-        Valid postcodes are changed to their statistical area code. Postcodes that are no longer valid are changed to
-        <strong>Terminated</strong>. Postcodes not recognised changed to <strong>Unknown</strong>.<br />
+        Census geographies are required to publish <a href="https://schema.librarydata.uk/membership"
+          target="_blank">library membership data</a>. This tool has calculated a count of members per statistical area.
+        Select the name of your library service and choose a date the postcodes were extracted from your library
+        management system
       </v-alert>
 
+      <v-select v-model="authority" :items="library_services" label="Library service name" variant="outlined"></v-select>
+
+      <v-text-field variant="outlined" :v-model="extractDate" label="Count date" prepend-inner-icon="mdi-calendar"
+        readonly v-on="on"></v-text-field>
+
+      <v-btn variant="tonal" color="success" v-on:click="downloadSchemaFile" size="large"
+        :disabled="authority === '' || extractDate === null">Save membership schema data</v-btn>
 
     </v-sheet>
 
-
-
-    <section>
-      <v-container>
-        <v-stepper v-model="active_step" flat outlined elevation="0">
-
-
-          <v-stepper-content step="3">
-
-
-            <v-row no-gutters>
-              <v-col cols="12" sm="6">
-                <v-container>
-                  <h4>Library membership data</h4>
-                  <br />
-                  <v-select v-model="authority" :items="library_services" label="Library service name"
-                    outlined></v-select>
-                  <v-dialog ref="dialog" v-model="modal" :v-model:return-value="extract_date" persistent width="290px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field variant="outlined" v-bind="attrs" v-model="extract_date" label="Count date"
-                        prepend-inner-icon="mdi-calendar" readonly v-on="on"></v-text-field>
-                    </template>
-                    <v-date-picker v-model="extract_date" scrollable>
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-                      <v-btn text color="primary" @click="$refs.dialog.save(date)">
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-dialog>
-                  <v-btn text color="primary" v-on:click="downloadSchemaFile"
-                    :disabled="authority === '' || extract_date === null">Save membership file</v-btn>
-                </v-container>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-alert border="right" color="orange" text type="warning">
-                  <p>
-                    <b>Public library open data</b>
-                  </p>
-                  <p>
-                    Census geographies are required for
-                    <a href="https://schema.librarydata.uk/membership" target="_blank">library membership data</a>.
-                  </p>
-                  <p>This tool has calculated a count of members per statistical area.</p>
-                  <ol>
-                    <li>Select the name of your library service</li>
-                    <li>
-                      Choose a date the postcodes were extracted from your library
-                      management system
-                    </li>
-                    <li>Save the data file</li>
-                  </ol>
-                </v-alert>
-              </v-col>
-            </v-row>
-          </v-stepper-content>
-        </v-stepper>
-      </v-container>
-    </section>
     <v-dialog v-model="loading" persistent width="300">
       <v-card>
         <v-card-title>
@@ -173,21 +117,14 @@ export default {
         { value: "unknown", text: "Unknown" }
       ],
       authority: "",
-      extract_date: null,
+      extractDate: null,
       library_services: config.library_services,
       modal: false
     };
   },
   methods: {
-    getTimeCompleted: function () {
-      if (this.start_time && this.endTIme) {
-        return Math.round(
-          moment.duration(this.endTIme.diff(this.start_time)).asSeconds()
-        );
-      }
-      return "";
-    },
-    confirmFile: async function () {
+    confirmFile: async function (files) {
+      this.files = files;
       let self = this;
       self.loading = true;
       if (self.files.length > 0) {
@@ -257,7 +194,7 @@ export default {
         });
         self.active_step = 3;
         this.loading = false;
-        this.endTIme = moment();
+        this.endTime = moment();
       });
     },
     downloadConvertedFile: function () {
@@ -265,7 +202,7 @@ export default {
     },
     downloadSchemaFile: async function () {
       let membership_data = [["Local authority", "Count date", "Area code", "Members"]];
-      const date_string = moment(this.extract_date).format("YYYY-MM-DD");
+      const date_string = moment(this.extractDate).format("YYYY-MM-DD");
       Object.keys(this.lsoas_counted)
         .filter((k) => k !== "Unknown" && k !== "Terminated")
         .forEach((lsoa) => {
@@ -292,6 +229,14 @@ export default {
     downloadFile: function (filename, data) {
       var blob = new Blob([Papa.unparse(data)], { type: "text/plain;charset=utf-8" });
       saveAs(blob, filename);
+    },
+    getTimeCompleted: function () {
+      if (this.start_time && this.endTime) {
+        return Math.round(
+          moment.duration(this.endTime.diff(this.start_time))
+        );
+      }
+      return "";
     }
   },
   components: {

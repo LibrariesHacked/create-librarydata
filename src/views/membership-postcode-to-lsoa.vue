@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <layout-header title="Convert postcodes"
+    <layout-header title="Postcodes to statistical areas"
       subtitle="Obtain census-based areas for the postcode locations of library members" />
 
     <v-divider inset color="info" class="my-2"></v-divider>
@@ -11,36 +11,54 @@
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a postcode file">
-        This tool loads CSV files. If your data isn't in CSV format you'll need to convert it. Try <strong>Save
-          as</strong> in spreadsheet software. The first row should be column headings, and one column should contain UK
-        postcodes
+        This tool loads CSV files. If your data isn't in CSV format try <strong>Save as</strong> in spreadsheet software.
+        The first row should be column headings, and one column should contain UK postcodes
       </v-alert>
 
       <file-upload v-bind:file="files" v-on:change-files="files = $event" />
       <v-btn class="mt-2" color="info" size="large" variant="tonal" :disabled="files.length === 0"
         v-on:click="confirmFile" append-icon="mdi-file-document">
-        Load file
+        Confirm and load file
       </v-btn>
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Choose fields in file">
-        The field headings in your data should be displayed. Choose the one which represents the postcodes.<br />
-        If your data is grouped into counts per postcode, also select the field the count is held
-      </v-alert>
+        The field headings in your data should be displayed. Choose which one represents the postcodes. If your data
+        includes counts per postcode, also select whcih field holds the count</v-alert>
 
-      <v-select v-model="postcode_column" :items="columns" label="Select postcode field" variant="outlined"
-        :disabled="postcode_column === ''"></v-select>
+      <v-select color="success" v-model="postcode_column" :items="columns" label="Select postcode field"
+        variant="outlined" :disabled="columns.length === 0"></v-select>
 
-      <p>Does your data include a postcode for each member, or a count per postcode? If there is already a count you can
-        also select
-        which field it appears in.</p>
-
-      <v-select :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="postcode_column === '' ||
+      <v-select color="success" :value="counts_column" :items="columns.filter((c) => c !== postcode_column)" :disabled="postcode_column === '' ||
         columns.filter((c) => c !== postcode_column).length === 0
         " label="Count field (optional)" variant="outlined"></v-select>
 
       <v-btn color="info" variant="tonal" size="large" v-on:click="confirmOptions" :disabled="postcode_column === ''">
         Convert
       </v-btn>
+
+      <v-alert class="mt-8 mb-4" icon="mdi-numeric-3-circle" title="Results">
+        Valid postcodes are changed to their statistical area code. Postcodes that are no longer valid are changed to
+        <strong>Terminated</strong>. Postcodes not recognised are changed to <strong>Unknown</strong>.<br />
+      </v-alert>
+
+      <span v-if="endTime !== null">
+              <p>
+          {{ "Completed in " + getTimeCompleted() + " seconds" }}
+        </p>
+
+        <v-data-table dense disable-filtering disable-pagination disable-sort hide-default-footer
+          :headers="summary_columns" :items="summary_data" item-key="total"></v-data-table>
+
+        <v-btn color="info" variant="tonal" size="large" v-on:click="downloadConvertedFile">
+          Save converted file
+        </v-btn>
+      </span>
+
+
+      <v-alert class="mt-8 mb-4" icon="mdi-numeric-4-circle" title="Library membership data">
+        Valid postcodes are changed to their statistical area code. Postcodes that are no longer valid are changed to
+        <strong>Terminated</strong>. Postcodes not recognised changed to <strong>Unknown</strong>.<br />
+      </v-alert>
 
 
     </v-sheet>
@@ -52,72 +70,8 @@
         <v-stepper v-model="active_step" flat outlined elevation="0">
 
 
-          <v-stepper-content step="2">
-            <v-row no-gutters>
-              <v-col cols="12" sm="6">
-
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-container>
-
-                  <v-alert border="right" color="orange" text type="warning">
-                    <p>
-                      <b>Optional: counts of people</b>
-                    </p>
-                    <p>
-                      If your data is grouped into counts per postcode, select the column
-                      the count is held in. The tool will then be able to count people per
-                      area for you.
-                    </p>
-                    <p>
-                      If each of your rows relates to an individual person you can ignore
-                      this option.
-                    </p>
-                  </v-alert>
-                </v-container>
-              </v-col>
-            </v-row>
-          </v-stepper-content>
           <v-stepper-content step="3">
-            <v-row no-gutters>
-              <v-col cols="12" sm="6">
-                <v-container>
-                  <v-subheader>
-                    {{ "Completed in " + getTimeCompleted() + " seconds" }}
-                  </v-subheader>
-                  <v-data-table dense disable-filtering disable-pagination disable-sort hide-default-footer
-                    :headers="summary_columns" :items="summary_data" item-key="total"></v-data-table>
-                  <br />
-                  <v-btn color="primary" depressed v-on:click="downloadConvertedFile">
-                    Save converted file
-                  </v-btn>
-                </v-container>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-container>
-                  <v-alert border="right" color="blue" text type="info">
-                    <p>
-                      <b>Saving converted file - what to expect</b>
-                    </p>
-                    <ul>
-                      <li>Valid postcodes are changed to their statistical area</li>
-                      <li>
-                        Postcodes that are no longer valid are changed to
-                        <strong>Terminated</strong>.
-                      </li>
-                      <li>
-                        Postcodes not recognised changed to
-                        <strong>Unknown</strong>.
-                      </li>
-                      <li>
-                        The postcode column header changed to
-                        <strong>Area</strong>.
-                      </li>
-                    </ul>
-                  </v-alert>
-                </v-container>
-              </v-col>
-            </v-row>
+
 
             <v-row no-gutters>
               <v-col cols="12" sm="6">
@@ -174,7 +128,7 @@
           <span class="headline">Please wait</span>
         </v-card-title>
         <v-card-text>
-          <v-progress-linear indeterminate color="primary"></v-progress-linear>
+          <v-progress-linear indeterminate color="info"></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -201,7 +155,7 @@ export default {
     return {
       mdText: MarkDownData,
       start_time: null,
-      end_time: null,
+      endTime: null,
       loading: false,
       loading_message: "",
       active_step: 1,
@@ -226,9 +180,9 @@ export default {
   },
   methods: {
     getTimeCompleted: function () {
-      if (this.start_time && this.end_time) {
+      if (this.start_time && this.endTIme) {
         return Math.round(
-          moment.duration(this.end_time.diff(this.start_time)).asSeconds()
+          moment.duration(this.endTIme.diff(this.start_time)).asSeconds()
         );
       }
       return "";
@@ -303,7 +257,7 @@ export default {
         });
         self.active_step = 3;
         this.loading = false;
-        this.end_time = moment();
+        this.endTIme = moment();
       });
     },
     downloadConvertedFile: function () {

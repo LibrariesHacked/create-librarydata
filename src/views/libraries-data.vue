@@ -18,7 +18,7 @@
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1"
-        text="Choose a local authority to view the libraries within that area." title="Local authority"></v-alert>
+        text="Search for a local authority to view the libraries within that area." title="Local authority"></v-alert>
 
       <service-select v-on:change="loadLibraries($event)" />
 

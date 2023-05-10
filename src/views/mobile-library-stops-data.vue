@@ -18,7 +18,7 @@
 <script>
 import Header from "../components/layout-header";
 import Markdown from "../components/markdown-section";
-import MarkDownData from "../markdown/membershipdata.md";
+import MarkDownData from "../markdown/mobilelibrarystopsdata.md";
 
 export default {
   data() {

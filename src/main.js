@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
+import VueMaplibreGl from 'vue-maplibre-gl'
 import './styles/main.scss'
 
 import * as components from 'vuetify/components'
@@ -29,4 +30,5 @@ createApp({
   .use(vuetify)
   .use(router)
   .use(store)
+  .use(VueMaplibreGl)
   .mount('#app')

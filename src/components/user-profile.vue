@@ -16,7 +16,7 @@
             : code
           }}</v-chip>
       </p>
-      <p v-if="!this.$store.state.loginKey">Not logged in</p>
+      <p v-if="!this.$store.state.loginKey">You are not logged in</p>
     </v-card-text>
     <v-card-actions v-if="this.actions">
       <v-spacer></v-spacer>

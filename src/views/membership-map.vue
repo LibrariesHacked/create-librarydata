@@ -29,21 +29,14 @@
       </v-radio-group>
 
       <v-container class="map">
-        <mgl-map :center="center" :zoom="zoom">
+        <mgl-map :center="center" :zoom="zoom" :mapStyle="mapStyle">
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
-            <mgl-circle-layer layer-id="libraries" :paint="librariesLayerCircles.paint"
-              :filter="librariesLayerCircles.filter" />
+          <mgl-marker :coordinates="markerCoordinates" color="#cc0000" :scale="0.5" />
+          <mgl-vector-source source-id="libraries" :tiles="librariesSourceTiles">
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries" :paint="librariesLayerCirclesPaint" />
           </mgl-vector-source>
-          <mgl-geo-json-source v-if="authoritySource !== null" source-id="authority_boundary_source"
-            :data="authoritySource.data">
-            <mgl-line-layer layer-id="authority_boundary_line"
-              :paint="authorityLayerLine.paint" />
-            <mgl-symbol-layer layer-id="authority_boundary_label" :layout="authorityLayerLabel.layout"
-              :paint="authorityLayerLabel.paint" />
-          </mgl-geo-json-source>
         </mgl-map>
       </v-container>
     </v-sheet>
@@ -70,11 +63,9 @@ import * as csvHelper from "../helpers/csv";
 import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 
 export default {
-  created() {
-    this.map = null;
-  },
   data() {
     return {
+      markerCoordinates: [13.377507, 52.516267],
       authorityLayerLine: {
         type: "line",
         minzoom: 10,
@@ -110,6 +101,14 @@ export default {
       authoritySource: null,
       center: [-2, 52],
       zoom: 7,
+      librariesLayerCirclesPaint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 5, 2, 18, 10],
+        "circle-color": "#1b5e20",
+        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 5, 1, 18, 4],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.8, 18, 1],
+        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
+      },
       librariesLayerCircles: {
         type: "circle",
         filter: ["!", ["has", "Year closed"]],
@@ -123,6 +122,7 @@ export default {
           "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
         }
       },
+      librariesSourceTiles: [config.libraries_tiles],
       librariesSource: {
         type: "vector",
         tiles: [config.libraries_tiles]
@@ -171,7 +171,6 @@ export default {
       matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
       matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
       matchFilter: ["in", ["get", "code"], ["literal", []]],
-      map: null,
       mapDisplay: "populationPercentage",
       mapStyle: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
       minZoom: 5,

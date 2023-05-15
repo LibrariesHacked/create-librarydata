@@ -102,12 +102,8 @@ export default {
       center: [-2, 52],
       zoom: 7,
       librariesLayerCirclesPaint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 5, 2, 18, 10],
-        "circle-color": "#1b5e20",
-        "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 5, 1, 18, 4],
-        "circle-stroke-color": "#ffffff",
-        "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.8, 18, 1],
-        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
+        "circle-radius": 5,
+        "circle-color": "#1b5e20"
       },
       librariesLayerCircles: {
         type: "circle",

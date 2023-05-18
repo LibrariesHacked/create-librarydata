@@ -13,8 +13,11 @@
         This tool loads CSV files in the format of the membership data schema.
       </v-alert>
 
-      <file-upload v-bind:file="lsoaFiles" v-on:change-files="addMembershipData($event)"
-        v-on:delete-file="lsoaFiles = null" />
+      <file-upload v-bind:file="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
+
+      <v-btn class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+        Add members to map
+      </v-btn>
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Map">
         <strong>Population percentage</strong> shades the map to highlight concentration of membership. When zooming in in
@@ -33,10 +36,14 @@
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-marker :coordinates="markerCoordinates" color="#cc0000" :scale="0.5" />
           <mgl-vector-source source-id="libraries" :tiles="librariesSourceTiles">
-            <mgl-circle-layer source-layer="libraries" layer-id="libraries" :paint="librariesLayerCirclesPaint" />
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries" :paint="librariesLayerCircles.paint" />
           </mgl-vector-source>
+          <mgl-geojson-source v-if="authoritySource != null" source-id="authority" :data="authoritySource">
+            <mgl-line-layer source-layer="authority" layer-id="authority" :paint="authorityLayerLine.paint" />
+            <mgl-symbol-layer source-layer="authority" layer-id="authority-label" :layout="authorityLayerLabel.layout"
+              :paint="authorityLayerLabel.paint" />
+          </mgl-geojson-source>
         </mgl-map>
       </v-container>
     </v-sheet>
@@ -65,7 +72,6 @@ import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 export default {
   data() {
     return {
-      markerCoordinates: [13.377507, 52.516267],
       authorityLayerLine: {
         type: "line",
         minzoom: 10,
@@ -101,10 +107,6 @@ export default {
       authoritySource: null,
       center: [-2, 52],
       zoom: 7,
-      librariesLayerCirclesPaint: {
-        "circle-radius": 5,
-        "circle-color": "#1b5e20"
-      },
       librariesLayerCircles: {
         type: "circle",
         filter: ["!", ["has", "Year closed"]],
@@ -119,10 +121,6 @@ export default {
         }
       },
       librariesSourceTiles: [config.libraries_tiles],
-      librariesSource: {
-        type: "vector",
-        tiles: [config.libraries_tiles]
-      },
       lsoaFiles: [],
       lsoasLayerFill: {
         type: "fill",

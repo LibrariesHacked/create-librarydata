@@ -23,7 +23,7 @@
     "papaparse": "^5.4.1",
     "vue": "^3.2.47",
     "vue-carbonbadge": "^1.2.1",
-    "vue-maplibre-gl": "^2.0.0",
+    "vue-maplibre-gl": "^2.1.0",
     "vue-markdown-render": "^2.0.1",
     "vue-router": "^4.1.6",
     "vuetify": "^3.2.2",

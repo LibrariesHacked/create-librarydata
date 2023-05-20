@@ -11,7 +11,8 @@
           @click="confirmSelection()"></v-icon>
       </template>
     </v-autocomplete>
-    <v-chip v-if="serviceConfirmed" class="ma-2" closable @click:close="serviceConfirmed = false">{{selectedService.nice_name}}</v-chip>
+    <v-chip v-if="serviceConfirmed" class="ma-2" closable @click:close="serviceConfirmed = false">{{
+      selectedService.nice_name }}</v-chip>
   </v-card>
 </template>
 
@@ -34,6 +35,11 @@ export default {
   },
   props: ["value"],
   methods: {
+    confirmSelection() {
+      if (this.selectedService === null) return;
+      this.serviceConfirmed = true;
+      this.$emit("change", this.selectedService);
+    },
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();
       services = services.sort((a, b) => a.nice_name.localeCompare(b.nice_name));
@@ -43,11 +49,6 @@ export default {
     updateSelection(newValue) {
       this.serviceConfirmed = false;
       this.selectedService = newValue;
-    },
-    confirmSelection() {
-      if (this.selectedService === null) return;
-      this.serviceConfirmed = true;
-      this.$emit("change", this.selectedService);
     }
   }
 };

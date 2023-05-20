@@ -20,19 +20,19 @@
   "library_types": [
     {
       "text": "Local authority",
-      "value": "LA"
+      "value": "LAL"
     },
     {
       "text": "Local authority unstaffed",
-      "value": "LAU"
+      "value": "LAL-"
     },
     {
       "text": "Commisioned",
-      "value": "C"
+      "value": "CL"
     },
     {
       "text": "Community-run",
-      "value": "CR"
+      "value": "CRL"
     },
     {
       "text": "Independent",

@@ -1,37 +1,37 @@
 <template>
-    <section class="markdown">
-        <vue-markdown :source="markdownText" :options=options></vue-markdown>
-    </section>
+  <section class="markdown">
+    <vue-markdown :source="markdownText" :options=options></vue-markdown>
+  </section>
 </template>
 <script>
 import VueMarkdown from "vue-markdown-render";
 
 export default {
-    data() {
-        return {
-            options: { html: true, breaks: true }
-        };
-    },
-    methods: {},
-    components: { VueMarkdown },
-    props: {
-        markdownText: {
-            type: String,
-            required: true
-        }
+  data() {
+    return {
+      options: { html: true, breaks: true }
+    };
+  },
+  methods: {},
+  components: { VueMarkdown },
+  props: {
+    markdownText: {
+      type: String,
+      required: true
     }
+  }
 };
 </script>
 <style>
 .markdown p {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .markdown a {
-    color: #2196F3;
+  color: #2196F3;
 }
 
 .markdown ul {
-    padding-left: 1.5rem;
+  padding-left: 1.5rem;
 }
 </style>

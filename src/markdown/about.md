@@ -1,4 +1,4 @@
-In 2019 a group of library workers collaborated on a set of [public library data schemas](https://schema.librarydata.uk/). These were designed to help libraries publish open data about themselves.
+In 2019 a group of library workers collaborated on a set of [public library data schemas](https://schema.librarydata.uk/). These were designed to help libraries publish open data.
 
 Here is some background information on that project:
 
@@ -9,6 +9,6 @@ Here is some background information on that project:
 This website is to aid in using those schemas. Including:
 
 - Tools to help libraries create and publish open data
-- Visualisations of the data
+- Visualisations from the data
 - Data analysis techniques using the data.
-- Data tools that use the data to aid in decision-making
+- Data tools to aid in decision-making

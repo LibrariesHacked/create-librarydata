@@ -25,14 +25,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.footerLinks li {
-  display: inline;
-  margin-left: 5px;
-  list-style-type: none;
-}
-
-.footerLinks li:not(:first-child):before {
-  content: "• ";
-}
-</style>
+<style scoped></style>

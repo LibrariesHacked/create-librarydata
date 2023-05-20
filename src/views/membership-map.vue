@@ -1,19 +1,19 @@
 <template>
   <v-container>
-    <layout-header title="Membership map" subtitle="Explore library membership data" />
+    <layout-header title="Membership map" subtitle="Insights from library membership data" />
 
     <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
     <v-divider inset color="info" class="my-2"></v-divider>
 
-    <h2 class="text-h5 text-decoration-underline my-3">View membership</h2>
+    <h2 class="text-h5 text-decoration-underline my-3">Map library members</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
         This tool loads CSV files in the format of the membership data schema.
       </v-alert>
 
-      <file-upload v-bind:file="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
+      <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
 
       <v-btn class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
         Add members to map

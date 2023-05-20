@@ -14,7 +14,7 @@
         The first row should be column headings, one column should contain UK postcodes
       </v-alert>
 
-      <file-upload v-bind:file="files" v-on:change-files="confirmFile($event)" />
+      <file-upload v-bind:files="files" v-on:change-files="confirmFile($event)" />
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Select file options">
         The field headings in your data should be displayed below. Choose which one represents the postcodes. If your data

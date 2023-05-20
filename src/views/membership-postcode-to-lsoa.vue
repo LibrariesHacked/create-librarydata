@@ -122,10 +122,10 @@ export default {
       postcodeColumn: "",
       startTime: null,
       summaryColumns: [
-        { value: "total", title: "Total" },
-        { value: "converted", title: "Successful" },
-        { value: "terminated", title: "Terminated" },
-        { value: "unknown", title: "Unknown" }
+        { key: "total", title: "Total" },
+        { key: "converted", title: "Successful" },
+        { key: "terminated", title: "Terminated" },
+        { key: "unknown", title: "Unknown" }
       ],
       summaryData: [{ total: 0, converted: 0, terminated: 0, unknown: 0 }]
     };

@@ -63,7 +63,7 @@
                             </v-col>
                             <v-col cols="12" sm="4" md="4">
                               <v-select variant="outlined" density="compact" v-model="editedItem.Statutory"
-                                :items="['Yes', 'No']" label="Statutory"></v-select>
+                                :menu-props="{ zIndex: 10000 }" :items="['Yes', 'No']" label="Statutory"></v-select>
                             </v-col>
                           </v-row>
                           <v-row dense>
@@ -349,15 +349,15 @@ export default {
         {
           title: 'Name',
           align: 'start',
-          value: 'Library_name'
+          key: 'Library_name'
         },
-        { title: 'Closed', value: 'Year_closed' },
+        { title: 'Closed', key: 'Year_closed' },
         {
           title: 'Address 1',
           align: 'start',
-          value: 'Address_1'
+          key: 'Address_1'
         },
-        { title: 'Postcode', value: 'Postcode' },
+        { title: 'Postcode', key: 'Postcode' },
         { title: 'Actions', key: 'actions', sortable: false }
       ],
       isEditing: false,

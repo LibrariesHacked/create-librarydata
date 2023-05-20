@@ -1,5 +1,5 @@
-Anyone can browse this site, and access library datasets, as well use the tools to build and visualise library data.
+Anyone can browse this site, as well use the tools to build and visualise library data.
 
-To publish updates to existing data, you need to login. Access is granted on an organisation basis. If your organisation has access you will be able to login using an email address of that organisation.
+To publish updates to existing data, you need to login. If your organisation has access you will be able to login using your organisation email address.
 
-Entering a valid email address will email you an access link.
+Once you've entered a valid email address you will be emailed an access link.

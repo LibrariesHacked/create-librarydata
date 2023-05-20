@@ -1,3 +1,5 @@
+const { VuetifyPlugin } = require('webpack-plugin-vuetify')
+
 module.exports = {
   configureWebpack: () => {
     var webpack = require('webpack')
@@ -7,9 +9,9 @@ module.exports = {
         rules: [
           {
             test: /\.md$/,
-            loader: "raw-loader" // npm install -D raw-loader
+            loader: 'raw-loader' // npm install -D raw-loader
           }
-        ],
+        ]
       },
       resolve: {
         fallback: {
@@ -21,10 +23,13 @@ module.exports = {
       plugins: [
         new webpack.ProvidePlugin({
           Buffer: ['buffer', 'Buffer']
+        }),
+        new VuetifyPlugin({
+          styles: { configFile: 'src/styles/settings.scss' }
         })
       ]
     }
-    return adjusted;
+    return adjusted
   },
-  transpileDependencies: ["vuetify"]
-};
+  transpileDependencies: ['vuetify']
+}

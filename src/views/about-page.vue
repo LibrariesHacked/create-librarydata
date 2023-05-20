@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <layout-header title="About" subtitle="What this site is and how it works" />
+    <layout-header title="About" subtitle="What the site is and does, and who for" />
     <markdown-section :markdownText="mdText" />
   </v-container>
 </template>

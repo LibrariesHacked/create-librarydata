@@ -3,9 +3,7 @@ import { createVuetify } from 'vuetify'
 import VueMaplibreGl from 'vue-maplibre-gl'
 import './styles/main.scss'
 
-import * as components from 'vuetify/components'
 import * as labs from 'vuetify/labs/components'
-import * as directives from 'vuetify/directives'
 
 import router from './router'
 
@@ -15,10 +13,8 @@ import App from './App.vue'
 
 const vuetify = createVuetify({
   components: {
-    ...components,
     ...labs
-  },
-  directives
+  }
 })
 
 createApp({

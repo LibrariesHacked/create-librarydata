@@ -10,7 +10,7 @@
     <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
     <v-divider inset color="info" class="my-2"></v-divider>
-    
+
   </v-container>
 </template>
 

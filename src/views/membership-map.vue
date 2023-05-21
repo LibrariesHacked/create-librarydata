@@ -15,7 +15,7 @@
 
       <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
 
-      <v-btn class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+      <v-btn append-icon="mdi-plus" color="info" class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
         Add members to map
       </v-btn>
 

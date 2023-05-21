@@ -20,7 +20,7 @@
       <v-alert icon="mdi-numeric-1-circle" class="mb-1"
         text="Search for a local authority to view the libraries within that area." title="Local authority"></v-alert>
 
-      <service-select v-on:change="loadLibraries($event)" />
+      <service-select v-bind:value="selectedService" v-on:change="loadLibraries($event)" />
 
       <v-alert class="mt-8 mb-1" icon="mdi-numeric-2-circle" text="Select the edit icon for each library to see and edit full details.
         Changes are not saved until the next step." title="Make changes"></v-alert>
@@ -236,8 +236,8 @@
         Save local copy
       </v-btn>
 
-      <v-btn :disabled="!isEditing" size="large" variant="tonal" color="success" class="ma-2"
-        append-icon="mdi-cloud-upload" v-on:click="publishChanges">
+      <v-btn :disabled="!isEditing || !this.$store.state.loginKey" size="large" variant="tonal" color="success"
+        class="ma-2" append-icon="mdi-cloud-upload" v-on:click="publishChanges">
         Publish changes
       </v-btn>
 
@@ -291,6 +291,14 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('beforeunload', this.preventNav)
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.isEditing) {
+      if (!window.confirm("Leave without saving?")) {
+        return;
+      }
+    }
+    next();
   },
   data() {
     return {
@@ -444,6 +452,9 @@ export default {
     },
     loadLibraries: async function (service) {
       this.selectedService = service
+      this.libraries = []
+      if (!service.code) return
+
       this.loadingServiceData = true
       let self = this
       const libraries = await schemaHelper.getSchemaData('libraries', service.code)
@@ -482,6 +493,7 @@ export default {
       } else {
         this.errorDialog = true
       }
+      this.isEditing = false
     },
     preventNav(event) {
       if (!this.isEditing) return
@@ -495,6 +507,7 @@ export default {
       this.dialogOpeningHoursEntry = false
     },
     save() {
+      this.isEditing = true
       if (this.editedIndex > -1) {
         Object.assign(this.libraries[this.editedIndex], this.editedItem)
       } else {

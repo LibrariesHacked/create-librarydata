@@ -11,7 +11,7 @@
           @click="confirmSelection()"></v-icon>
       </template>
     </v-autocomplete>
-    <v-chip v-if="serviceConfirmed" class="ma-2" closable @click:close="serviceConfirmed = false">{{
+    <v-chip v-if="serviceConfirmed" class="ma-2" closable @click:close="deselectService()">{{
       selectedService.nice_name }}</v-chip>
   </v-card>
 </template>
@@ -39,6 +39,11 @@ export default {
       if (this.selectedService === null) return;
       this.serviceConfirmed = true;
       this.$emit("change", this.selectedService);
+    },
+    deselectService() {
+      this.selectedService = null;
+      this.serviceConfirmed = false;
+      this.$emit("change", null);
     },
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();

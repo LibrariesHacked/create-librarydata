@@ -15,7 +15,8 @@
 
       <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
 
-      <v-btn append-icon="mdi-plus" color="info" class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+      <v-btn append-icon="mdi-plus" color="info" class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData"
+        :disabled="lsoaFiles.length == 0">
         Add members to map
       </v-btn>
 
@@ -51,14 +52,11 @@
 </template>
 
 <script>
-import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/membershipmap.md";
 
 import "../extensions/strings";
 
 import FileUpload from "../components/file-upload";
-
-import Header from "../components/layout-header";
 
 const config = require('../helpers/config.json');
 
@@ -313,9 +311,7 @@ export default {
     }
   },
   components: {
-    "layout-header": Header,
-    "file-upload": FileUpload,
-    "markdown-section": Markdown
+    "file-upload": FileUpload
   }
 };
 </script>

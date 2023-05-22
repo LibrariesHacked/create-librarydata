@@ -5,6 +5,8 @@ import './styles/main.scss'
 
 import * as labs from 'vuetify/labs/components'
 
+import Header from './components/layout-header'
+import Markdown from './components/markdown-section'
 import UserProfile from './components/user-profile'
 
 import router from './router'
@@ -29,5 +31,7 @@ createApp({
   .use(router)
   .use(store)
   .use(VueMaplibreGl)
+  .component('layout-header', Header)
+  .component('markdown-section', Markdown)
   .component('user-profile', UserProfile)
   .mount('#app')

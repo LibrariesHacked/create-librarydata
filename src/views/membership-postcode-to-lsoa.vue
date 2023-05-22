@@ -90,8 +90,6 @@
 
 <script>
 import FileUpload from "../components/file-upload";
-import Header from "../components/layout-header";
-import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/membershippostcodetolsoa.md";
 import ServiceSelect from '../components/service-select'
 
@@ -248,8 +246,6 @@ export default {
   },
   components: {
     "file-upload": FileUpload,
-    "layout-header": Header,
-    "markdown-section": Markdown,
     "service-select": ServiceSelect
   }
 };

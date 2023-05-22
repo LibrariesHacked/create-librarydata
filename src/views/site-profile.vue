@@ -10,8 +10,6 @@
   </v-container>
 </template>
 <script>
-import Header from "../components/layout-header";
-import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/profile.md";
 
 export default {
@@ -25,12 +23,6 @@ export default {
       this.$store.dispatch("logout");
     }
   },
-  components: { "layout-header": Header, "markdown-section": Markdown }
+  components: {}
 };
 </script>
-
-<style scoped>
-.main {
-  margin: 20px;
-}
-</style>

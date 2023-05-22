@@ -262,14 +262,11 @@
 </template>
 
 <script>
-import Header from '../components/layout-header'
+import MarkDownData from '../markdown/librariesdataedit.md'
 import ServiceSelect from '../components/service-select'
 
 import * as Papa from 'papaparse'
 import * as schemaHelper from '../helpers/schemas'
-
-import Markdown from '../components/markdown-section'
-import MarkDownData from '../markdown/librariesdata.md'
 
 const config = require('../helpers/config.json')
 
@@ -510,9 +507,7 @@ export default {
     }
   },
   components: {
-    'layout-header': Header,
-    'service-select': ServiceSelect,
-    'markdown-section': Markdown
+    'service-select': ServiceSelect
   }
 }
 </script>

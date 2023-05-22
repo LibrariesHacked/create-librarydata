@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import Header from "../components/layout-header";
-import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/physicalvisitsdata.md";
 
 export default {
@@ -27,10 +25,7 @@ export default {
     };
   },
   methods: {},
-  components: {
-    "layout-header": Header,
-    "markdown-section": Markdown
-  }
+  components: {}
 };
 </script>
 <style scoped></style>

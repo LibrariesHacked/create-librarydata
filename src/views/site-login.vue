@@ -34,8 +34,6 @@
 <script>
 import { useRoute } from 'vue-router'
 
-import Header from "../components/layout-header";
-import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/login.md";
 
 import * as login from "../helpers/login";
@@ -82,12 +80,6 @@ export default {
       }
     }
   },
-  components: { "layout-header": Header, "markdown-section": Markdown }
+  components: {}
 };
 </script>
-
-<style scoped>
-.main {
-  margin: 20px;
-}
-</style>

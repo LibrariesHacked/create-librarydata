@@ -15,9 +15,7 @@
 </template>
 
 <script>
-import Header from "../components/layout-header";
-import Markdown from "../components/markdown-section";
-import MarkDownData from "../markdown/membershipdata.md";
+import MarkDownData from "../markdown/loansdata.md";
 
 export default {
   data() {
@@ -26,10 +24,6 @@ export default {
     };
   },
   methods: {},
-  components: {
-    "layout-header": Header,
-    "markdown-section": Markdown
-  }
+  components: {}
 };
 </script>
-<style scoped></style>

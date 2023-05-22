@@ -1,0 +1,1 @@
+This tool allows you to view and edit library service points, grouped by local authority. To make changes you must first [Log in](/login). At the end you must **publish changes** to ensure you overwrite the existing data.

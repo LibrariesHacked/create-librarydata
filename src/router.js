@@ -5,6 +5,7 @@ import Accessibility from './views/accessibility-page.vue'
 import EventsData from './views/events-data.vue'
 import Home from './views/home-page.vue'
 import LibrariesData from './views/libraries-data.vue'
+import LibrariesDataEdit from './views/libraries-data-edit.vue'
 import LoansData from './views/loans-data.vue'
 import Login from './views/site-login.vue'
 import MembershipData from './views/membership-data.vue'
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/libraries',
       name: 'Libraries',
       component: LibrariesData
+    },
+    {
+      path: '/libraries-edit',
+      name: 'Libraries edit',
+      component: LibrariesDataEdit
     },
     {
       path: '/loans',

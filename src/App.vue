@@ -35,6 +35,10 @@
             :class="'/libraries' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Libraries dataset</v-list-item-title>
           </v-list-item>
+          <v-list-item variant="tonal" color="success" :to="'/libraries-edit'" active-class="highlighted"
+            :class="'/libraries' === $route.path ? 'highlighted' : ''">
+            <v-list-item-title>Edit libraries</v-list-item-title>
+          </v-list-item>
         </v-list-group>
         <v-list-group value="Loans" prepend-icon="mdi-book-account-outline">
           <template v-slot:activator="{ props }">

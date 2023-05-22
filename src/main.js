@@ -5,6 +5,8 @@ import './styles/main.scss'
 
 import * as labs from 'vuetify/labs/components'
 
+import UserProfile from './components/user-profile'
+
 import router from './router'
 
 import store from './plugins/store'
@@ -27,4 +29,5 @@ createApp({
   .use(router)
   .use(store)
   .use(VueMaplibreGl)
+  .component('user-profile', UserProfile)
   .mount('#app')

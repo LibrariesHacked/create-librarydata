@@ -7,22 +7,23 @@
         <v-spacer></v-spacer>
       </v-container>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" elevation="0">
+    <v-navigation-drawer border v-model="drawer" elevation="0">
       <v-list nav>
-        <v-list-item :to="'/'" active-class="highlighted" :class="'/' === $route.path ? 'highlighted' : ''"
-          prepend-icon="mdi-home-variant-outline">
+        <v-list-item variant="tonal" color="info" :to="'/'" active-class="highlighted"
+          :class="'/' === $route.path ? 'highlighted' : ''" prepend-icon="mdi-home-circle">
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
-        <v-list-item :to="'/about'" active-class="highlighted" :class="'/about' === $route.path ? 'highlighted' : ''"
-          prepend-icon="mdi-information-outline">
+        <v-list-item variant="tonal" color="info" :to="'/about'" active-class="highlighted"
+          :class="'/about' === $route.path ? 'highlighted' : ''" prepend-icon="mdi-information">
           <v-list-item-title>About</v-list-item-title>
         </v-list-item>
         <v-divider />
-        <v-list-group value="Events" no-action prepend-icon="mdi-calendar-star-outline">
+        <v-list-group value="Events" no-action prepend-icon="mdi-calendar-star">
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Events"></v-list-item>
           </template>
-          <v-list-item :to="'/events'" active-class="highlighted" :class="'/events' === $route.path ? 'highlighted' : ''">
+          <v-list-item variant="tonal" color="success" :to="'/events'" active-class="highlighted"
+            :class="'/events' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Events dataset</v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -30,7 +31,7 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Libraries"></v-list-item>
           </template>
-          <v-list-item :to="'/libraries'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/libraries'" active-class="highlighted"
             :class="'/libraries' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Libraries dataset</v-list-item-title>
           </v-list-item>
@@ -39,7 +40,8 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Loans"></v-list-item>
           </template>
-          <v-list-item :to="'/loans'" active-class="highlighted" :class="'/loans' === $route.path ? 'highlighted' : ''">
+          <v-list-item variant="tonal" color="success" :to="'/loans'" active-class="highlighted"
+            :class="'/loans' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Loans dataset</v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -47,15 +49,15 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Membership"></v-list-item>
           </template>
-          <v-list-item :to="'/membership'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/membership'" active-class="highlighted"
             :class="'/membership' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Membership dataset</v-list-item-title>
           </v-list-item>
-          <v-list-item :to="'/postcode-to-lsoa'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/postcode-to-lsoa'" active-class="highlighted"
             :class="'/postcode-to-lsoa' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Postcode converter</v-list-item-title>
           </v-list-item>
-          <v-list-item :to="'/membership-map'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/membership-map'" active-class="highlighted"
             :class="'/membership-map' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Membership map</v-list-item-title>
           </v-list-item>
@@ -64,7 +66,7 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Mobile libraries"></v-list-item>
           </template>
-          <v-list-item :to="'/mobile-library-stops'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/mobile-library-stops'" active-class="highlighted"
             :class="'/mobile-library-stops' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Mobile library stops dataset</v-list-item-title>
           </v-list-item>
@@ -73,7 +75,7 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Visits"></v-list-item>
           </template>
-          <v-list-item :to="'/physical-visits'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/physical-visits'" active-class="highlighted"
             :class="'/physical-visits' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Physical visits dataset</v-list-item-title>
           </v-list-item>
@@ -82,12 +84,19 @@
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Catalogue"></v-list-item>
           </template>
-          <v-list-item :to="'/stock-summary'" active-class="highlighted"
+          <v-list-item variant="tonal" color="success" :to="'/stock-summary'" active-class="highlighted"
             :class="'/stock-summary' === $route.path ? 'highlighted' : ''">
             <v-list-item-title>Stock summary dataset</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
+      <template v-slot:append>
+        <v-card>
+          <v-card-text>
+            <user-profile actions />
+          </v-card-text>
+        </v-card>
+      </template>
     </v-navigation-drawer>
 
     <v-main>

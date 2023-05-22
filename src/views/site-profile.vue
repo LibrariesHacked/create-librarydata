@@ -13,7 +13,6 @@
 import Header from "../components/layout-header";
 import Markdown from "../components/markdown-section";
 import MarkDownData from "../markdown/profile.md";
-import UserProfile from "../components/user-profile";
 
 export default {
   data() {
@@ -26,7 +25,7 @@ export default {
       this.$store.dispatch("logout");
     }
   },
-  components: { "layout-header": Header, "markdown-section": Markdown, "user-profile": UserProfile }
+  components: { "layout-header": Header, "markdown-section": Markdown }
 };
 </script>
 

@@ -270,7 +270,6 @@
 <script>
 import Header from '../components/layout-header'
 import ServiceSelect from '../components/service-select'
-import UserProfile from '../components/user-profile'
 
 import * as Papa from 'papaparse'
 import * as schemaHelper from '../helpers/schemas'
@@ -519,7 +518,6 @@ export default {
   components: {
     'layout-header': Header,
     'service-select': ServiceSelect,
-    'user-profile': UserProfile,
     'markdown-section': Markdown
   }
 }

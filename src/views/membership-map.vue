@@ -27,7 +27,7 @@
         multiple deprivation for each area. 1 represents highly deprived areas, 10 the least deprived.
       </v-alert>
 
-      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" row>
+      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
         <v-radio label="Display population percentage" value="populationPercentage"></v-radio>
         <v-radio label="Display areas of deprivation" value="imd"></v-radio>
       </v-radio-group>
@@ -164,7 +164,7 @@ export default {
       matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
       matchFilter: ["in", ["get", "code"], ["literal", []]],
       mapDisplay: "populationPercentage",
-      mapStyle: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+      mapStyle: "/style.json",
       minZoom: 5,
       maxZoom: 16,
       matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
@@ -173,9 +173,8 @@ export default {
     }
   },
   methods: {
-    addMembershipData: async function (files) {
+    addMembershipData: async function () {
       let self = this;
-      self.lsoaFiles = files;
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
         this.setLsoaFields(data.slice(1));

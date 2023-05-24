@@ -33,18 +33,18 @@
       </v-radio-group>
 
       <v-container class="map">
-        <mgl-map :center="center" :zoom="zoom" :mapStyle="mapStyle">
+        <mgl-map ref="mglMap" :center="center" :zoom="zoom" :mapStyle="mapStyle">
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
           <mgl-vector-source source-id="libraries" :tiles="librariesSourceTiles">
             <mgl-circle-layer source-layer="libraries" layer-id="libraries" :paint="librariesLayerCircles.paint" />
           </mgl-vector-source>
-          <mgl-geojson-source v-if="authoritySource != null" source-id="authority" :data="authoritySource">
-            <mgl-line-layer source-layer="authority" layer-id="authority" :paint="authorityLayerLine.paint" />
-            <mgl-symbol-layer source-layer="authority" layer-id="authority-label" :layout="authorityLayerLabel.layout"
+          <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
+            <mgl-line-layer v-if="authoritySource.show" layer-id="authority-line" :paint="authorityLayerLine.paint" />
+            <mgl-symbol-layer v-if="authoritySource.show" layer-id="authority-label" :layout="authorityLayerLabel.layout"
               :paint="authorityLayerLabel.paint" />
-          </mgl-geojson-source>
+          </mgl-geo-json-source>
         </mgl-map>
       </v-container>
     </v-sheet>
@@ -102,7 +102,12 @@ export default {
           "text-halo-width": 2
         }
       },
-      authoritySource: null,
+      authoritySource: {
+        type: "geojson", data: {
+          'type': 'FeatureCollection',
+          'features': []
+        }, show: false
+      },
       center: [-2, 52],
       zoom: 7,
       librariesLayerCircles: {
@@ -177,15 +182,15 @@ export default {
       let self = this;
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
-        this.setLsoaFields(data.slice(1));
+        // this.setLsoaFields(data.slice(1));
         const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
           data[1][0]
         );
         const geojson = JSON.parse(authority.geojson);
-        this.authoritySource = { type: "geojson", data: geojson };
-        this.authorityLayerLabel.layout["text-field"] = authority.utla19nm;
+        this.authoritySource.data = geojson;
+        this.authoritySource.show = true;
         var bounds = bbox(geojson);
-        this.$refs.VMap.map.fitBounds(bounds, { padding: 10 });
+        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 });
       }
     },
     setDisplayOptions: function () {

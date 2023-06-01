@@ -15,9 +15,9 @@
 
       <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
 
-      <v-btn append-icon="mdi-plus" color="info" class="mt-3" variant="tonal" size="large" v-on:click="addMembershipData"
-        :disabled="lsoaFiles.length == 0">
-        Add members to map
+      <v-btn append-icon="mdi-map-marker-plus" color="info" class="mt-3" variant="tonal" size="large"
+        v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+        Add to map
       </v-btn>
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Map">
@@ -37,8 +37,15 @@
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-vector-source source-id="libraries" :tiles="librariesSourceTiles">
-            <mgl-circle-layer source-layer="libraries" layer-id="libraries" :paint="librariesLayerCircles.paint" />
+          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries_layer_circles"
+              :paint="librariesLayerCircle.paint" />
+          </mgl-vector-source>
+          <mgl-vector-source source-id="lsoas" :tiles="lsoasSource.tiles" :promoteId="lsoasSource.promoteId">
+            <mgl-fill-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_fill" :paint="lsoasLayerFill.paint"
+              :filter="matchFilter" />
+            <mgl-symbol-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_label" :paint="lsoasLayerLabel.paint"
+              :layout="lsoasLayerLabel.layout" :filter="matchFilter" :minzoom="lsoasLayerLabel.minzoom" />
           </mgl-vector-source>
           <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
             <mgl-line-layer v-if="authoritySource.show" layer-id="authority-line" :paint="authorityLayerLine.paint" />
@@ -70,6 +77,13 @@ import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 export default {
   data() {
     return {
+      authoritySource: {
+        data: {
+          'type': 'FeatureCollection',
+          'features': []
+        },
+        show: false
+      },
       authorityLayerLine: {
         type: "line",
         minzoom: 10,
@@ -102,16 +116,12 @@ export default {
           "text-halo-width": 2
         }
       },
-      authoritySource: {
-        type: "geojson", data: {
-          'type': 'FeatureCollection',
-          'features': []
-        }, show: false
-      },
       center: [-2, 52],
       zoom: 7,
-      librariesLayerCircles: {
-        type: "circle",
+      librariesSource: {
+        tiles: [config.libraries_tiles]
+      },
+      librariesLayerCircle: {
         filter: ["!", ["has", "Year closed"]],
         "source-layer": "libraries",
         paint: {
@@ -123,25 +133,25 @@ export default {
           "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
         }
       },
-      librariesSourceTiles: [config.libraries_tiles],
       lsoaFiles: [],
+      lsoasSource: {
+        tiles: [config.lsoa_tiles],
+        promoteId: { lsoa_boundaries: "code" },
+        show: false
+      },
       lsoasLayerFill: {
-        type: "fill",
-        filter: ["in", ["get", "code"], ["literal", []]],
-        "source-layer": "lsoa_boundaries",
         paint: {
           "fill-color": "rgba(254, 113, 144, 1)",
           "fill-opacity": 0.5
         }
       },
       lsoasLayerLabel: {
-        type: "symbol",
-        filter: ["in", ["get", "code"], ["literal", []]],
-        "source-layer": "lsoa_boundaries",
         minzoom: 12,
         layout: {
           "text-field": ["to-string", ["get", "code"]],
-          "text-font": ["Open Sans Bold"],
+          "text-font": [
+            "Source Sans Pro SemiBold"
+          ],
           "symbol-placement": "point",
           "text-size": {
             base: 1.2,
@@ -150,7 +160,6 @@ export default {
               [22, 48]
             ]
           },
-          "text-allow-overlap": false,
           "text-line-height": 1
         },
         paint: {
@@ -159,17 +168,11 @@ export default {
           "text-halo-width": 1
         }
       },
-      lsoasSource: {
-        type: "vector",
-        id: "lsoa_boundaries",
-        tiles: [config.lsoa_tiles],
-        promoteId: { lsoa_boundaries: "code" }
-      },
       matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
       matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
       matchFilter: ["in", ["get", "code"], ["literal", []]],
       mapDisplay: "populationPercentage",
-      mapStyle: "/style.json",
+      mapStyle: "https://zoomstack.librarydata.uk/light.json",
       minZoom: 5,
       maxZoom: 16,
       matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
@@ -182,7 +185,7 @@ export default {
       let self = this;
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
-        // this.setLsoaFields(data.slice(1));
+        this.setLsoaFields(data.slice(1));
         const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
           data[1][0]
         );
@@ -194,17 +197,19 @@ export default {
       }
     },
     setDisplayOptions: function () {
+      console.log(this.matchColourLsoaPopulation);
       if (this.mapDisplay === "populationPercentage") {
         this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaPopulation;
         this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaPopulation;
+        this.$refs.mglMap.map.setPaintProperty("lsoas_layer_fill", "fill-color", this.matchColourLsoaPopulation);
+        this.$refs.mglMap.map.setLayoutProperty("lsoas_layer_label", "text-field", this.matchFieldLsoaPopulation);
       }
       if (this.mapDisplay === "imd") {
         this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaDeprivation;
         this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaDeprivation;
+        this.$refs.mglMap.map.setPaintProperty("lsoas_layer_fill", "fill-color", this.matchColourLsoaDeprivation);
+        this.$refs.mglMap.map.setLayoutProperty("lsoas_layer_label", "text-field", this.matchFieldLsoaDeprivation);
       }
-
-      this.lsoasLayerFill.filter = this.matchFilter;
-      this.lsoasLayerLabel.filter = this.matchFilter;
     },
     setLsoaFields: function (lsoas) {
       let filters = [];
@@ -215,7 +220,7 @@ export default {
         const members = parseInt(lsoa[3].replace("x", "2"));
         this.$refs.mglMap.map.setFeatureState(
           {
-            source: "lsoa_boundaries",
+            source: "lsoas",
             sourceLayer: "lsoa_boundaries",
             id: lsoa[2]
           },
@@ -304,6 +309,9 @@ export default {
       // Only show where lsoas exist in data
       let matchFilter = ["in", ["get", "code"], ["literal", filters]];
       this.matchFilter = matchFilter;
+
+      this.$refs.mglMap.map.setFilter("lsoas_layer_fill", matchFilter);
+      this.$refs.mglMap.map.setFilter("lsoas_layer_label", matchFilter);
 
       // Store permanent definitions
       this.matchFieldLsoaPopulation = matchFieldLsoaPopulation;

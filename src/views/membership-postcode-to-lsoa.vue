@@ -63,7 +63,7 @@
 
       <span v-if="endTime !== null">
 
-        <service-select v-bind:value="authority" v-on:change="authority = $event" />
+        <service-select v-on:select="authority = $event" />
 
         <v-text-field class="mt-4" variant="outlined" v-model="extractDate" label="Count date"
           prepend-inner-icon="mdi-calendar" type="date"></v-text-field>

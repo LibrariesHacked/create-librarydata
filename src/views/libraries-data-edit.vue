@@ -14,7 +14,7 @@
       <v-alert icon="mdi-numeric-1-circle" class="mb-1"
         text="Search for a local authority to view the libraries within that area." title="Local authority"></v-alert>
 
-      <service-select v-bind:value="selectedService" v-on:change="loadLibraries($event)" />
+      <service-select v-on:select="loadLibraries($event)" />
 
       <v-alert class="mt-8 mb-1" icon="mdi-numeric-2-circle" text="Select the edit icon for each library to see and edit full details.
         Changes are not saved until the next step." title="Make changes"></v-alert>
@@ -443,7 +443,7 @@ export default {
     loadLibraries: async function (service) {
       this.selectedService = service
       this.libraries = []
-      if (!service.code) return
+      if (!service?.code) return
 
       this.loadingServiceData = true
       let self = this

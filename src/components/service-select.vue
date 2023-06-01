@@ -1,17 +1,12 @@
 <template>
   <v-card elevation="0" color="grey-lighten-5">
     <div class="text-caption pa-3">Select local authority</div>
-    <v-autocomplete persistent-hint bg-color="green" class="elevation-0" clearable :v-model="value"
-      :items="libraryServices" item-title="nice_name" item-value="code" label="Find a local authority" return-object
+    <v-autocomplete persistent-hint bg-color="green" class="elevation-0" clearable :items="libraryServices"
+      item-title="nice_name" item-value="code" label="Find a local authority" return-object
       :loading="libraryServices.length === 0" prepend-inner-icon="mdi-domain" v-on:update:modelValue="updateSelection"
-      hint="You can type to search. After selecting a service, select the arrow icon to confirm">
-      <template v-slot:append>
-        <v-icon :color="selectedService !== null ? 'success' : 'grey'"
-          :icon="serviceConfirmed ? 'mdi-check-circle' : 'mdi-chevron-right-circle'" disabled="false"
-          @click="confirmSelection()"></v-icon>
-      </template>
+      hint="You can type to search library services.">
     </v-autocomplete>
-    <v-chip v-if="serviceConfirmed" class="ma-2" closable @click:close="deselectService()">{{
+    <v-chip v-if="selectedService != null" class="ma-2" closable @click:close="deselectService()">{{
       selectedService.nice_name }}</v-chip>
   </v-card>
 </template>
@@ -23,8 +18,7 @@ export default {
   data() {
     return {
       libraryServices: [],
-      selectedService: null,
-      serviceConfirmed: false,
+      selectedService: null
     };
   },
   created() {
@@ -33,17 +27,10 @@ export default {
       this.getServices();
     }
   },
-  props: ["value"],
   methods: {
-    confirmSelection() {
-      if (this.selectedService === null) return;
-      this.serviceConfirmed = true;
-      this.$emit("change", this.selectedService);
-    },
     deselectService() {
       this.selectedService = null;
-      this.serviceConfirmed = false;
-      this.$emit("change", null);
+      this.$emit("select", null);
     },
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();
@@ -52,8 +39,8 @@ export default {
       this.libraryServices = services;
     },
     updateSelection(newValue) {
-      this.serviceConfirmed = false;
       this.selectedService = newValue;
+      this.$emit("select", this.selectedService);
     }
   }
 };

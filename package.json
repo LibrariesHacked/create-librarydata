@@ -25,12 +25,12 @@
     "vue-carbonbadge": "^1.2.1",
     "vue-maplibre-gl": "^2.1.0",
     "vue-markdown-render": "^2.0.1",
-    "vue-router": "^4.1.6",
-    "vuetify": "^3.3.0",
+    "vue-router": "^4.2.2",
+    "vuetify": "^3.3.2",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
+    "@babel/core": "^7.22.1",
     "@babel/eslint-parser": "^7.21.8",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
@@ -41,7 +41,7 @@
     "gh-pages": "^3.2.3",
     "raw-loader": "^4.0.2",
     "sass": "^1.62.1",
-    "sass-loader": "^13.2.2",
+    "sass-loader": "^13.3.1",
     "webpack-plugin-vuetify": "^2.0.1"
   },
   "eslintConfig": {

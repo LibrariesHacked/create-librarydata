@@ -1,28 +1,21 @@
 <template>
-  <div>
+  <v-container>
     <layout-header title="Loans" subtitle="Lending of library items" />
-    <section>
-      <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-        <p class="text-center">
-          <v-btn
-            depressed
-            color="primary"
-            href="https://schema.librarydata.uk/loans"
-            target="_blank"
-          >
-            Loans data schema
-          </v-btn>
-        </p>
-      </v-container>
-    </section>
-  </div>
+    <p class="text-center">
+      <v-btn size="large" variant="tonal" color="info" href="https://schema.librarydata.uk/loans" target="_blank">
+        Explore the loans data schema
+      </v-btn>
+    </p>
+
+    <v-divider inset color="info" class="my-2"></v-divider>
+    <markdown-section :markdownText="mdText" />
+    <v-divider inset color="info" class="my-2"></v-divider>
+
+  </v-container>
 </template>
 
 <script>
-import Header from "../components/layout-header";
-import MarkDownData from "../markdown/membershipdata.md";
-import VueMarkdownPlus from "vue-markdown-plus";
+import MarkDownData from "../markdown/loansdata.md";
 
 export default {
   data() {
@@ -31,11 +24,6 @@ export default {
     };
   },
   methods: {},
-  components: {
-    "layout-header": Header,
-    VueMarkdownPlus
-  }
+  components: {}
 };
 </script>
-<style scoped>
-</style>

@@ -14,7 +14,29 @@
     },
     "libraries": {
       "name": "Library locations",
-      "version": "0.3.0"
+      "version": "0.4.0"
     }
-  }
+  },
+  "library_types": [
+    {
+      "text": "Local authority",
+      "value": "LAL"
+    },
+    {
+      "text": "Local authority unstaffed",
+      "value": "LAL-"
+    },
+    {
+      "text": "Commisioned",
+      "value": "CL"
+    },
+    {
+      "text": "Community-run",
+      "value": "CRL"
+    },
+    {
+      "text": "Independent",
+      "value": "ICL"
+    }
+  ]
 }

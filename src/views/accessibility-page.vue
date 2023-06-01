@@ -1,20 +1,11 @@
 <template>
-  <div>
-    <layout-header
-      title="Accessibility"
-      subtitle="How this site meets accessibility requirements"
-    />
-    <section>
-      <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-      </v-container>
-    </section>
-  </div>
+  <v-container>
+    <layout-header title="Accessibility" subtitle="How this site meets accessibility requirements" />
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 <script>
-import Header from "../components/layout-header";
 import MarkDownData from "../markdown/accessibility.md";
-import VueMarkdownPlus from "vue-markdown-plus";
 
 export default {
   data() {
@@ -23,6 +14,6 @@ export default {
     };
   },
   methods: {},
-  components: { "layout-header": Header, VueMarkdownPlus }
+  components: {}
 };
 </script>

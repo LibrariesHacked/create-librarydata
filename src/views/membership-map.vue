@@ -1,121 +1,71 @@
 <template>
-  <div>
-    <layout-header title="Membership map" subtitle="Explore library membership data" />
-    <section>
-      <v-container>
-        <p>
-          You need library membership data in the
-          <a href="https://schema.librarydata.uk/membership" target="_blank"
-            >membership data schema format</a
-          >. This can be created using the
-          <a href="/postcode-to-lsoa" target="_blank"
-            >postcode to statistical area converter</a
-          >.
-        </p>
-        <v-row no-gutters>
-          <v-col cols="12" sm="6">
-            <v-container>
-              <file-upload
-                v-bind:file="lsoaFiles"
-                v-on:change-files="lsoaFiles = $event"
-                v-on:delete-file="lsoaFiles = null"
-              />
-              <br />
-              <v-btn
-                depressed
-                color="primary"
-                :disabled="lsoaFiles.length === 0"
-                v-on:click="addMembershipData"
-                >Add members to map
-              </v-btn>
-            </v-container>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-container>
-              <v-alert border="right" color="blue" text type="info">
-                <p>
-                  <b>Display options</b>
-                </p>
-                <ul>
-                  <li>
-                    <b>Population percentage</b>. Shades the map to highlight
-                    concentration of membership. When zooming in in also displays the
-                    membership population percentage.
-                  </li>
-                  <li>
-                    <b>Areas of deprivation</b>. Shades the map to highlight highly
-                    deprived areas. Uses the index of multiple deprivation for each area.
-                    1 represents highly deprived areas, 10 the least deprived.
-                  </li>
-                </ul>
-              </v-alert>
-            </v-container>
-          </v-col>
-        </v-row>
-        <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" row>
-          <v-radio
-            label="Display population percentage"
-            value="populationPercentage"
-          ></v-radio>
-          <v-radio label="Display areas of deprivation" value="imd"></v-radio>
-        </v-radio-group>
-        <MglMap
-          container="map-container"
-          :minZoom="minZoom"
-          :maxZoom="maxZoom"
-          :center.sync="center"
-          :mapStyle="mapStyle"
-          :zoom.sync="zoom"
-          ref="mglMap"
-        >
-          <MglVectorLayer
-            :sourceId="lsoasSource.id"
-            :source="lsoasSource"
-            layerId="lsoa_boundaries_fill"
-            :layer="lsoasLayerFill"
-          />
-          <MglVectorLayer
-            :sourceId="lsoasSource.id"
-            :source="lsoasSource"
-            layerId="lsoa_boundaries_label"
-            :layer="lsoasLayerLabel"
-          />
-          <MglVectorLayer
-            sourceId="libraries"
-            :source="librariesSource"
-            layerId="libraries_circles"
-            :layer="librariesLayerCircles"
-          />
-          <MglNavigationControl position="bottom-right" />
-          <MglFullscreenControl position="top-right" />
-          <MglGeojsonLayer
-            v-if="authoritySource !== null"
-            sourceId="authority_boundary_source"
-            :source="authoritySource"
-            layerId="authority_boundary_line"
-            :layer="authorityLayerLine"
-          />
-          <MglGeojsonLayer
-            v-if="authoritySource !== null"
-            sourceId="authority_boundary_source"
-            :source="authoritySource"
-            layerId="authority_boundary_label"
-            :layer="authorityLayerLabel"
-          />
-        </MglMap>
+  <v-container>
+    <layout-header title="Membership map" subtitle="Insights from library membership data" />
+
+    <v-divider inset color="info" class="my-2"></v-divider>
+    <markdown-section :markdownText="mdText" />
+    <v-divider inset color="info" class="my-2"></v-divider>
+
+    <h2 class="text-h5 text-decoration-underline my-3">Map library members</h2>
+
+    <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
+      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
+        This tool loads CSV files in the format of the membership data schema.
+      </v-alert>
+
+      <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event" v-on:delete-file="lsoaFiles = null" />
+
+      <v-btn append-icon="mdi-map-marker-plus" color="info" class="mt-3" variant="tonal" size="large"
+        v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+        Add to map
+      </v-btn>
+
+      <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Map">
+        <strong>Population percentage</strong> shades the map to highlight concentration of membership. When zooming in in
+        also displays the membership population percentage.
+        <strong>Areas of deprivation</strong> shades the map to highlight highly deprived areas. Uses the index of
+        multiple deprivation for each area. 1 represents highly deprived areas, 10 the least deprived.
+      </v-alert>
+
+      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
+        <v-radio label="Display population percentage" value="populationPercentage"></v-radio>
+        <v-radio label="Display areas of deprivation" value="imd"></v-radio>
+      </v-radio-group>
+
+      <v-container class="map">
+        <mgl-map ref="mglMap" :center="center" :zoom="zoom" :mapStyle="mapStyle">
+          <mgl-fullscreen-control />
+          <mgl-navigation-control />
+          <mgl-scale-control />
+          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries_layer_circles"
+              :paint="librariesLayerCircle.paint" />
+          </mgl-vector-source>
+          <mgl-vector-source source-id="lsoas" :tiles="lsoasSource.tiles" :promoteId="lsoasSource.promoteId">
+            <mgl-fill-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_fill" :paint="lsoasLayerFill.paint"
+              :filter="matchFilter" />
+            <mgl-symbol-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_label" :paint="lsoasLayerLabel.paint"
+              :layout="lsoasLayerLabel.layout" :filter="matchFilter" :minzoom="lsoasLayerLabel.minzoom" />
+          </mgl-vector-source>
+          <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
+            <mgl-line-layer v-if="authoritySource.show" layer-id="authority-line" :paint="authorityLayerLine.paint" />
+            <mgl-symbol-layer v-if="authoritySource.show" layer-id="authority-label" :layout="authorityLayerLabel.layout"
+              :paint="authorityLayerLabel.paint" />
+          </mgl-geo-json-source>
+        </mgl-map>
       </v-container>
-    </section>
-  </div>
+    </v-sheet>
+  </v-container>
 </template>
 
 <script>
+import MarkDownData from "../markdown/membershipmap.md";
+
 import "../extensions/strings";
 
 import FileUpload from "../components/file-upload";
 
-import Header from "../components/layout-header";
-
-const config = require("../helpers/config.json");
+const config = require('../helpers/config.json');
 
 import * as colorbrewer from "colorbrewer";
 
@@ -124,28 +74,16 @@ import bbox from "@turf/bbox";
 import * as csvHelper from "../helpers/csv";
 import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
 
-import {
-  MglMap,
-  MglFullscreenControl,
-  MglNavigationControl,
-  MglGeojsonLayer,
-  MglVectorLayer
-} from "vue-mapbox";
-
 export default {
-  created() {
-    this.map = null;
-  },
   data() {
     return {
-      map: null,
-      mapStyle: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-      center: [-2, 52],
-      zoom: 7,
-      minZoom: 5,
-      maxZoom: 16,
-      mapDisplay: "populationPercentage",
-      authoritySource: null,
+      authoritySource: {
+        data: {
+          'type': 'FeatureCollection',
+          'features': []
+        },
+        show: false
+      },
       authorityLayerLine: {
         type: "line",
         minzoom: 10,
@@ -178,33 +116,12 @@ export default {
           "text-halo-width": 2
         }
       },
-      lsoaFiles: [],
-      lsoasSource: {
-        type: "vector",
-        id: "lsoa_boundaries",
-        tiles: [config.lsoa_tiles],
-        promoteId: { lsoa_boundaries: "code" }
-      },
+      center: [-2, 52],
+      zoom: 7,
       librariesSource: {
-        type: "vector",
         tiles: [config.libraries_tiles]
       },
-      matchFilter: ["in", ["get", "code"], ["literal", []]],
-      matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
-      matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
-      lsoasLayerFill: {
-        type: "fill",
-        filter: ["in", ["get", "code"], ["literal", []]],
-        "source-layer": "lsoa_boundaries",
-        paint: {
-          "fill-color": "rgba(254, 113, 144, 1)",
-          "fill-opacity": 0.5
-        }
-      },
-      matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
-      matchFieldLsoaDeprivation: ["to-string", ["get", "code"]],
-      librariesLayerCircles: {
-        type: "circle",
+      librariesLayerCircle: {
         filter: ["!", ["has", "Year closed"]],
         "source-layer": "libraries",
         paint: {
@@ -216,14 +133,25 @@ export default {
           "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
         }
       },
+      lsoaFiles: [],
+      lsoasSource: {
+        tiles: [config.lsoa_tiles],
+        promoteId: { lsoa_boundaries: "code" },
+        show: false
+      },
+      lsoasLayerFill: {
+        paint: {
+          "fill-color": "rgba(254, 113, 144, 1)",
+          "fill-opacity": 0.5
+        }
+      },
       lsoasLayerLabel: {
-        type: "symbol",
-        filter: ["in", ["get", "code"], ["literal", []]],
-        "source-layer": "lsoa_boundaries",
         minzoom: 12,
         layout: {
           "text-field": ["to-string", ["get", "code"]],
-          "text-font": ["Open Sans Bold"],
+          "text-font": [
+            "Source Sans Pro SemiBold"
+          ],
           "symbol-placement": "point",
           "text-size": {
             base: 1.2,
@@ -232,7 +160,6 @@ export default {
               [22, 48]
             ]
           },
-          "text-allow-overlap": false,
           "text-line-height": 1
         },
         paint: {
@@ -240,33 +167,60 @@ export default {
           "text-halo-color": "#fafaf8",
           "text-halo-width": 1
         }
-      }
-    };
+      },
+      matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
+      matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
+      matchFilter: ["in", ["get", "code"], ["literal", []]],
+      mapDisplay: "populationPercentage",
+      mapStyle: "https://zoomstack.librarydata.uk/light.json",
+      minZoom: 5,
+      maxZoom: 16,
+      matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
+      matchFieldLsoaDeprivation: ["to-string", ["get", "code"]],
+      mdText: MarkDownData
+    }
   },
   methods: {
-    setDisplayOptions: function() {
+    addMembershipData: async function () {
+      let self = this;
+      if (self.lsoaFiles[0].name) {
+        const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
+        this.setLsoaFields(data.slice(1));
+        const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
+          data[1][0]
+        );
+        const geojson = JSON.parse(authority.geojson);
+        this.authoritySource.data = geojson;
+        this.authoritySource.show = true;
+        var bounds = bbox(geojson);
+        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 });
+      }
+    },
+    setDisplayOptions: function () {
+      console.log(this.matchColourLsoaPopulation);
       if (this.mapDisplay === "populationPercentage") {
         this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaPopulation;
         this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaPopulation;
+        this.$refs.mglMap.map.setPaintProperty("lsoas_layer_fill", "fill-color", this.matchColourLsoaPopulation);
+        this.$refs.mglMap.map.setLayoutProperty("lsoas_layer_label", "text-field", this.matchFieldLsoaPopulation);
       }
       if (this.mapDisplay === "imd") {
         this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaDeprivation;
         this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaDeprivation;
+        this.$refs.mglMap.map.setPaintProperty("lsoas_layer_fill", "fill-color", this.matchColourLsoaDeprivation);
+        this.$refs.mglMap.map.setLayoutProperty("lsoas_layer_label", "text-field", this.matchFieldLsoaDeprivation);
       }
-
-      this.lsoasLayerFill.filter = this.matchFilter;
-      this.lsoasLayerLabel.filter = this.matchFilter;
     },
-    setLsoaFields: function(lsoas) {
+    setLsoaFields: function (lsoas) {
       let filters = [];
       let matchFieldLsoaPopulation = ["match", ["get", "code"]];
       let matchFieldLsoaDeprivation = ["match", ["get", "code"]];
 
-      lsoas.forEach(lsoa => {
+      lsoas.forEach((lsoa) => {
         const members = parseInt(lsoa[3].replace("x", "2"));
         this.$refs.mglMap.map.setFeatureState(
           {
-            source: "lsoa_boundaries",
+            source: "lsoas",
             sourceLayer: "lsoa_boundaries",
             id: lsoa[2]
           },
@@ -356,6 +310,9 @@ export default {
       let matchFilter = ["in", ["get", "code"], ["literal", filters]];
       this.matchFilter = matchFilter;
 
+      this.$refs.mglMap.map.setFilter("lsoas_layer_fill", matchFilter);
+      this.$refs.mglMap.map.setFilter("lsoas_layer_label", matchFilter);
+
       // Store permanent definitions
       this.matchFieldLsoaPopulation = matchFieldLsoaPopulation;
       this.matchFieldLsoaDeprivation = matchFieldLsoaDeprivation;
@@ -363,52 +320,20 @@ export default {
       this.matchColourLsoaDeprivation = matchColourLsoaDeprivation;
 
       this.setDisplayOptions();
-    },
-    addMembershipData: async function() {
-      let self = this;
-      if (self.lsoaFiles[0].name) {
-        const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
-        this.setLsoaFields(data.slice(1));
-        const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
-          data[1][0]
-        );
-        const geojson = JSON.parse(authority.geojson);
-        this.authoritySource = { type: "geojson", data: geojson };
-        this.authorityLayerLabel.layout["text-field"] = authority.utla19nm;
-        var bounds = bbox(geojson);
-        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 });
-      }
     }
   },
   components: {
-    "layout-header": Header,
-    "file-upload": FileUpload,
-    MglGeojsonLayer,
-    MglMap,
-    MglFullscreenControl,
-    MglNavigationControl,
-    MglVectorLayer
+    "file-upload": FileUpload
   }
 };
 </script>
 
 <style>
-.main {
-  padding: 20px;
-}
-.mapboxgl-canvas {
-  left: 0;
-}
-#map-container {
+.map {
   position: relative;
-  margin-top: 10px;
-  height: 75vh;
+  height: 500px;
   width: 100%;
   border: 1px solid #e5e5e5;
+  padding: 0;
 }
-#map-container canvas {
-  outline: none;
-}
-
-@import "~mapbox-gl/dist/mapbox-gl.css";
 </style>

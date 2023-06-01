@@ -1,35 +1,18 @@
 <template>
-  <div>
-    <layout-header
-      title="Log in"
-      subtitle="Gain access to edit and submit data for your service"
-    />
+  <v-container>
+    <layout-header title="Log in" subtitle="Gain access to edit and submit data for your service" />
+    <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-      </v-container>
-    </section>
-    <section>
-      <v-container>
-        <v-card outlined :loading="loading" max-width="350" class="mx-auto">
-          <template slot="progress">
+        <v-card color="success" variant="outlined" elevation="0" :loading="loading" max-width="350" class="mx-auto">
+          <template #progress>
             <v-progress-linear height="5" indeterminate></v-progress-linear>
           </template>
-          <v-card-title>Access</v-card-title>
+          <v-card-title>Access the site</v-card-title>
           <v-card-text v-if="!success">
             <v-form ref="form" v-model="valid">
-              <v-text-field
-                clearable
-                dense
-                outlined
-                v-model="email"
-                :rules="emailRules"
-                label="Enter email address"
-                type="email"
-                prepend-inner-icon="mdi-email"
-                color="primary"
-                required
-              ></v-text-field>
+              <v-text-field clearable variant="outlined" v-model="email" :rules="emailRules" label="Enter email address"
+                type="email" prepend-inner-icon="mdi-email" required></v-text-field>
               <p>{{ message }}</p>
             </v-form>
           </v-card-text>
@@ -38,20 +21,20 @@
           </v-card-text>
           <v-card-actions v-if="!success">
             <v-spacer></v-spacer>
-            <v-btn large color="primary" text @click="login" :disabled="!valid">
-              Log in
-              <v-icon right>mdi-login</v-icon>
+            <v-btn append-icon="mdi-email" variant="tonal" size="large" color="success" text @click="login"
+              :disabled="!valid">
+              Email login link
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-container>
     </section>
-  </div>
+  </v-container>
 </template>
 <script>
-import Header from "../components/layout-header";
+import { useRoute } from 'vue-router'
+
 import MarkDownData from "../markdown/login.md";
-import VueMarkdownPlus from "vue-markdown-plus";
 
 import * as login from "../helpers/login";
 
@@ -71,7 +54,7 @@ export default {
     };
   },
   created: function () {
-    this.stripLoginKey();
+    this.processLoginKey();
   },
   methods: {
     async login() {
@@ -88,22 +71,15 @@ export default {
       }
       this.loading = false;
     },
-    stripLoginKey: function () {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const key = urlParams.get("key");
+    processLoginKey: function () {
+      const route = useRoute()
+      const key = route.query.key;
       if (key) {
         this.$store.commit("setLoginKey", key);
         this.$router.push("/profile");
       }
     }
   },
-  components: { "layout-header": Header, VueMarkdownPlus }
+  components: {}
 };
 </script>
-
-<style scoped>
-.main {
-  margin: 20px;
-}
-</style>

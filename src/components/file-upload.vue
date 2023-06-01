@@ -1,27 +1,19 @@
 <template>
-  <section>
-    <v-file-input
-      accept="text/csv"
-      chips
-      counter
-      outlined
-      multiple
-      show-size
-      label="Choose a file"
-      :value="file"
-      v-on:change="$emit('change-files', $event)"
-      prepend-icon=""
-      prepend-inner-icon="mdi-file-document-outline"
-    ></v-file-input>
-  </section>
+  <v-card elevation="0" color="grey-lighten-5" class="pt-2">
+    <v-file-input chips show-size single-line bg-color="info" accept="text/csv" counter variant="outlined" clearable
+      multiple label="Select a file" :model-value="files" v-on:update:model-value="updateSelection($event)"
+      prepend-inner-icon="mdi-file-document" prepend-icon="" hint="File loader will only accept CSV file types"
+      persistent-hint></v-file-input>
+  </v-card>
 </template>
 
 <script>
 export default {
-  props: ["file"],
-  data() {
-    return {};
-  },
-  methods: {}
+  props: ["files"],
+  methods: {
+    updateSelection(files) {
+      this.$emit('change-files', files)
+    },
+  }
 };
 </script>

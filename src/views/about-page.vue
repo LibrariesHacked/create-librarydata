@@ -1,17 +1,11 @@
 <template>
-  <div>
-    <layout-header title="About" subtitle="What this site is for and how it works" />
-    <section>
-      <v-container>
-        <vue-markdown-plus :source="mdText"></vue-markdown-plus>
-      </v-container>
-    </section>
-  </div>
+  <v-container>
+    <layout-header title="About" subtitle="What the site is and does, and who for" />
+    <markdown-section :markdownText="mdText" />
+  </v-container>
 </template>
 <script>
-import Header from "../components/layout-header";
 import MarkDownData from "../markdown/about.md";
-import VueMarkdownPlus from "vue-markdown-plus";
 
 export default {
   data() {
@@ -20,6 +14,6 @@ export default {
     };
   },
   methods: {},
-  components: { "layout-header": Header, VueMarkdownPlus }
+  components: {}
 };
 </script>

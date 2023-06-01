@@ -1,18 +1,14 @@
 <template>
-  <section>
-    <v-autocomplete
-      :items="library_services"
-      item-text="nice_name"
-      item-value="code"
-      label="Choose a library authority"
-      outlined
-      :value="value"
-      @change="update"
-      return-object
-      :loading="library_services.length === 0"
-      prepend-inner-icon="mdi-map-legend"
-    ></v-autocomplete>
-  </section>
+  <v-card elevation="0" color="grey-lighten-5">
+    <div class="text-caption pa-3">Select local authority</div>
+    <v-autocomplete persistent-hint bg-color="green" class="elevation-0" clearable :items="libraryServices"
+      item-title="nice_name" item-value="code" label="Find a local authority" return-object
+      :loading="libraryServices.length === 0" prepend-inner-icon="mdi-domain" v-on:update:modelValue="updateSelection"
+      hint="You can type to search library services.">
+    </v-autocomplete>
+    <v-chip v-if="selectedService != null" class="ma-2" closable @click:close="deselectService()">{{
+      selectedService.nice_name }}</v-chip>
+  </v-card>
 </template>
 
 <script>
@@ -21,25 +17,30 @@ const authoritiesHelper = require("../helpers/libraryAuthorities.js");
 export default {
   data() {
     return {
-      library_services: []
+      libraryServices: [],
+      selectedService: null
     };
   },
   created() {
-    this.library_services = this.$store.state.library_services;
-    if (this.library_services.length === 0) {
+    this.libraryServices = this.$store.state.libraryServices;
+    if (this.libraryServices.length === 0) {
       this.getServices();
     }
   },
-  props: ["value"],
   methods: {
+    deselectService() {
+      this.selectedService = null;
+      this.$emit("select", null);
+    },
     async getServices() {
       let services = await authoritiesHelper.getLibraryAuthorities();
       services = services.sort((a, b) => a.nice_name.localeCompare(b.nice_name));
       this.$store.commit("setServices", services);
-      this.library_services = services;
+      this.libraryServices = services;
     },
-    update(newValue) {
-      this.$emit("change", newValue);
+    updateSelection(newValue) {
+      this.selectedService = newValue;
+      this.$emit("select", this.selectedService);
     }
   }
 };

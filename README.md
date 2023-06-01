@@ -1,6 +1,6 @@
 # Create
 
-A website providing tools for public libraries to create open data for their service.
+A website providing tools for public libraries to create open data for their libraries.
 
 ## Getting Started
 

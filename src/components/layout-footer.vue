@@ -7,11 +7,7 @@
       <v-btn size="large" variant="text" color="info" to="/privacy">
         Privacy
       </v-btn>
-    </v-row>
-    <v-row justify="center" no-gutters>
-      <p>
-        <CarbonBadge />
-      </p>
+      <CarbonBadge />
     </v-row>
   </v-footer>
 </template>

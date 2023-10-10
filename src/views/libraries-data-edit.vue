@@ -6,7 +6,7 @@
     <markdown-section :markdownText="mdText" />
     <v-divider inset color="info" class="my-2"></v-divider>
 
-    <user-profile actions />
+    <user-profile :actions="true" />
 
     <h2 class="text-h5 text-decoration-underline my-3">Edit library locations</h2>
 

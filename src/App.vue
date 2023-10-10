@@ -97,7 +97,7 @@
       <template v-slot:append>
         <v-card>
           <v-card-text>
-            <user-profile actions />
+            <user-profile :actions="true" />
           </v-card-text>
         </v-card>
       </template>

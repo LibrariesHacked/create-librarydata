@@ -12,7 +12,6 @@ export default {
       options: { html: true, breaks: true }
     };
   },
-  methods: {},
   components: { VueMarkdown },
   props: {
     markdownText: {

@@ -47,6 +47,9 @@ export default {
       services = services.sort((a, b) => a.name.localeCompare(b.name));
       this.$store.commit("setServices", services);
       this.library_services = services;
+    },
+    async logout() {
+      this.$store.commit("logout");
     }
   },
   beforeMount() {

@@ -4,7 +4,7 @@
       <p v-if="this.$store.state.loginKey">
         Logged in as <strong>{{ this.$store.state.loginSubject }}</strong>
         <span v-if="this.$store.state.loginAdmin">
-          <v-chip color="info" class="mx-2" prepend-icon="mdi-shield-crown">
+          <v-chip color="info" class="mx-2 my-2" prepend-icon="mdi-shield-crown">
             Admin
           </v-chip>
         </span>
@@ -20,11 +20,11 @@
     </v-card-text>
     <v-card-actions v-if="this.actions">
       <v-spacer></v-spacer>
-      <v-btn v-if="this.$store.state.loginKey" large color="primary" text @click="logout">
+      <v-btn v-if="this.$store.state.loginKey" size="small" variant="tonal" color="info" text @click="logout">
         Log out
         <v-icon right>mdi-logout</v-icon>
       </v-btn>
-      <v-btn v-if="!this.$store.state.loginKey" large color="primary" text :to="'/login'">
+      <v-btn v-if="!this.$store.state.loginKey" size="small" variant="tonal" color="info" :to="'/login'">
         Log in
         <v-icon right>mdi-login</v-icon>
       </v-btn>
@@ -47,6 +47,9 @@ export default {
       services = services.sort((a, b) => a.name.localeCompare(b.name));
       this.$store.commit("setServices", services);
       this.library_services = services;
+    },
+    async logout() {
+      this.$store.commit("logout");
     }
   },
   beforeMount() {

@@ -23,7 +23,7 @@
             <v-spacer></v-spacer>
             <v-btn append-icon="mdi-email" variant="tonal" size="large" color="success" text @click="login"
               :disabled="!valid">
-              Email login link
+              Log in
             </v-btn>
           </v-card-actions>
         </v-card>

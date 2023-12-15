@@ -9,7 +9,7 @@
       </v-btn>
     </v-container>
     <div v-if="this.$store.state.loginKey">
-      <user-profile actions />
+      <user-profile :actions="true" />
     </div>
   </v-container>
 </template>

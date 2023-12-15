@@ -4,7 +4,7 @@
     <markdown-section :markdownText="mdText" />
     <section>
       <v-container>
-        <user-profile />
+        <user-profile :actions="true" />
       </v-container>
     </section>
   </v-container>

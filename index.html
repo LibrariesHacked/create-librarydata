@@ -8,19 +8,19 @@
       // When the single page app is loaded further down in this file,
       // the correct url will be waiting in the browser's history for
       // the single page app to route accordingly.
-      (function (l) {
-        if (l.search[1] === "/") {
+      ;(function (l) {
+        if (l.search[1] === '/') {
           var decoded = l.search
             .slice(1)
-            .split("&")
+            .split('&')
             .map(function (s) {
-              return s.replace(/~and~/g, "&");
+              return s.replace(/~and~/g, '&')
             })
-            .join("?");
+            .join('?')
           window.history.replaceState(
             null,
             null,
             l.pathname.slice(0, -1) + decoded + l.hash
-          );
+          )
         }
-      })(window.location);</script><script defer="defer" type="module" src="/js/chunk-vendors.85cd589a.js"></script><script defer="defer" type="module" src="/js/app.fed403e7.js"></script><link href="/css/chunk-vendors.bcce0cf6.css" rel="stylesheet"><link href="/css/app.b13e632d.css" rel="stylesheet"><script defer="defer" src="/js/chunk-vendors-legacy.295588e9.js" nomodule></script><script defer="defer" src="/js/app-legacy.b787ffdd.js" nomodule></script></head><body><noscript><strong>We're sorry but create doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+      })(window.location)</script><script defer="defer" src="/js/chunk-vendors.04f3feee.js" type="module"></script><script defer="defer" src="/js/app.fa47d686.js" type="module"></script><link href="/css/chunk-vendors.7b5593b2.css" rel="stylesheet"><link href="/css/app.054809a5.css" rel="stylesheet"><script defer="defer" src="/js/chunk-vendors-legacy.bb6afcf5.js" nomodule></script><script defer="defer" src="/js/app-legacy.21214a15.js" nomodule></script></head><body><noscript><strong>We're sorry but create doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>

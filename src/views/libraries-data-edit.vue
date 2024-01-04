@@ -213,8 +213,8 @@
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <div class="d-flex">
-              <v-icon class="mr-2" v-on:click="editItem(item.raw)"> mdi-pencil </v-icon>
-              <v-icon v-on:click="deleteItem(item.raw)">mdi-delete</v-icon>
+              <v-icon class="mr-2" v-on:click="editItem(item)"> mdi-pencil </v-icon>
+              <v-icon v-on:click="deleteItem(item)">mdi-delete</v-icon>
             </div>
           </template>
         </v-data-table>

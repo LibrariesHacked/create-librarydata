@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
+
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+import '@mdi/font/css/materialdesignicons.css'
 
 import VueMaplibreGl from 'vue-maplibre-gl'
 
@@ -18,6 +22,13 @@ import store from './plugins/store'
 import App from './App.vue'
 
 const vuetify = createVuetify({
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  },
   components: {
     ...labs
   }

@@ -1,25 +1,25 @@
-import axios from "axios";
+import axios from 'axios'
 
-const config = require("./config.json");
+import * as config from './config'
 
-export async function getLibraryAuthorities() {
-  const response = await axios.get(config.authorities_path);
+export async function getLibraryAuthorities () {
+  const response = await axios.get(config.authorities_path)
   if (response && response.data) {
-    return response.data;
+    return response.data
   } else {
-    return [];
+    return []
   }
 }
 
-export async function getLibraryAuthorityByName(name) {
-  const response = await axios.get(config.authorities_path + "/name/" + name);
+export async function getLibraryAuthorityByName (name) {
+  const response = await axios.get(config.authorities_path + '/name/' + name)
   if (response && response.data) {
-    return response.data;
+    return response.data
   } else {
-    return {};
+    return {}
   }
 }
 
-export function getLibraryAuthoritySystemName(name) {
+export function getLibraryAuthoritySystemName (name) {
   return name.replace(/[. ,:-]+/g, '-').toLowerCase()
 }

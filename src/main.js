@@ -1,13 +1,19 @@
 import { createApp } from 'vue'
+
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+import '@mdi/font/css/materialdesignicons.css'
+
 import VueMaplibreGl from 'vue-maplibre-gl'
+
 import './styles/main.scss'
 
 import * as labs from 'vuetify/labs/components'
 
-import Header from './components/layout-header'
-import Markdown from './components/markdown-section'
-import UserProfile from './components/user-profile'
+import Header from './components/Header.vue'
+import Markdown from './components/Markdown.vue'
+import UserProfile from './components/UserProfile.vue'
 
 import router from './router'
 
@@ -16,6 +22,13 @@ import store from './plugins/store'
 import App from './App.vue'
 
 const vuetify = createVuetify({
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  },
   components: {
     ...labs
   }

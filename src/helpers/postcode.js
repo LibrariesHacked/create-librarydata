@@ -1,43 +1,43 @@
-// Axios for making requests
-import axios from "axios";
+import axios from 'axios'
 
-const config = require("./config.json");
+import * as config from './config.json'
 
-export function extractPostcodeSectors(postcode_list) {
-  let sectors = new Set(
-    postcode_list
+export function extractPostcodeSectors (postcodeList) {
+  const sectors = new Set(
+    postcodeList
       .map(postcode => extractPostcodeSector(postcode))
       .filter(sector => sector != null)
-  );
-  return [...sectors];
+  )
+  return [...sectors]
 }
 
-export function extractPostcodeSector(postcode) {
-  const re = /[a-zA-Z]+\d\d?[a-zA-Z]?\s*\d+/;
+export function extractPostcodeSector (postcode) {
+  const re = /[a-zA-Z]+\d\d?[a-zA-Z]?\s*\d+/
   if (postcode) {
-    let match = postcode.match(re);
-    if (match && match.length > 0) return match[0].substring(0, 6);
+    const match = postcode.match(re)
+    if (match && match.length > 0) return match[0].substring(0, 6)
   }
-  return null;
+  return null
 }
 
-export function getLsoasFromPostcodeSectors(sectors, callback) {
-  axios.post(config.postcode_api + "lsoas?filter=sector", sectors).then(response => {
-    callback(response.data);
-  });
+export function getLsoasFromPostcodeSectors (sectors, callback) {
+  axios
+    .post(config.postcode_api + 'lsoas?filter=sector', sectors)
+    .then(response => {
+      callback(response.data)
+    })
 }
 
-export function extractLsoaLookupFromPostcodes(postcode_list, callback) {
-  // First thing to do is extract all the postcode sectors
-  const sectors = extractPostcodeSectors(postcode_list);
-  // Then we retrieve all the LSOA data
-  let postcodes = {};
+export function extractLsoaLookupFromPostcodes (postcodeList, callback) {
+  const sectors = extractPostcodeSectors(postcodeList)
+
+  const postcodes = {}
   getLsoasFromPostcodeSectors(sectors, lsoas => {
     Object.keys(lsoas).forEach(lsoa => {
       lsoas[lsoa].forEach(postcode => {
-        postcodes[postcode.replace(/\s/g, "")] = lsoa.trim();
-      });
-    });
-    callback(postcodes);
-  });
+        postcodes[postcode.replace(/\s/g, '')] = lsoa.trim()
+      })
+    })
+    callback(postcodes)
+  })
 }

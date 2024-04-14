@@ -1,19 +1,23 @@
 <template>
   <v-container>
-    <layout-header title="About" subtitle="What the site is and does, and who for" />
+    <layout-header
+      title="About"
+      subtitle="What the site is and does, and who for"
+    />
     <markdown-section :markdownText="mdText" />
   </v-container>
 </template>
+
 <script>
-import MarkDownData from "../markdown/about.md";
+import MarkDownData from '../markdown/about.md?raw'
 
 export default {
-  data() {
+  data () {
     return {
       mdText: MarkDownData
-    };
+    }
   },
   methods: {},
   components: {}
-};
+}
 </script>

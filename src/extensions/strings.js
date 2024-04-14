@@ -4,4 +4,4 @@ const isUrl = urlString => {
   return regexp.test(urlString)
 }
 
-String.prototype.isUrl = isUrl
+String.prototype.isUrl = isUrl // eslint-disable-line no-extend-native

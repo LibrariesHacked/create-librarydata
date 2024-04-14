@@ -19,7 +19,7 @@ import StockSummaryData from './views/stock-summary-data.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes: [
     {
       path: '/',

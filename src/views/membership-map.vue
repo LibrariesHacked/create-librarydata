@@ -35,14 +35,19 @@
       </v-btn>
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Map">
-        <strong>Population percentage</strong> shades the map to highlight concentration
-        of membership. When zooming in in also displays the membership population
-        percentage. <strong>Areas of deprivation</strong> shades the map to highlight
-        highly deprived areas. Uses the index of multiple deprivation for each area. 1
+        <strong>Population percentage</strong> shades the map to highlight
+        concentration of membership. When zooming in in also displays the
+        membership population percentage.
+        <strong>Areas of deprivation</strong> shades the map to highlight highly
+        deprived areas. Uses the index of multiple deprivation for each area. 1
         represents highly deprived areas, 10 the least deprived.
       </v-alert>
 
-      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
+      <v-radio-group
+        v-model="mapDisplay"
+        v-on:change="setDisplayOptions"
+        inline
+      >
         <v-radio
           label="Display population percentage"
           value="populationPercentage"
@@ -51,11 +56,19 @@
       </v-radio-group>
 
       <v-container class="map">
-        <mgl-map ref="mglMap" :center="center" :zoom="zoom" :mapStyle="mapStyle">
+        <mgl-map
+          ref="mglMap"
+          :center="center"
+          :zoom="zoom"
+          :mapStyle="mapStyle"
+        >
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
+          <mgl-vector-source
+            source-id="libraries"
+            :tiles="librariesSource.tiles"
+          >
             <mgl-circle-layer
               source-layer="libraries"
               layer-id="libraries_layer_circles"
@@ -82,7 +95,10 @@
               :minzoom="lsoasLayerLabel.minzoom"
             />
           </mgl-vector-source>
-          <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
+          <mgl-geo-json-source
+            source-id="authority"
+            :data="authoritySource.data"
+          >
             <mgl-line-layer
               v-if="authoritySource.show"
               layer-id="authority-line"
@@ -102,61 +118,61 @@
 </template>
 
 <script>
-import MarkDownData from "../markdown/membershipmap.md";
+import MarkDownData from '../markdown/membershipmap.md?raw'
 
-import "../extensions/strings";
+import '../extensions/strings'
 
-import FileUpload from "../components/file-upload";
+import FileUpload from '../components/FileUpload.vue'
 
-const config = require("../helpers/config.json");
+import * as colorbrewer from 'colorbrewer'
 
-import * as colorbrewer from "colorbrewer";
+import bbox from '@turf/bbox'
 
-import bbox from "@turf/bbox";
+import * as csvHelper from '../helpers/csv'
+import * as libraryAuthoritiesHelper from '../helpers/libraryAuthorities'
 
-import * as csvHelper from "../helpers/csv";
-import * as libraryAuthoritiesHelper from "../helpers/libraryAuthorities";
+import * as config from '../helpers/config.json'
 
 export default {
-  data() {
+  data () {
     return {
       authoritySource: {
         data: {
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: []
         },
         show: false
       },
       authorityLayerLine: {
-        type: "line",
+        type: 'line',
         minzoom: 10,
         paint: {
-          "line-color": "#697B89",
-          "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 22, 8]
+          'line-color': '#697B89',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2, 22, 8]
         }
       },
       authorityLayerLabel: {
-        type: "symbol",
+        type: 'symbol',
         layout: {
-          "text-field": ["to-string", ["get", "utla19nm"]],
-          "text-font": ["Open Sans Bold"],
-          "text-allow-overlap": true,
-          "text-ignore-placement": true,
-          "symbol-placement": "line",
-          "text-max-angle": 90,
-          "text-size": {
+          'text-field': ['to-string', ['get', 'utla19nm']],
+          'text-font': ['Open Sans Bold'],
+          'text-allow-overlap': true,
+          'text-ignore-placement': true,
+          'symbol-placement': 'line',
+          'text-max-angle': 90,
+          'text-size': {
             base: 1.2,
             stops: [
               [10, 8],
               [22, 48]
             ]
           },
-          "text-line-height": 1
+          'text-line-height': 1
         },
         paint: {
-          "text-color": "#697B89",
-          "text-halo-color": "#fafaf8",
-          "text-halo-width": 2
+          'text-color': '#697B89',
+          'text-halo-color': '#fafaf8',
+          'text-halo-width': 2
         }
       },
       center: [-2, 52],
@@ -165,154 +181,183 @@ export default {
         tiles: [config.libraries_tiles]
       },
       librariesLayerCircle: {
-        filter: ["!", ["has", "Year closed"]],
-        "source-layer": "libraries",
+        filter: ['!', ['has', 'Year closed']],
+        'source-layer': 'libraries',
         paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 5, 2, 18, 10],
-          "circle-color": "#1b5e20",
-          "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 5, 1, 18, 4],
-          "circle-stroke-color": "#ffffff",
-          "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.8, 18, 1],
-          "circle-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 18, 0.9]
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 2, 18, 10],
+          'circle-color': '#1b5e20',
+          'circle-stroke-width': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            5,
+            1,
+            18,
+            4
+          ],
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            5,
+            0.8,
+            18,
+            1
+          ],
+          'circle-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            5,
+            0.4,
+            18,
+            0.9
+          ]
         }
       },
       lsoaFiles: [],
       lsoasSource: {
         tiles: [config.lsoa_tiles],
-        promoteId: { lsoa_boundaries: "code" },
+        promoteId: { lsoa_boundaries: 'code' },
         show: false
       },
       lsoasLayerFill: {
         paint: {
-          "fill-color": "rgba(254, 113, 144, 1)",
-          "fill-opacity": 0.5
+          'fill-color': 'rgba(254, 113, 144, 1)',
+          'fill-opacity': 0.5
         }
       },
       lsoasLayerLabel: {
         minzoom: 12,
         layout: {
-          "text-field": ["to-string", ["get", "code"]],
-          "text-font": ["Source Sans Pro SemiBold"],
-          "symbol-placement": "point",
-          "text-size": {
+          'text-field': ['to-string', ['get', 'code']],
+          'text-font': ['Source Sans Pro SemiBold'],
+          'symbol-placement': 'point',
+          'text-size': {
             base: 1.2,
             stops: [
               [12, 14],
               [22, 48]
             ]
           },
-          "text-line-height": 1
+          'text-line-height': 1
         },
         paint: {
-          "text-color": "#697B89",
-          "text-halo-color": "#fafaf8",
-          "text-halo-width": 1
+          'text-color': '#697B89',
+          'text-halo-color': '#fafaf8',
+          'text-halo-width': 1
         }
       },
-      matchColourLsoaPopulation: "rgba(254, 113, 144, 1)",
-      matchColourLsoaDeprivation: "rgba(254, 113, 144, 1)",
-      matchFilter: ["in", ["get", "code"], ["literal", []]],
-      mapDisplay: "populationPercentage",
-      mapStyle: "https://zoomstack.librarydata.uk/light.json",
+      matchColourLsoaPopulation: 'rgba(254, 113, 144, 1)',
+      matchColourLsoaDeprivation: 'rgba(254, 113, 144, 1)',
+      matchFilter: ['in', ['get', 'code'], ['literal', []]],
+      mapDisplay: 'populationPercentage',
+      mapStyle: 'https://zoomstack.librarydata.uk/light.json',
       minZoom: 5,
       maxZoom: 16,
-      matchFieldLsoaPopulation: ["to-string", ["get", "code"]],
-      matchFieldLsoaDeprivation: ["to-string", ["get", "code"]],
+      matchFieldLsoaPopulation: ['to-string', ['get', 'code']],
+      matchFieldLsoaDeprivation: ['to-string', ['get', 'code']],
       mdText: MarkDownData
-    };
+    }
   },
   methods: {
     addMembershipData: async function () {
-      let self = this;
+      let self = this
       if (self.lsoaFiles[0].name) {
-        const data = await csvHelper.parseFile(self.lsoaFiles[0], false);
-        this.setLsoaFields(data.slice(1));
-        const authority = await libraryAuthoritiesHelper.getLibraryAuthorityByName(
-          data[1][0]
-        );
-        const geojson = JSON.parse(authority.geojson);
-        this.authoritySource.data = geojson;
-        this.authoritySource.show = true;
-        var bounds = bbox(geojson);
-        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 });
+        const data = await csvHelper.parseFile(self.lsoaFiles[0], false)
+        this.setLsoaFields(data.slice(1))
+        const authority =
+          await libraryAuthoritiesHelper.getLibraryAuthorityByName(data[1][0])
+        const geojson = JSON.parse(authority.geojson)
+        this.authoritySource.data = geojson
+        this.authoritySource.show = true
+        var bounds = bbox(geojson)
+        this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 })
       }
     },
     setDisplayOptions: function () {
-      if (this.mapDisplay === "populationPercentage") {
-        this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaPopulation;
-        this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaPopulation;
-        this.$refs.mglMap.map.setPaintProperty(
-          "lsoas_layer_fill",
-          "fill-color",
-          this.matchColourLsoaPopulation
-        );
-        this.$refs.mglMap.map.setLayoutProperty(
-          "lsoas_layer_label",
-          "text-field",
+      if (this.mapDisplay === 'populationPercentage') {
+        this.lsoasLayerFill.paint['fill-color'] = this.matchColourLsoaPopulation
+        this.lsoasLayerLabel.layout['text-field'] =
           this.matchFieldLsoaPopulation
-        );
-      }
-      if (this.mapDisplay === "imd") {
-        this.lsoasLayerFill.paint["fill-color"] = this.matchColourLsoaDeprivation;
-        this.lsoasLayerLabel.layout["text-field"] = this.matchFieldLsoaDeprivation;
         this.$refs.mglMap.map.setPaintProperty(
-          "lsoas_layer_fill",
-          "fill-color",
-          this.matchColourLsoaDeprivation
-        );
+          'lsoas_layer_fill',
+          'fill-color',
+          this.matchColourLsoaPopulation
+        )
         this.$refs.mglMap.map.setLayoutProperty(
-          "lsoas_layer_label",
-          "text-field",
+          'lsoas_layer_label',
+          'text-field',
+          this.matchFieldLsoaPopulation
+        )
+      }
+      if (this.mapDisplay === 'imd') {
+        this.lsoasLayerFill.paint['fill-color'] =
+          this.matchColourLsoaDeprivation
+        this.lsoasLayerLabel.layout['text-field'] =
           this.matchFieldLsoaDeprivation
-        );
+        this.$refs.mglMap.map.setPaintProperty(
+          'lsoas_layer_fill',
+          'fill-color',
+          this.matchColourLsoaDeprivation
+        )
+        this.$refs.mglMap.map.setLayoutProperty(
+          'lsoas_layer_label',
+          'text-field',
+          this.matchFieldLsoaDeprivation
+        )
       }
     },
     setLsoaFields: function (lsoas) {
-      let filters = [];
-      let matchFieldLsoaPopulation = ["match", ["get", "code"]];
-      let matchFieldLsoaDeprivation = ["match", ["get", "code"]];
+      let filters = []
+      let matchFieldLsoaPopulation = ['match', ['get', 'code']]
+      let matchFieldLsoaDeprivation = ['match', ['get', 'code']]
 
-      lsoas.forEach((lsoa) => {
-        const members = parseInt(lsoa[3].replace("x", "2"));
+      lsoas.forEach(lsoa => {
+        const members = parseInt(lsoa[3].replace('x', '2'))
         this.$refs.mglMap.map.setFeatureState(
           {
-            source: "lsoas",
-            sourceLayer: "lsoa_boundaries",
+            source: 'lsoas',
+            sourceLayer: 'lsoa_boundaries',
             id: lsoa[2]
           },
           {
             members: members
           }
-        );
+        )
 
-        filters.push(lsoa[2]);
-        matchFieldLsoaPopulation.push(lsoa[2]);
+        filters.push(lsoa[2])
+        matchFieldLsoaPopulation.push(lsoa[2])
         matchFieldLsoaPopulation.push([
-          "concat",
+          'concat',
           [
-            "to-string",
-            ["round", ["*", ["/", members, ["to-number", ["get", "population"]]], 100]]
+            'to-string',
+            [
+              'round',
+              ['*', ['/', members, ['to-number', ['get', 'population']]], 100]
+            ]
           ],
-          "%"
-        ]);
-        matchFieldLsoaDeprivation.push(lsoa[2]);
-        matchFieldLsoaDeprivation.push(["get", "imd"]);
-      });
+          '%'
+        ])
+        matchFieldLsoaDeprivation.push(lsoa[2])
+        matchFieldLsoaDeprivation.push(['get', 'imd'])
+      })
 
-      matchFieldLsoaPopulation.push("");
-      matchFieldLsoaDeprivation.push("");
+      matchFieldLsoaPopulation.push('')
+      matchFieldLsoaDeprivation.push('')
 
       let matchColourLsoaPopulation = [
-        "interpolate",
-        ["linear"],
+        'interpolate',
+        ['linear'],
         [
-          "round",
+          'round',
           [
-            "*",
+            '*',
             [
-              "/",
-              ["to-number", ["feature-state", "members"]],
-              ["to-number", ["get", "population"]]
+              '/',
+              ['to-number', ['feature-state', 'members']],
+              ['to-number', ['get', 'population']]
             ],
             100
           ]
@@ -335,11 +380,11 @@ export default {
         colorbrewer.default.OrRd[9][7],
         40,
         colorbrewer.default.OrRd[9][8]
-      ];
+      ]
       let matchColourLsoaDeprivation = [
-        "interpolate",
-        ["linear"],
-        ["to-number", ["get", "imd"]],
+        'interpolate',
+        ['linear'],
+        ['to-number', ['get', 'imd']],
         1,
         colorbrewer.default.OrRd[9][8],
         2,
@@ -360,28 +405,28 @@ export default {
         colorbrewer.default.OrRd[9][0],
         10,
         colorbrewer.default.OrRd[9][0]
-      ];
+      ]
 
       // Only show where lsoas exist in data
-      let matchFilter = ["in", ["get", "code"], ["literal", filters]];
-      this.matchFilter = matchFilter;
+      let matchFilter = ['in', ['get', 'code'], ['literal', filters]]
+      this.matchFilter = matchFilter
 
-      this.$refs.mglMap.map.setFilter("lsoas_layer_fill", matchFilter);
-      this.$refs.mglMap.map.setFilter("lsoas_layer_label", matchFilter);
+      this.$refs.mglMap.map.setFilter('lsoas_layer_fill', matchFilter)
+      this.$refs.mglMap.map.setFilter('lsoas_layer_label', matchFilter)
 
       // Store permanent definitions
-      this.matchFieldLsoaPopulation = matchFieldLsoaPopulation;
-      this.matchFieldLsoaDeprivation = matchFieldLsoaDeprivation;
-      this.matchColourLsoaPopulation = matchColourLsoaPopulation;
-      this.matchColourLsoaDeprivation = matchColourLsoaDeprivation;
+      this.matchFieldLsoaPopulation = matchFieldLsoaPopulation
+      this.matchFieldLsoaDeprivation = matchFieldLsoaDeprivation
+      this.matchColourLsoaPopulation = matchColourLsoaPopulation
+      this.matchColourLsoaDeprivation = matchColourLsoaDeprivation
 
-      this.setDisplayOptions();
+      this.setDisplayOptions()
     }
   },
   components: {
-    "file-upload": FileUpload
+    'file-upload': FileUpload
   }
-};
+}
 </script>
 
 <style>

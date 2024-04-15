@@ -165,8 +165,6 @@ import * as Papa from 'papaparse'
 import * as csvHelper from '../helpers/csv'
 import * as postcodeHelper from '../helpers/postcode'
 
-import * as config from '../helpers/config.json'
-
 export default {
   data () {
     return {
@@ -177,7 +175,6 @@ export default {
       endTime: null,
       extractDate: null,
       files: [],
-      libraryServices: config.libraryServices,
       loading: false,
       lsoasCounted: {},
       mdText: MarkDownData,

@@ -263,7 +263,7 @@ export default {
   },
   methods: {
     addMembershipData: async function () {
-      let self = this
+      const self = this
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false)
         this.setLsoaFields(data.slice(1))
@@ -272,7 +272,7 @@ export default {
         const geojson = JSON.parse(authority.geojson)
         this.authoritySource.data = geojson
         this.authoritySource.show = true
-        var bounds = bbox(geojson)
+        const bounds = bbox(geojson)
         this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 })
       }
     },
@@ -310,9 +310,9 @@ export default {
       }
     },
     setLsoaFields: function (lsoas) {
-      let filters = []
-      let matchFieldLsoaPopulation = ['match', ['get', 'code']]
-      let matchFieldLsoaDeprivation = ['match', ['get', 'code']]
+      const filters = []
+      const matchFieldLsoaPopulation = ['match', ['get', 'code']]
+      const matchFieldLsoaDeprivation = ['match', ['get', 'code']]
 
       lsoas.forEach(lsoa => {
         const members = parseInt(lsoa[3].replace('x', '2'))
@@ -347,7 +347,41 @@ export default {
       matchFieldLsoaPopulation.push('')
       matchFieldLsoaDeprivation.push('')
 
-      let matchColourLsoaPopulation = [
+      const estimatedMinPopulationPercentage = Math.floor(
+        Math.min(
+          ...lsoas.map(lsoa => {
+            return (parseInt(lsoa[3].replace('x', '2')) / 1500) * 100
+          })
+        )
+      )
+
+      const estimatedMaxPopulationPercentage = Math.ceil(
+        Math.max(
+          ...lsoas
+            .filter(lsoa => lsoa[3] <= 1500)
+            .map(lsoa => {
+              return (parseInt(lsoa[3].replace('x', '2')) / 1500) * 100
+            })
+        )
+      )
+
+      // From the min and max, create 10 deciles
+      const percentageDeciles = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(decile => {
+        return Math.round(
+          estimatedMinPopulationPercentage +
+            (estimatedMaxPopulationPercentage -
+              estimatedMinPopulationPercentage) *
+              (decile / 10)
+        )
+      })
+
+      const decilesPlusColourFlattened = percentageDeciles.map(
+        (decile, index) => {
+          return [decile, colorbrewer.default.OrRd[9][index]]
+        }
+      )
+
+      const matchColourLsoaPopulation = [
         'interpolate',
         ['linear'],
         [
@@ -362,26 +396,10 @@ export default {
             100
           ]
         ],
-        0,
-        colorbrewer.default.OrRd[9][0],
-        5,
-        colorbrewer.default.OrRd[9][1],
-        10,
-        colorbrewer.default.OrRd[9][2],
-        15,
-        colorbrewer.default.OrRd[9][3],
-        20,
-        colorbrewer.default.OrRd[9][4],
-        25,
-        colorbrewer.default.OrRd[9][5],
-        30,
-        colorbrewer.default.OrRd[9][6],
-        35,
-        colorbrewer.default.OrRd[9][7],
-        40,
-        colorbrewer.default.OrRd[9][8]
+        ...decilesPlusColourFlattened.flat()
       ]
-      let matchColourLsoaDeprivation = [
+
+      const matchColourLsoaDeprivation = [
         'interpolate',
         ['linear'],
         ['to-number', ['get', 'imd']],
@@ -408,7 +426,7 @@ export default {
       ]
 
       // Only show where lsoas exist in data
-      let matchFilter = ['in', ['get', 'code'], ['literal', filters]]
+      const matchFilter = ['in', ['get', 'code'], ['literal', filters]]
       this.matchFilter = matchFilter
 
       this.$refs.mglMap.map.setFilter('lsoas_layer_fill', matchFilter)

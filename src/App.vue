@@ -162,12 +162,6 @@
     <layout-footer />
   </v-app>
 </template>
-<style lang="scss">
-.v-btn,
-.v-tab {
-  text-transform: none !important;
-}
-</style>
 
 <script>
 import Footer from './components/Footer.vue'

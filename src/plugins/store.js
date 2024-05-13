@@ -4,14 +4,12 @@ import * as jose from 'jose'
 
 export default createStore({
   state: {
-    // Logged in user data
     loginKey: null,
     loginSubject: null,
     loginIssuer: null,
     loginExpires: null,
     loginAdmin: false,
     loginCodes: [],
-    // Library service lookups
     libraryServices: []
   },
   mutations: {

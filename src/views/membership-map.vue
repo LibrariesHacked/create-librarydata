@@ -350,7 +350,7 @@ export default {
       const estimatedMinPopulationPercentage = Math.floor(
         Math.min(
           ...lsoas.map(lsoa => {
-            return (parseInt(lsoa[3].replace('x', '2')) / 1500) * 100
+            return (parseInt(lsoa[3].replace('x', '2')) / 1800) * 100
           })
         )
       )
@@ -358,7 +358,7 @@ export default {
       const estimatedMaxPopulationPercentage = Math.ceil(
         Math.max(
           ...lsoas
-            .filter(lsoa => lsoa[3] <= 1500)
+            .filter(lsoa => lsoa[3] <= 1200)
             .map(lsoa => {
               return (parseInt(lsoa[3].replace('x', '2')) / 1500) * 100
             })

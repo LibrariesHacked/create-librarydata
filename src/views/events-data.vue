@@ -1,18 +1,9 @@
 <template>
   <v-container>
-    <layout-header
-      title="Events"
-      subtitle="Library event attendance and outcomes"
-    />
+    <layout-header title="Events" subtitle="Library event attendance and outcomes" />
     <p class="text-center">
-      <v-btn
-        variant="tonal"
-        size="large"
-        color="info"
-        href="https://schema.librarydata.uk/events"
-        target="_blank"
-      >
-        Explore the events data schema
+      <v-btn variant="tonal" size="large" color="info" href="https://schema.librarydata.uk/events" target="_blank">
+        Explore the events schema
       </v-btn>
     </p>
 
@@ -26,7 +17,7 @@
 import MarkDownData from '../markdown/eventsdata.md?raw'
 
 export default {
-  data () {
+  data() {
     return {
       mdText: MarkDownData
     }

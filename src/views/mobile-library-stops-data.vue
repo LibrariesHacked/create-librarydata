@@ -1,18 +1,10 @@
 <template>
   <v-container>
-    <layout-header
-      title="Mobile library stops"
-      subtitle="Locations of mobile library stops, and their frequency"
-    />
+    <layout-header title="Mobile library stops" subtitle="Locations of mobile library stops, and their frequency" />
     <p class="text-center">
-      <v-btn
-        size="large"
-        variant="tonal"
-        color="info"
-        href="https://schema.librarydata.uk/mobile-library-stops"
-        target="_blank"
-      >
-        Explore the mobile stops data schema
+      <v-btn size="large" variant="tonal" color="info" href="https://schema.librarydata.uk/mobile-library-stops"
+        target="_blank">
+        Explore the mobile stops schema
       </v-btn>
     </p>
 
@@ -26,7 +18,7 @@
 import MarkDownData from '../markdown/mobilelibrarystopsdata.md?raw'
 
 export default {
-  data () {
+  data() {
     return {
       mdText: MarkDownData
     }

@@ -2,18 +2,18 @@
   <v-card elevation="0" color="grey-lighten-5" class="pt-4">
     <v-file-input
       chips
-      show-size
       accept="text/csv"
-      counter
-      variant="outlined"
-      bg-color="white"
+      variant="solo-filled"
+      flat
       multiple
       label="Select a file on your computer"
       :model-value="files"
       v-on:update:model-value="updateSelection($event)"
-      prepend-icon="mdi-file-document"
       hint="Only files with an extension of .csv will be displayed"
       persistent-hint
+      persistent-clear
+      prepend-icon=""
+      prepend-inner-icon="mdi-file-document-outline"
     ></v-file-input>
   </v-card>
 </template>

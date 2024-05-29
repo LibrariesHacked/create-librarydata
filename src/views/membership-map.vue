@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <layout-header
-      title="Membership map"
-      subtitle="Insights from library membership data"
-    />
+    <layout-header title="Membership map" subtitle="Insights from library membership data" />
 
     <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
@@ -16,100 +13,47 @@
         This tool loads CSV files in the format of the membership data schema.
       </v-alert>
 
-      <file-upload
-        v-bind:files="lsoaFiles"
-        v-on:change-files="lsoaFiles = $event"
-        v-on:delete-file="lsoaFiles = null"
-      />
+      <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event"
+        v-on:delete-file="lsoaFiles = null" />
 
-      <v-btn
-        append-icon="mdi-map-marker-plus"
-        color="info"
-        class="mt-3"
-        variant="tonal"
-        size="large"
-        v-on:click="addMembershipData"
-        :disabled="lsoaFiles.length == 0"
-      >
-        Add to map
+      <v-btn append-icon="mdi-map-marker-plus" color="info" class="mt-3" variant="tonal" size="large"
+        v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
+        Display on map
       </v-btn>
 
       <v-alert class="mt-8 mb-4" icon="mdi-numeric-2-circle" title="Map">
-        <strong>Population percentage</strong> shades the map to highlight
-        concentration of membership. When zooming in in also displays the
-        membership population percentage.
-        <strong>Areas of deprivation</strong> shades the map to highlight highly
-        deprived areas. Uses the index of multiple deprivation for each area. 1
-        represents highly deprived areas, 10 the least deprived.
+        <strong>Percentage membership</strong> shades the map to highlight
+        concentration of membership. When zooming in this also displays the
+        membership population percentage for individual areas.
+        <strong>Displaying deprivation</strong> shades the map to highlight highly
+        deprived areas. This uses the index of multiple deprivation for each area. 1
+        represents highly deprived areas and is shaded in red, 10 the least deprived.
       </v-alert>
 
-      <v-radio-group
-        v-model="mapDisplay"
-        v-on:change="setDisplayOptions"
-        inline
-      >
-        <v-radio
-          label="Display population percentage"
-          value="populationPercentage"
-        ></v-radio>
-        <v-radio label="Display areas of deprivation" value="imd"></v-radio>
+      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
+        <v-radio label="Highlight percentage membership" value="populationPercentage"></v-radio>
+        <v-radio label="Highlight deprivation levels" value="imd"></v-radio>
       </v-radio-group>
 
       <v-container class="map">
-        <mgl-map
-          ref="mglMap"
-          :center="center"
-          :zoom="zoom"
-          :mapStyle="mapStyle"
-        >
+        <mgl-map ref="mglMap" :center="center" :zoom="zoom" :mapStyle="mapStyle">
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-vector-source
-            source-id="libraries"
-            :tiles="librariesSource.tiles"
-          >
-            <mgl-circle-layer
-              source-layer="libraries"
-              layer-id="libraries_layer_circles"
-              :paint="librariesLayerCircle.paint"
-            />
+          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries_layer_circles"
+              :paint="librariesLayerCircle.paint" />
           </mgl-vector-source>
-          <mgl-vector-source
-            source-id="lsoas"
-            :tiles="lsoasSource.tiles"
-            :promoteId="lsoasSource.promoteId"
-          >
-            <mgl-fill-layer
-              source-layer="lsoa_boundaries"
-              layer-id="lsoas_layer_fill"
-              :paint="lsoasLayerFill.paint"
-              :filter="matchFilter"
-            />
-            <mgl-symbol-layer
-              source-layer="lsoa_boundaries"
-              layer-id="lsoas_layer_label"
-              :paint="lsoasLayerLabel.paint"
-              :layout="lsoasLayerLabel.layout"
-              :filter="matchFilter"
-              :minzoom="lsoasLayerLabel.minzoom"
-            />
+          <mgl-vector-source source-id="lsoas" :tiles="lsoasSource.tiles" :promoteId="lsoasSource.promoteId">
+            <mgl-fill-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_fill" :paint="lsoasLayerFill.paint"
+              :filter="matchFilter" />
+            <mgl-symbol-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_label" :paint="lsoasLayerLabel.paint"
+              :layout="lsoasLayerLabel.layout" :filter="matchFilter" :minzoom="lsoasLayerLabel.minzoom" />
           </mgl-vector-source>
-          <mgl-geo-json-source
-            source-id="authority"
-            :data="authoritySource.data"
-          >
-            <mgl-line-layer
-              v-if="authoritySource.show"
-              layer-id="authority-line"
-              :paint="authorityLayerLine.paint"
-            />
-            <mgl-symbol-layer
-              v-if="authoritySource.show"
-              layer-id="authority-label"
-              :layout="authorityLayerLabel.layout"
-              :paint="authorityLayerLabel.paint"
-            />
+          <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
+            <mgl-line-layer v-if="authoritySource.show" layer-id="authority-line" :paint="authorityLayerLine.paint" />
+            <mgl-symbol-layer v-if="authoritySource.show" layer-id="authority-label"
+              :layout="authorityLayerLabel.layout" :paint="authorityLayerLabel.paint" />
           </mgl-geo-json-source>
         </mgl-map>
       </v-container>
@@ -134,7 +78,7 @@ import * as libraryAuthoritiesHelper from '../helpers/libraryAuthorities'
 import * as config from '../helpers/config.json'
 
 export default {
-  data () {
+  data() {
     return {
       authoritySource: {
         data: {
@@ -263,7 +207,7 @@ export default {
   },
   methods: {
     addMembershipData: async function () {
-      let self = this
+      const self = this
       if (self.lsoaFiles[0].name) {
         const data = await csvHelper.parseFile(self.lsoaFiles[0], false)
         this.setLsoaFields(data.slice(1))
@@ -272,7 +216,7 @@ export default {
         const geojson = JSON.parse(authority.geojson)
         this.authoritySource.data = geojson
         this.authoritySource.show = true
-        var bounds = bbox(geojson)
+        const bounds = bbox(geojson)
         this.$refs.mglMap.map.fitBounds(bounds, { padding: 10 })
       }
     },
@@ -310,9 +254,9 @@ export default {
       }
     },
     setLsoaFields: function (lsoas) {
-      let filters = []
-      let matchFieldLsoaPopulation = ['match', ['get', 'code']]
-      let matchFieldLsoaDeprivation = ['match', ['get', 'code']]
+      const filters = []
+      const matchFieldLsoaPopulation = ['match', ['get', 'code']]
+      const matchFieldLsoaDeprivation = ['match', ['get', 'code']]
 
       lsoas.forEach(lsoa => {
         const members = parseInt(lsoa[3].replace('x', '2'))
@@ -347,7 +291,41 @@ export default {
       matchFieldLsoaPopulation.push('')
       matchFieldLsoaDeprivation.push('')
 
-      let matchColourLsoaPopulation = [
+      const estimatedMinPopulationPercentage = Math.floor(
+        Math.min(
+          ...lsoas.map(lsoa => {
+            return (parseInt(lsoa[3].replace('x', '2')) / 1800) * 100
+          })
+        )
+      )
+
+      const estimatedMaxPopulationPercentage = Math.ceil(
+        Math.max(
+          ...lsoas
+            .filter(lsoa => lsoa[3] <= 1200)
+            .map(lsoa => {
+              return (parseInt(lsoa[3].replace('x', '2')) / 1500) * 100
+            })
+        )
+      )
+
+      // From the min and max, create 10 deciles
+      const percentageDeciles = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(decile => {
+        return Math.round(
+          estimatedMinPopulationPercentage +
+          (estimatedMaxPopulationPercentage -
+            estimatedMinPopulationPercentage) *
+          (decile / 10)
+        )
+      })
+
+      const decilesPlusColourFlattened = percentageDeciles.map(
+        (decile, index) => {
+          return [decile, colorbrewer.default.OrRd[9][index]]
+        }
+      )
+
+      const matchColourLsoaPopulation = [
         'interpolate',
         ['linear'],
         [
@@ -362,26 +340,10 @@ export default {
             100
           ]
         ],
-        0,
-        colorbrewer.default.OrRd[9][0],
-        5,
-        colorbrewer.default.OrRd[9][1],
-        10,
-        colorbrewer.default.OrRd[9][2],
-        15,
-        colorbrewer.default.OrRd[9][3],
-        20,
-        colorbrewer.default.OrRd[9][4],
-        25,
-        colorbrewer.default.OrRd[9][5],
-        30,
-        colorbrewer.default.OrRd[9][6],
-        35,
-        colorbrewer.default.OrRd[9][7],
-        40,
-        colorbrewer.default.OrRd[9][8]
+        ...decilesPlusColourFlattened.flat()
       ]
-      let matchColourLsoaDeprivation = [
+
+      const matchColourLsoaDeprivation = [
         'interpolate',
         ['linear'],
         ['to-number', ['get', 'imd']],
@@ -408,7 +370,7 @@ export default {
       ]
 
       // Only show where lsoas exist in data
-      let matchFilter = ['in', ['get', 'code'], ['literal', filters]]
+      const matchFilter = ['in', ['get', 'code'], ['literal', filters]]
       this.matchFilter = matchFilter
 
       this.$refs.mglMap.map.setFilter('lsoas_layer_fill', matchFilter)

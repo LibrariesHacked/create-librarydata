@@ -31,6 +31,14 @@ const vuetify = createVuetify({
   },
   components: {
     ...labs
+  },
+  defaults: {
+    VBtn: {
+      style: 'text-transform: none;'
+    },
+    VTabs: {
+      style: 'text-transform: none;'
+    }
   }
 })
 

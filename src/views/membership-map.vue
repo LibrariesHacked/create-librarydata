@@ -10,7 +10,7 @@
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
-        This tool loads CSV files in the format of the membership data schema.
+        First you need a CSV file in the format of the membership data schema.
       </v-alert>
 
       <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event"

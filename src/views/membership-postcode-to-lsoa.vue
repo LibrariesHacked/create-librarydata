@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <layout-header
-      title="Postcode to area"
+      title="Postcode converter"
       subtitle="Convert postcode locations to statistical areas"
     />
 
@@ -13,7 +13,8 @@
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
       <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
-        This tool loads CSV files. If your data isn't in CSV format try
+        First you need a CSV file of postcodes. If your data isn't in CSV format
+        try
         <strong>Save as</strong> in your software. The first row should be
         column headings and one column should contain UK postcodes
       </v-alert>
@@ -60,7 +61,7 @@
         size="large"
         v-on:click="confirmOptions"
         :disabled="postcodeColumn === ''"
-        append-icon="mdi-chevron-triple-right"
+        append-icon="mdi-chevron-right-circle"
       >
         Convert
       </v-btn>
@@ -198,6 +199,10 @@ export default {
         const data = await csvHelper.parseFile(self.files[0], false)
         self.columns = data[0]
         self.csvData = data
+        self.loading = false
+      } else {
+        self.columns = []
+        self.csvData = []
         self.loading = false
       }
     },

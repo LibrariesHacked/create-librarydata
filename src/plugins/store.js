@@ -1,3 +1,5 @@
+/* global localStorage */
+
 import { createStore } from 'vuex'
 
 import * as jose from 'jose'

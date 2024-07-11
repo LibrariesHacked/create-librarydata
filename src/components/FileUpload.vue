@@ -13,7 +13,7 @@
       persistent-hint
       persistent-clear
       prepend-icon=""
-      prepend-inner-icon="mdi-file-document-outline"
+      prepend-inner-icon="mdi-file-document"
     ></v-file-input>
   </v-card>
 </template>

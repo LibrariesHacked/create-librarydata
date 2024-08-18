@@ -2,7 +2,7 @@
   <v-container>
     <layout-header
       title="Create"
-      subtitle="Helping libraries publish and make use of open data"
+      subtitle="Helping libraries publish and utilise open data"
     />
     <markdown-section :markdownText="mdText" />
     <v-container class="text-center" v-if="!this.$store.state.loginKey">

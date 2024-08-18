@@ -2,7 +2,7 @@
   <v-container>
     <layout-header
       title="Postcode converter"
-      subtitle="Convert postcode locations to statistical areas"
+      subtitle="Convert postcodes to statistical areas"
     />
 
     <v-divider inset color="info" class="my-2"></v-divider>
@@ -12,11 +12,10 @@
     <h2 class="text-h5 text-decoration-underline my-3">Convert postcodes</h2>
 
     <v-sheet color="grey-lighten-5" rounded elevation="0" class="px-5 py-5">
-      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load a file">
+      <v-alert icon="mdi-numeric-1-circle" class="mb-1" title="Load postcodes">
         First you need a CSV file of postcodes. If your data isn't in CSV format
-        try
-        <strong>Save as</strong> in your software. The first row should be
-        column headings and one column should contain UK postcodes
+        try using <strong>Save as</strong> in your software. The first row
+        should be column headings. One column should contain UK postcodes.
       </v-alert>
 
       <file-upload
@@ -29,10 +28,10 @@
         icon="mdi-numeric-2-circle"
         title="Select file options"
       >
-        The field headings in your file are displayed below. Choose which column
-        contains the postcodes. If your data includes counts per postcode, also
-        select the field holding the count</v-alert
-      >
+        Column headings in your file are displayed below. Choose which column
+        contains postcodes. If your data includes counts per postcode, select
+        the field holding the count.
+      </v-alert>
 
       <v-select
         color="success"
@@ -75,7 +74,7 @@
 
       <span v-if="endTime !== null">
         <p class="mb-2">
-          {{ 'Completed in ' + getTimeCompleted() + ' seconds' }}
+          {{ 'Completed in ' + getTimeCompleted() }}
         </p>
 
         <v-card
@@ -310,7 +309,9 @@ export default {
     },
     getTimeCompleted: function () {
       if (this.startTime && this.endTime) {
-        return Math.round(moment.duration(this.endTime.diff(this.startTime)))
+        const diff = this.endTime.diff(this.startTime)
+        const duration = moment.duration(diff)
+        return moment.utc(duration.as('milliseconds')).format('HH:mm:ss')
       }
       return ''
     }

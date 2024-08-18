@@ -9,7 +9,7 @@
     </v-app-bar>
     <v-navigation-drawer border v-model="drawer" elevation="0">
       <v-list nav>
-        <v-list-subheader>Data types</v-list-subheader>
+        <v-list-subheader>Datasets</v-list-subheader>
         <v-list-group value="Catalogue" prepend-icon="mdi-bookshelf">
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Catalogue"></v-list-item>

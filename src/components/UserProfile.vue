@@ -1,5 +1,5 @@
 <template>
-  <v-card variant="text" class="mb-4">
+  <v-card variant="tonal" class="mb-4" color="info">
     <v-card-text>
       <p v-if="this.$store.state.loginKey">
         Logged in as <strong>{{ this.$store.state.loginSubject }}</strong>
@@ -25,7 +25,7 @@
           }}</v-chip
         >
       </p>
-      <p v-if="!this.$store.state.loginKey">You are not logged in</p>
+      <p v-if="!this.$store.state.loginKey">You are not logged in.</p>
     </v-card-text>
     <v-card-actions v-if="this.actions">
       <v-spacer></v-spacer>
@@ -42,6 +42,7 @@
       <v-btn
         v-if="!this.$store.state.loginKey"
         color="info"
+        size="large"
         variant="tonal"
         :to="'/login'"
         append-icon="mdi-account-circle"

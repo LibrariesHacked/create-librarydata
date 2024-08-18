@@ -9,7 +9,7 @@
       label="Select a file on your computer"
       :model-value="files"
       v-on:update:model-value="updateSelection($event)"
-      hint="Only files with an extension of .csv will be displayed"
+      hint="Only files with a .csv extension will be available"
       persistent-hint
       persistent-clear
       prepend-icon=""

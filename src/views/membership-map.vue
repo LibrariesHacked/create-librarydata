@@ -292,7 +292,7 @@ export default {
             const memberInt = memberString.length > 0 ? parseInt(memberString) : 0
             lsoaStat.members = memberInt
             lsoaStat.memberPercentage =
-              (memberInt / lsoaStat.population) * 100
+              Math.round((memberInt / lsoaStat.population) * 100)
 
             const existingDeprivation = authorityDeprivationSummary.find(
               summary => summary.imd === lsoaStat.imd_decile
@@ -572,7 +572,7 @@ export default {
         ]
       ].concat(
         this.authorityLsoaStats.map(lsoa => [
-          lsoa.name,
+          lsoa.area_name,
           lsoa.code,
           lsoa.imd_decile,
           lsoa.rural_urban_code,

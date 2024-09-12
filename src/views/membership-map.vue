@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <layout-header
-      title="Membership map"
-      subtitle="Insights from library membership data"
-    />
+    <layout-header title="Membership map" subtitle="Insights from library membership data" />
 
     <v-divider inset color="info" class="my-2"></v-divider>
     <markdown-section :markdownText="mdText" />
@@ -16,21 +13,11 @@
         First you need a CSV file in the format of the membership data schema.
       </v-alert>
 
-      <file-upload
-        v-bind:files="lsoaFiles"
-        v-on:change-files="lsoaFiles = $event"
-        v-on:delete-file="lsoaFiles = null"
-      />
+      <file-upload v-bind:files="lsoaFiles" v-on:change-files="lsoaFiles = $event"
+        v-on:delete-file="lsoaFiles = null" />
 
-      <v-btn
-        append-icon="mdi-map-marker-plus"
-        color="info"
-        class="mt-3"
-        variant="tonal"
-        size="large"
-        v-on:click="addMembershipData"
-        :disabled="lsoaFiles.length == 0"
-      >
+      <v-btn append-icon="mdi-map-marker-plus" color="info" class="mt-3" variant="tonal" size="large"
+        v-on:click="addMembershipData" :disabled="lsoaFiles.length == 0">
         Display on map
       </v-btn>
 
@@ -44,102 +31,62 @@
         the least deprived.
       </v-alert>
 
-      <v-radio-group
-        v-model="mapDisplay"
-        v-on:change="setDisplayOptions"
-        inline
-      >
-        <v-radio
-          label="Highlight percentage membership"
-          value="populationPercentage"
-        ></v-radio>
+      <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
+        <v-radio label="Highlight percentage membership" value="populationPercentage"></v-radio>
         <v-radio label="Highlight deprivation levels" value="imd"></v-radio>
       </v-radio-group>
 
       <v-container class="map">
-        <mgl-map
-          ref="mglMap"
-          :center="center"
-          :zoom="zoom"
-          :mapStyle="mapStyle"
-        >
+        <mgl-map ref="mglMap" :center="center" :zoom="zoom" :mapStyle="mapStyle">
           <mgl-fullscreen-control />
           <mgl-navigation-control />
           <mgl-scale-control />
-          <mgl-vector-source
-            source-id="libraries"
-            :tiles="librariesSource.tiles"
-          >
-            <mgl-circle-layer
-              source-layer="libraries"
-              layer-id="libraries_layer_circles"
-              :paint="librariesLayerCircle.paint"
-            />
+          <mgl-vector-source source-id="libraries" :tiles="librariesSource.tiles">
+            <mgl-circle-layer source-layer="libraries" layer-id="libraries_layer_circles"
+              :paint="librariesLayerCircle.paint" />
           </mgl-vector-source>
-          <mgl-vector-source
-            source-id="lsoas"
-            :tiles="lsoasSource.tiles"
-            :promoteId="lsoasSource.promoteId"
-          >
-            <mgl-fill-layer
-              source-layer="lsoa_boundaries"
-              layer-id="lsoas_layer_fill"
-              :paint="lsoasLayerFill.paint"
-              :filter="matchFilter"
-            />
-            <mgl-symbol-layer
-              source-layer="lsoa_boundaries"
-              layer-id="lsoas_layer_label"
-              :paint="lsoasLayerLabel.paint"
-              :layout="lsoasLayerLabel.layout"
-              :filter="matchFilter"
-              :minzoom="lsoasLayerLabel.minzoom"
-            />
+          <mgl-vector-source source-id="lsoas" :tiles="lsoasSource.tiles" :promoteId="lsoasSource.promoteId">
+            <mgl-fill-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_fill" :paint="lsoasLayerFill.paint"
+              :filter="matchFilter" />
+            <mgl-symbol-layer source-layer="lsoa_boundaries" layer-id="lsoas_layer_label" :paint="lsoasLayerLabel.paint"
+              :layout="lsoasLayerLabel.layout" :filter="matchFilter" :minzoom="lsoasLayerLabel.minzoom" />
           </mgl-vector-source>
-          <mgl-geo-json-source
-            source-id="authority"
-            :data="authoritySource.data"
-          >
-            <mgl-line-layer
-              v-if="authoritySource.show"
-              layer-id="authority-line"
-              :paint="authorityLayerLine.paint"
-            />
-            <mgl-symbol-layer
-              v-if="authoritySource.show"
-              layer-id="authority-label"
-              :layout="authorityLayerLabel.layout"
-              :paint="authorityLayerLabel.paint"
-            />
+          <mgl-geo-json-source source-id="authority" :data="authoritySource.data">
+            <mgl-line-layer v-if="authoritySource.show" layer-id="authority-line" :paint="authorityLayerLine.paint" />
+            <mgl-symbol-layer v-if="authoritySource.show" layer-id="authority-label"
+              :layout="authorityLayerLabel.layout" :paint="authorityLayerLabel.paint" />
           </mgl-geo-json-source>
         </mgl-map>
       </v-container>
       <v-container>
         <span v-if="authorityLsoaStats.length > 0">
-          <v-card
-            color="grey-lighten-2"
-            variant="outlined"
-            elevation="0"
-            class="mb-2"
-          >
-            <v-data-table
-              no-filter
-              :headers="authorityLsoaStatsSummaryColumns"
-              :items="[authorityLsoaStatsSummary]"
-              item-key="lsoas"
-            >
+
+          <h3 class="text-h6 text-decoration-underline my-3">Authority LSOAs</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityLsoaStatsSummaryColumns" :items="[authorityLsoaStatsSummary]"
+              item-key="lsoas">
               <template #bottom></template>
             </v-data-table>
           </v-card>
 
-          <v-btn
-            color="info"
-            variant="tonal"
-            size="large"
-            v-on:click="downloadStats"
-            append-icon="mdi-content-save"
-          >
-            Save authority LSOA stats
+          <h3 class="text-h6 text-decoration-underline my-3">LSOA deprivation stats</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityDeprivationSummaryColumns" :items="authorityDeprivationSummary"
+              item-key="imd">
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+
+          <h3 class="text-h6 text-decoration-underline my-3">LSOA rural_urban classifications</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityRuralUrbanSummaryColumns" :items="authorityRuralUrbanSummary"
+              item-key="ruralUrbanClassification">
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+
+          <v-btn color="info" variant="tonal" size="large" v-on:click="downloadStats" append-icon="mdi-content-save">
+            Save all authority LSOA stats
           </v-btn>
         </span>
       </v-container>
@@ -164,7 +111,7 @@ import * as libraryAuthoritiesHelper from '../helpers/libraryAuthorities'
 import * as config from '../helpers/config.json'
 
 export default {
-  data () {
+  data() {
     return {
       authorityLsoaStats: [],
       authorityLsoaStatsSummary: [],
@@ -175,6 +122,20 @@ export default {
         { title: 'Member percentage', key: 'memberPercentage' },
         { title: 'Min percentage', key: 'minMembersPercentage' },
         { title: 'Max percentage', key: 'maxMembersPercentage' }
+      ],
+      authorityDeprivationSummaryColumns: [
+        { title: 'Index of multiple deprivation', key: 'imd' },
+        { title: 'Population', key: 'population' },
+        { title: 'Percentage of population', key: 'percentPopulation' },
+        { title: 'Members', key: 'members' },
+        { title: 'Percentage of members', key: 'percentMembers' }
+      ],
+      authorityRuralUrbanSummaryColumns: [
+        { title: 'Rural Urban Classification', key: 'ruralUrbanClassification' },
+        { title: 'Population', key: 'population' },
+        { title: 'Percentage of population', key: 'percentPopulation' },
+        { title: 'Members', key: 'members' },
+        { title: 'Percentage of members', key: 'percentMembers' }
       ],
       authorityDeprivationSummary: [],
       authorityRuralUrbanSummary: [],
@@ -315,23 +276,88 @@ export default {
           await libraryAuthoritiesHelper.getAuthorityLsoaStatsByCode(
             authority.code
           )
-        authorityLsoaStats.forEach(element => {
+        const authorityDeprivationSummary = []
+        const authorityRuralUrbanSummary = []
+        authorityLsoaStats.forEach(lsoaStat => {
           // Find the lsoa in the data
           const matchingLibraryLsoaData = data.find(
-            lsoa => lsoa[2] === element.code
+            lsoa => lsoa[2] === lsoaStat.code
           )
+          console.log(lsoaStat)
           if (matchingLibraryLsoaData) {
             const memberString = matchingLibraryLsoaData[3].replace('x', '2')
-            element.members =
-              memberString.length > 0 ? parseInt(memberString) : 0
-            element.memberPercentage =
-              (element.members / element.population) * 100
+            const memberInt = memberString.length > 0 ? parseInt(memberString) : 0
+            lsoaStat.members = memberInt
+            lsoaStat.memberPercentage =
+              (memberInt / lsoaStat.population) * 100
+
+            const existingDeprivation = authorityDeprivationSummary.find(
+              summary => summary.imd === lsoaStat.imd_decile
+            )
+            if (existingDeprivation) {
+              existingDeprivation.population += lsoaStat.population
+              existingDeprivation.members += memberInt
+            } else {
+              authorityDeprivationSummary.push({
+                imd: lsoaStat.imd_decile,
+                population: lsoaStat.population,
+                members: memberInt
+              })
+            }
+            const existingRuralUrban = authorityRuralUrbanSummary.find(
+              summary => summary.ruralUrbanClassification === lsoaStat.rural_urban_code
+            )
+            if (existingRuralUrban) {
+              existingRuralUrban.population += lsoaStat.population
+              existingRuralUrban.members += memberInt
+            } else {
+              authorityRuralUrbanSummary.push({
+                ruralUrbanClassification: lsoaStat.rural_urban_code,
+                population: lsoaStat.population,
+                members: lsoaStat.members
+              })
+            }
           } else {
-            element.members = 0
-            element.memberPercentage = 0
+            lsoaStat.members = 0
+            lsoaStat.memberPercentage = 0
           }
         })
+        // Add the percentages to the deprivation and rural urban summaries
+        authorityDeprivationSummary.forEach(summary => {
+          summary.percentPopulation = Math.round(
+            (summary.population / authorityDeprivationSummary.reduce(
+              (acc, lsoa) => acc + lsoa.population,
+              0
+            )) * 100
+          )
+          summary.percentMembers = Math.round(
+            (summary.members / authorityDeprivationSummary.reduce(
+              (acc, lsoa) => acc + lsoa.members,
+              0
+            )) * 100
+          )
+        })
+        authorityRuralUrbanSummary.forEach(summary => {
+          summary.percentPopulation = Math.round(
+            (summary.population / authorityRuralUrbanSummary.reduce(
+              (acc, ruc) => acc + ruc.population,
+              0
+            )) * 100
+          )
+          summary.percentMembers = Math.round(
+            (summary.members / authorityRuralUrbanSummary.reduce(
+              (acc, ruc) => acc + ruc.members,
+              0
+            )) * 100
+          )
+        })
         this.authorityLsoaStats = authorityLsoaStats
+        this.authorityDeprivationSummary = authorityDeprivationSummary.sort(
+          (a, b) => a.imd - b.imd
+        )
+        this.authorityRuralUrbanSummary = authorityRuralUrbanSummary.sort(
+          (a, b) => a.ruralUrbanClassification.localeCompare(b.ruralUrbanClassification)
+        )
         this.authorityLsoaStatsSummary = {
           lsoas: authorityLsoaStats.length,
           population: authorityLsoaStats.reduce(
@@ -352,8 +378,9 @@ export default {
         this.authorityLsoaStatsSummary.memberPercentage = Math.round(
           (this.authorityLsoaStatsSummary.members /
             this.authorityLsoaStatsSummary.population) *
-            100
+          100
         )
+
         const geojson = JSON.parse(authority.geojson)
         this.authoritySource.data = geojson
         this.authoritySource.show = true
@@ -454,9 +481,9 @@ export default {
       const percentageDeciles = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(decile => {
         return Math.round(
           estimatedMinPopulationPercentage +
-            (estimatedMaxPopulationPercentage -
-              estimatedMinPopulationPercentage) *
-              (decile / 10)
+          (estimatedMaxPopulationPercentage -
+            estimatedMinPopulationPercentage) *
+          (decile / 10)
         )
       })
 

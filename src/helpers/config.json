@@ -4,6 +4,7 @@
   "lsoa_tiles": "https://api-geography.librarydata.uk/rest/lsoas/{z}/{x}/{y}.mvt",
   "libraries_tiles": "https://api.librarydata.uk/libraries/{z}/{x}/{y}.mvt",
   "authorities_path": "https://api-geography.librarydata.uk/rest/libraryAuthorities",
+  "lsoas_path": "https://api-geography.librarydata.uk/rest/lsoas",
   "authenticate_path": "https://api.librarydata.uk/authenticate",
   "authenticate_website": "create.librarydata.uk",
   "schema_url": "https://api.librarydata.uk/schemas/",

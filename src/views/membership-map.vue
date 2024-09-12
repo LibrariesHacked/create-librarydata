@@ -25,9 +25,10 @@
         <strong>Percentage membership</strong> shades the map to highlight
         concentration of membership. When zooming in this also displays the
         membership population percentage for individual areas.
-        <strong>Displaying deprivation</strong> shades the map to highlight highly
-        deprived areas. This uses the index of multiple deprivation for each area. 1
-        represents highly deprived areas and is shaded in red, 10 the least deprived.
+        <strong>Displaying deprivation</strong> shades the map to highlight
+        highly deprived areas. This uses the index of multiple deprivation for
+        each area. 1 represents highly deprived areas and is shaded in red, 10
+        the least deprived.
       </v-alert>
 
       <v-radio-group v-model="mapDisplay" v-on:change="setDisplayOptions" inline>
@@ -57,6 +58,38 @@
           </mgl-geo-json-source>
         </mgl-map>
       </v-container>
+      <v-container>
+        <span v-if="authorityLsoaStats.length > 0">
+
+          <h3 class="text-h6 text-decoration-underline my-3">Authority LSOAs</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityLsoaStatsSummaryColumns" :items="[authorityLsoaStatsSummary]"
+              item-key="lsoas">
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+
+          <h3 class="text-h6 text-decoration-underline my-3">LSOA deprivation stats</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityDeprivationSummaryColumns" :items="authorityDeprivationSummary"
+              item-key="imd">
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+
+          <h3 class="text-h6 text-decoration-underline my-3">LSOA rural_urban classifications</h3>
+          <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
+            <v-data-table no-filter :headers="authorityRuralUrbanSummaryColumns" :items="authorityRuralUrbanSummary"
+              item-key="ruralUrbanClassification">
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+
+          <v-btn color="info" variant="tonal" size="large" v-on:click="downloadStats" append-icon="mdi-content-save">
+            Save all authority LSOA stats
+          </v-btn>
+        </span>
+      </v-container>
     </v-sheet>
   </v-container>
 </template>
@@ -80,6 +113,32 @@ import * as config from '../helpers/config.json'
 export default {
   data() {
     return {
+      authorityLsoaStats: [],
+      authorityLsoaStatsSummary: [],
+      authorityLsoaStatsSummaryColumns: [
+        { title: 'LSOAs', key: 'lsoas' },
+        { title: 'Population', key: 'population' },
+        { title: 'Members', key: 'members' },
+        { title: 'Member percentage', key: 'memberPercentage' },
+        { title: 'Min percentage', key: 'minMembersPercentage' },
+        { title: 'Max percentage', key: 'maxMembersPercentage' }
+      ],
+      authorityDeprivationSummaryColumns: [
+        { title: 'Index of multiple deprivation', key: 'imd' },
+        { title: 'Population', key: 'population' },
+        { title: 'Percentage of population', key: 'percentPopulation' },
+        { title: 'Members', key: 'members' },
+        { title: 'Percentage of members', key: 'percentMembers' }
+      ],
+      authorityRuralUrbanSummaryColumns: [
+        { title: 'Rural Urban Classification', key: 'ruralUrbanClassification' },
+        { title: 'Population', key: 'population' },
+        { title: 'Percentage of population', key: 'percentPopulation' },
+        { title: 'Members', key: 'members' },
+        { title: 'Percentage of members', key: 'percentMembers' }
+      ],
+      authorityDeprivationSummary: [],
+      authorityRuralUrbanSummary: [],
       authoritySource: {
         data: {
           type: 'FeatureCollection',
@@ -213,6 +272,115 @@ export default {
         this.setLsoaFields(data.slice(1))
         const authority =
           await libraryAuthoritiesHelper.getLibraryAuthorityByName(data[1][0])
+        const authorityLsoaStats =
+          await libraryAuthoritiesHelper.getAuthorityLsoaStatsByCode(
+            authority.code
+          )
+        const authorityDeprivationSummary = []
+        const authorityRuralUrbanSummary = []
+        authorityLsoaStats.forEach(lsoaStat => {
+          // Find the lsoa in the data
+          const matchingLibraryLsoaData = data.find(
+            lsoa => lsoa[2] === lsoaStat.code
+          )
+          console.log(lsoaStat)
+          if (matchingLibraryLsoaData) {
+            const memberString = matchingLibraryLsoaData[3].replace('x', '2')
+            const memberInt = memberString.length > 0 ? parseInt(memberString) : 0
+            lsoaStat.members = memberInt
+            lsoaStat.memberPercentage =
+              (memberInt / lsoaStat.population) * 100
+
+            const existingDeprivation = authorityDeprivationSummary.find(
+              summary => summary.imd === lsoaStat.imd_decile
+            )
+            if (existingDeprivation) {
+              existingDeprivation.population += lsoaStat.population
+              existingDeprivation.members += memberInt
+            } else {
+              authorityDeprivationSummary.push({
+                imd: lsoaStat.imd_decile,
+                population: lsoaStat.population,
+                members: memberInt
+              })
+            }
+            const existingRuralUrban = authorityRuralUrbanSummary.find(
+              summary => summary.ruralUrbanClassification === lsoaStat.rural_urban_code
+            )
+            if (existingRuralUrban) {
+              existingRuralUrban.population += lsoaStat.population
+              existingRuralUrban.members += memberInt
+            } else {
+              authorityRuralUrbanSummary.push({
+                ruralUrbanClassification: lsoaStat.rural_urban_code,
+                population: lsoaStat.population,
+                members: lsoaStat.members
+              })
+            }
+          } else {
+            lsoaStat.members = 0
+            lsoaStat.memberPercentage = 0
+          }
+        })
+        // Add the percentages to the deprivation and rural urban summaries
+        authorityDeprivationSummary.forEach(summary => {
+          summary.percentPopulation = Math.round(
+            (summary.population / authorityDeprivationSummary.reduce(
+              (acc, lsoa) => acc + lsoa.population,
+              0
+            )) * 100
+          )
+          summary.percentMembers = Math.round(
+            (summary.members / authorityDeprivationSummary.reduce(
+              (acc, lsoa) => acc + lsoa.members,
+              0
+            )) * 100
+          )
+        })
+        authorityRuralUrbanSummary.forEach(summary => {
+          summary.percentPopulation = Math.round(
+            (summary.population / authorityRuralUrbanSummary.reduce(
+              (acc, ruc) => acc + ruc.population,
+              0
+            )) * 100
+          )
+          summary.percentMembers = Math.round(
+            (summary.members / authorityRuralUrbanSummary.reduce(
+              (acc, ruc) => acc + ruc.members,
+              0
+            )) * 100
+          )
+        })
+        this.authorityLsoaStats = authorityLsoaStats
+        this.authorityDeprivationSummary = authorityDeprivationSummary.sort(
+          (a, b) => a.imd - b.imd
+        )
+        this.authorityRuralUrbanSummary = authorityRuralUrbanSummary.sort(
+          (a, b) => a.ruralUrbanClassification.localeCompare(b.ruralUrbanClassification)
+        )
+        this.authorityLsoaStatsSummary = {
+          lsoas: authorityLsoaStats.length,
+          population: authorityLsoaStats.reduce(
+            (acc, lsoa) => acc + lsoa.population,
+            0
+          ),
+          members: authorityLsoaStats.reduce(
+            (acc, lsoa) => acc + lsoa.members,
+            0
+          ),
+          minMembersPercentage: Math.round(
+            Math.min(...authorityLsoaStats.map(lsoa => lsoa.memberPercentage))
+          ),
+          maxMembersPercentage: Math.round(
+            Math.max(...authorityLsoaStats.map(lsoa => lsoa.memberPercentage))
+          )
+        }
+        this.authorityLsoaStatsSummary.memberPercentage = Math.round(
+          (this.authorityLsoaStatsSummary.members /
+            this.authorityLsoaStatsSummary.population) *
+          100
+        )
+
         const geojson = JSON.parse(authority.geojson)
         this.authoritySource.data = geojson
         this.authoritySource.show = true

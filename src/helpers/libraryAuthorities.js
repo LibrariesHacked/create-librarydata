@@ -20,6 +20,17 @@ export async function getLibraryAuthorityByName (name) {
   }
 }
 
+export async function getAuthorityLsoaStatsByCode (code) {
+  const response = await axios.get(
+    config.lsoas_path + '/smallareas/libraryauthority/' + code
+  )
+  if (response && response.data) {
+    return response.data
+  } else {
+    return {}
+  }
+}
+
 export function getLibraryAuthoritySystemName (name) {
   return name.replace(/[. ,:-]+/g, '-').toLowerCase()
 }

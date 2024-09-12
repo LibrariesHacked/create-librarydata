@@ -77,7 +77,7 @@
             </v-data-table>
           </v-card>
 
-          <h3 class="text-h6 text-decoration-underline my-3">LSOA rural_urban classifications</h3>
+          <h3 class="text-h6 text-decoration-underline my-3">LSOA rural/urban classifications</h3>
           <v-card color="grey-lighten-2" variant="outlined" elevation="0" class="mb-2">
             <v-data-table no-filter :headers="authorityRuralUrbanSummaryColumns" :items="authorityRuralUrbanSummary"
               item-key="ruralUrbanClassification">
@@ -99,7 +99,11 @@ import MarkDownData from '../markdown/membershipmap.md?raw'
 
 import '../extensions/strings'
 
+import { saveAs } from 'file-saver'
+
 import FileUpload from '../components/FileUpload.vue'
+
+import * as Papa from 'papaparse'
 
 import * as colorbrewer from 'colorbrewer'
 
@@ -283,7 +287,6 @@ export default {
           const matchingLibraryLsoaData = data.find(
             lsoa => lsoa[2] === lsoaStat.code
           )
-          console.log(lsoaStat)
           if (matchingLibraryLsoaData) {
             const memberString = matchingLibraryLsoaData[3].replace('x', '2')
             const memberInt = memberString.length > 0 ? parseInt(memberString) : 0
@@ -298,11 +301,13 @@ export default {
               existingDeprivation.population += lsoaStat.population
               existingDeprivation.members += memberInt
             } else {
-              authorityDeprivationSummary.push({
-                imd: lsoaStat.imd_decile,
-                population: lsoaStat.population,
-                members: memberInt
-              })
+              if (lsoaStat.imd_decile) {
+                authorityDeprivationSummary.push({
+                  imd: lsoaStat.imd_decile,
+                  population: lsoaStat.population,
+                  members: memberInt
+                })
+              }
             }
             const existingRuralUrban = authorityRuralUrbanSummary.find(
               summary => summary.ruralUrbanClassification === lsoaStat.rural_urban_code
@@ -311,11 +316,13 @@ export default {
               existingRuralUrban.population += lsoaStat.population
               existingRuralUrban.members += memberInt
             } else {
-              authorityRuralUrbanSummary.push({
-                ruralUrbanClassification: lsoaStat.rural_urban_code,
-                population: lsoaStat.population,
-                members: lsoaStat.members
-              })
+              if (lsoaStat.rural_urban_code && lsoaStat.rural_urban_code.length > 0) {
+                authorityRuralUrbanSummary.push({
+                  ruralUrbanClassification: lsoaStat.rural_urban_code,
+                  population: lsoaStat.population,
+                  members: lsoaStat.members
+                })
+              }
             }
           } else {
             lsoaStat.members = 0
@@ -551,6 +558,33 @@ export default {
       this.matchColourLsoaDeprivation = matchColourLsoaDeprivation
 
       this.setDisplayOptions()
+    },
+    downloadStats: function () {
+      const statsCsvData = [
+        [
+          'LSOA name',
+          'LSOA code',
+          'IMD',
+          'Rural urban code',
+          'Population',
+          'Members',
+          'Member percentage'
+        ]
+      ].concat(
+        this.authorityLsoaStats.map(lsoa => [
+          lsoa.name,
+          lsoa.code,
+          lsoa.imd_decile,
+          lsoa.rural_urban_code,
+          lsoa.population,
+          lsoa.members,
+          lsoa.memberPercentage
+        ])
+      )
+      const blob = new Blob([Papa.unparse(statsCsvData)], {
+        type: 'text/plain;charset=utf-8'
+      })
+      saveAs(blob, 'authority-lsoa-stats.csv')
     }
   },
   components: {

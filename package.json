@@ -17,7 +17,7 @@
     "file-saver": "^2.0.5",
     "jose": "^5.8.0",
     "maplibre-gl": "^6.4.1",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "papaparse": "^5.4.1",
     "vue": "^3.4.21",
     "vue-carbonbadge": "^2.0.0",
